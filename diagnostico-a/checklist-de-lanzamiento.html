@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist de Lanzamiento: 12 Pasos para Activar tu Sistema de Captación · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--brand-dark);
+    color: var(--text-body);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.85;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* PRINT STYLES */
+  @media print {
+    body { background: #fff; color: #111; }
+    .no-print { display: none; }
+    .page-break { page-break-before: always; }
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: var(--card-dark);
+    border-bottom: 2px solid var(--green);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo { font-size: 14px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.05em; }
+  .logo span { color: var(--green); }
+  .doc-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 4px 10px; }
+
+  /* MAIN */
+  .doc-wrap {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 60px 48px 100px;
+  }
+
+  /* COVER */
+  .cover {
+    text-align: center;
+    padding: 60px 0 80px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+  }
+
+  .cover-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 20px; display: flex; align-items: center;
+    justify-content: center; gap: 12px;
+  }
+  .cover-eyebrow::before, .cover-eyebrow::after {
+    content: ''; display: inline-block; width: 32px; height: 1px; background: var(--green);
+  }
+
+  .cover-title {
+    font-size: clamp(28px, 5vw, 46px); font-weight: 900;
+    color: var(--white); line-height: 1.07; letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .cover-title em { font-style: normal; color: var(--green); }
+
+  .cover-sub {
+    font-size: 16px; font-weight: 300; color: var(--text-muted);
+    max-width: 560px; margin: 0 auto 36px; line-height: 1.65;
+  }
+
+  .cover-meta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 20px; font-size: 12px; color: var(--text-muted);
+  }
+  .cover-meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; }
+
+  /* SECTIONS */
+  .section { margin-bottom: 64px; }
+
+  .section-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--green); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--green); }
+
+  h2 {
+    font-size: clamp(20px, 3vw, 28px); font-weight: 900;
+    color: var(--white); margin-bottom: 16px;
+    line-height: 1.12; letter-spacing: -0.025em;
+  }
+
+  h3 {
+    font-size: 17px; font-weight: 700; color: var(--white);
+    margin: 32px 0 10px; letter-spacing: -0.01em;
+  }
+
+  p { margin-bottom: 20px; line-height: 1.8; }
+  p strong { color: var(--white); font-weight: 600; }
+
+  /* INTRO BLOCK */
+  .intro-block {
+    background: var(--card-dark); border: 1px solid var(--border);
+    border-left: 3px solid var(--green); padding: 24px 28px; margin-bottom: 32px;
+  }
+  .intro-block p { margin: 0; font-size: 15px; line-height: 1.75; }
+
+  /* KOMMO SECTION */
+  .kommo-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); margin: 32px 0;
+  }
+
+  .kommo-card {
+    background: var(--card-dark); padding: 24px 22px;
+    border-left: 3px solid transparent; transition: border-color 0.2s;
+  }
+  .kommo-card:hover { border-left-color: var(--green); }
+
+  .kommo-card-num {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--green);
+    background: var(--green-dim); padding: 2px 8px;
+    display: inline-block; margin-bottom: 10px;
+  }
+
+  .kommo-card-title {
+    font-size: 15px; font-weight: 700; color: var(--white);
+    margin-bottom: 8px; letter-spacing: -0.01em; line-height: 1.3;
+  }
+
+  .kommo-card-body {
+    font-size: 13px; color: var(--text-body); line-height: 1.65;
+  }
+  .kommo-card-body strong { color: var(--white); font-weight: 600; }
+
+  /* PIPELINE DIAGRAM */
+  .pipeline {
+    display: flex; align-items: center; gap: 0;
+    margin: 28px 0; overflow-x: auto;
+  }
+
+  .pipeline-stage {
+    background: var(--card-dark); border: 1px solid var(--border);
+    padding: 16px 18px; text-align: center; flex: 1; min-width: 120px;
+    position: relative;
+  }
+
+  .pipeline-stage::after {
+    content: '→';
+    position: absolute; right: -14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--green); font-size: 14px; font-weight: 700; z-index: 1;
+  }
+
+  .pipeline-stage:last-child::after { display: none; }
+
+  .pipeline-stage-num {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--green); margin-bottom: 6px;
+  }
+
+  .pipeline-stage-name {
+    font-size: 13px; font-weight: 700; color: var(--white); line-height: 1.2;
+  }
+
+  .pipeline-stage-action {
+    font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4;
+  }
+
+  /* CHECKLIST ITEMS */
+  .checklist-section { margin: 48px 0; }
+
+  .checklist-phase {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .check-item {
+    display: flex; gap: 0; margin-bottom: 8px;
+    background: var(--card-dark); border: 1px solid var(--border);
+    overflow: hidden; transition: border-color 0.15s;
+  }
+  .check-item:hover { border-color: var(--green-border); }
+
+  .check-box {
+    width: 48px; min-height: 100%; background: var(--card-mid);
+    border-right: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; cursor: pointer; transition: background 0.2s;
+    user-select: none;
+  }
+
+  .check-box:hover { background: var(--green-dim); }
+  .check-box.done { background: var(--green); }
+  .check-box .tick { font-size: 14px; font-weight: 900; color: var(--brand-dark); display: none; }
+  .check-box.done .tick { display: block; }
+  .check-box .num { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+  .check-box.done .num { display: none; }
+
+  .check-content { padding: 16px 20px; flex: 1; }
+
+  .check-title {
+    font-size: 15px; font-weight: 700; color: var(--white);
+    margin-bottom: 6px; letter-spacing: -0.01em; line-height: 1.3;
+  }
+
+  .check-desc { font-size: 13px; color: var(--text-body); line-height: 1.65; }
+  .check-desc strong { color: var(--white); font-weight: 600; }
+
+  .check-criteria {
+    margin-top: 10px; padding: 10px 14px;
+    background: var(--brand-dark); border: 1px solid var(--border);
+    font-size: 12px; color: var(--text-muted); line-height: 1.6;
+  }
+  .check-criteria-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--green); margin-bottom: 4px;
+  }
+
+  /* DATA CALLOUT */
+  .data-callout {
+    background: var(--card-dark); border: 1px solid var(--border);
+    border-left: 3px solid var(--green); padding: 18px 22px;
+    margin: 20px 0; display: flex; gap: 16px; align-items: flex-start;
+  }
+  .data-num { font-size: 32px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 70px; }
+  .data-text { font-size: 13px; color: var(--text-body); line-height: 1.6; }
+  .data-text strong { color: var(--white); font-weight: 600; }
+
+  .source-tag {
+    display: inline-block; font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--green);
+    background: var(--green-dim); border: 1px solid var(--green-border);
+    padding: 1px 6px; font-weight: 600; vertical-align: middle; margin-left: 4px;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: var(--card-dark); border: 1px solid var(--border);
+    padding: 20px 24px; margin: 32px 0;
+  }
+  .progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted); margin-bottom: 10px;
+  }
+  .progress-label strong { color: var(--white); }
+  .progress-track { height: 4px; background: var(--border); }
+  .progress-fill { height: 100%; background: var(--green); width: 0%; transition: width 0.5s ease; }
+
+  /* CTA FINAL */
+  .cta-final {
+    background: var(--card-dark); border: 1px solid var(--border);
+    border-top: 2px solid var(--green); padding: 48px 40px;
+    margin-top: 64px; text-align: center;
+  }
+
+  .cta-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--green); margin-bottom: 14px;
+    display: inline-block; background: var(--green-dim);
+    border: 1px solid var(--green-border); padding: 4px 12px;
+  }
+
+  .cta-title {
+    font-size: clamp(20px, 3vw, 30px); font-weight: 900;
+    color: var(--white); letter-spacing: -0.025em; line-height: 1.15;
+    margin: 14px 0 10px;
+  }
+
+  .cta-title em { font-style: normal; color: var(--green); }
+
+  .cta-sub {
+    font-size: 15px; color: var(--text-muted); max-width: 460px;
+    margin: 0 auto 32px; line-height: 1.65; font-weight: 300;
+  }
+
+  .cta-items {
+    display: flex; flex-direction: column; gap: 8px;
+    max-width: 440px; margin: 0 auto 32px; text-align: left;
+  }
+
+  .cta-item {
+    display: flex; gap: 10px; font-size: 14px; color: var(--text-body);
+  }
+  .cta-item::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  .cta-btn {
+    display: inline-block; background: var(--green); color: var(--brand-dark);
+    padding: 16px 40px; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+    transition: all 0.2s; cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+  }
+  .cta-btn:hover { background: #4eff8a; transform: translateY(-1px); }
+
+  .cta-note { font-size: 12px; color: var(--text-muted); margin-top: 14px; }
+
+  /* DIVIDER */
+  .divider { display: flex; align-items: center; gap: 16px; margin: 48px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+
+  /* FOOTNOTE */
+  .footnote { font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 24px; margin-top: 48px; line-height: 1.8; }
+
+  @media (max-width: 640px) {
+    .doc-header { padding: 20px 20px; }
+    .doc-wrap { padding: 40px 20px 80px; }
+    .kommo-grid { grid-template-columns: 1fr; }
+    .pipeline { flex-direction: column; }
+    .pipeline-stage::after { content: '↓'; right: 50%; bottom: -18px; top: auto; transform: translateX(50%); }
+    .cta-final { padding: 36px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-header no-print">
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="doc-tag">Recurso Exclusivo</div>
+</div>
+
+<div class="doc-wrap">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eyebrow">Checklist de Lanzamiento</div>
+    <h1 class="cover-title">12 pasos para activar tu <em>sistema de captación</em> en 30 días</h1>
+    <p class="cover-sub">Una guía paso a paso para empresas de construcción y home improvement que quieren generar demanda predecible sin depender de referidos. Cada paso incluye el criterio de completitud para saber cuándo avanzar al siguiente.</p>
+    <div class="cover-meta">
+      <span>Mucho Marketing</span>
+      <span class="cover-meta-dot"></span>
+      <span>12 pasos · 30 días</span>
+      <span class="cover-meta-dot"></span>
+      <span>Incluye intro a Kommo CRM</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="section">
+    <div class="section-eyebrow">Antes de empezar</div>
+    <h2>Cómo usar este checklist</h2>
+    <div class="intro-block">
+      <p>Este documento está diseñado para seguirse <strong>en orden estricto.</strong> Cada paso es condición del siguiente. El error más frecuente es lanzar campañas antes de tener el sistema de procesamiento listo — el resultado es leads que entran y se pierden, y la conclusión incorrecta de que "el digital no funciona".</p>
+    </div>
+    <p>Los primeros cuatro pasos son de preparación y no requieren ninguna inversión en publicidad. Los pasos 5 a 8 configuran el sistema. Los pasos 9 a 12 son de lanzamiento, medición y escala.</p>
+    <p>Cada paso tiene un <strong>criterio de completitud</strong> — una condición objetiva que determina si el paso está realmente listo antes de pasar al siguiente. No avances si el criterio no está cumplido.</p>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-label">
+        <span>Progreso del checklist</span>
+        <strong id="progress-text">0 de 12 completados</strong>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><span class="divider-icon">◆ ◆ ◆</span></div>
+
+  <!-- KOMMO INTRO -->
+  <div class="section">
+    <div class="section-eyebrow">Herramienta central del sistema</div>
+    <h2>Introducción a Kommo CRM</h2>
+
+    <p>El checklist que sigue hace referencia a Kommo CRM en varios pasos. Antes de avanzar, es importante entender qué es, por qué es la herramienta correcta para este sistema, y cómo encaja en el proceso de captación.</p>
+
+    <h3>¿Qué es Kommo?</h3>
+    <p>Kommo es un CRM (Customer Relationship Manager) diseñado específicamente para negocios que venden por WhatsApp y canales de mensajería. A diferencia de Salesforce o HubSpot, que están pensados para equipos de ventas B2B complejos, <strong>Kommo está optimizado para el flujo de ventas de alto ticket en negocios de servicio:</strong> lead entra por WhatsApp, se califica, se presupuesta, se sigue, se cierra.</p>
+
+    <p>En el contexto de este sistema, Kommo hace tres cosas que ninguna otra herramienta hace de forma integrada para este perfil de negocio:</p>
+
+    <div class="kommo-grid">
+      <div class="kommo-card">
+        <div class="kommo-card-num">Función 01</div>
+        <div class="kommo-card-title">Pipeline visual del embudo</div>
+        <div class="kommo-card-body">Muestra en tiempo real en qué etapa está cada lead. El dueño puede ver de un vistazo cuántos leads nuevos entraron, cuántos fueron contactados, cuántos tienen presupuesto enviado, y cuántos cerraron. <strong>Sin esta visibilidad no existe la gestión activa del embudo.</strong></div>
+      </div>
+      <div class="kommo-card">
+        <div class="kommo-card-num">Función 02</div>
+        <div class="kommo-card-title">Automatización del primer mensaje</div>
+        <div class="kommo-card-body">Cuando un lead entra desde Meta Ads, Kommo dispara automáticamente un mensaje por WhatsApp en menos de 5 minutos. <strong>Sin automatización, el 60%+ de los leads que llegan fuera del horario comercial se enfrían antes de ser atendidos.</strong></div>
+      </div>
+      <div class="kommo-card">
+        <div class="kommo-card-num">Función 03</div>
+        <div class="kommo-card-title">Datos para tomar decisiones</div>
+        <div class="kommo-card-body">Cruza los datos de Meta Ads con los datos del CRM: cuántos leads generó cada campaña, cuántos avanzaron a presupuesto, cuántos cerraron. <strong>Ese cruce es el que permite calcular el ROI real del canal digital</strong>, no solo el costo del lead.</div>
+      </div>
+      <div class="kommo-card">
+        <div class="kommo-card-num">Función 04</div>
+        <div class="kommo-card-title">Registro de cada interacción</div>
+        <div class="kommo-card-body">Cada conversación, cada presupuesto enviado, cada seguimiento queda registrado. <strong>Si un vendedor se va, el historial no se va con él.</strong> El nuevo vendedor retoma exactamente donde quedó, con el contexto completo del lead.</div>
+      </div>
+    </div>
+
+    <h3>El pipeline de 4 etapas mínimas</h3>
+    <p>Para este sistema, el pipeline de Kommo se configura con cuatro etapas. Cada etapa tiene una definición clara de qué acción mueve el lead hacia adelante.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-stage">
+        <div class="pipeline-stage-num">Etapa 01</div>
+        <div class="pipeline-stage-name">Nuevo Lead</div>
+        <div class="pipeline-stage-action">Entró el contacto. Aún no fue respondido.</div>
+      </div>
+      <div class="pipeline-stage">
+        <div class="pipeline-stage-num">Etapa 02</div>
+        <div class="pipeline-stage-name">Contactado</div>
+        <div class="pipeline-stage-action">Hubo respuesta y conversación activa.</div>
+      </div>
+      <div class="pipeline-stage">
+        <div class="pipeline-stage-num">Etapa 03</div>
+        <div class="pipeline-stage-name">Presupuestado</div>
+        <div class="pipeline-stage-action">Se envió propuesta formal.</div>
+      </div>
+      <div class="pipeline-stage">
+        <div class="pipeline-stage-num">Etapa 04</div>
+        <div class="pipeline-stage-name">Cerrado / Perdido</div>
+        <div class="pipeline-stage-action">Proyecto firmado o descartado con motivo.</div>
+      </div>
+    </div>
+
+    <div class="data-callout">
+      <div class="data-num">28%</div>
+      <div class="data-text"><p><strong>Más rápido crecen las empresas que gestionan activamente su pipeline</strong> versus las que no lo hacen. La gestión activa requiere visibilidad en tiempo real, lo que hace imposible sin un CRM funcionando correctamente. <span class="source-tag">HubSpot 2024</span></p></div>
+    </div>
+
+    <h3>Por qué Kommo y no otro CRM</h3>
+    <p>La razón principal es la integración nativa con WhatsApp Business API. Para empresas de construcción y home improvement en Argentina, WhatsApp es el canal principal de comunicación con el cliente. Un CRM que no se integra nativamente con WhatsApp obliga al equipo a usar dos sistemas en paralelo, lo que en la práctica significa que ninguno de los dos se usa correctamente.</p>
+    <p>Kommo también tiene una curva de aprendizaje significativamente menor que Salesforce o HubSpot para equipos de 2 a 4 vendedores sin experiencia previa en CRM.</p>
+  </div>
+
+  <div class="divider"><span class="divider-icon">◆ ◆ ◆</span></div>
+
+  <!-- CHECKLIST -->
+  <div class="section">
+    <div class="section-eyebrow">El checklist completo</div>
+    <h2>Los 12 pasos en orden</h2>
+
+    <!-- PHASE 1 -->
+    <div class="checklist-section">
+      <div class="checklist-phase">Fase 1 — Preparación (Días 1 a 7)</div>
+
+      <div class="check-item" data-step="1">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">01</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Definir el perfil exacto del cliente ideal</div>
+          <div class="check-desc">No "propietarios de viviendas". El perfil tiene que incluir cinco elementos: <strong>zona geográfica específica</strong> (barrios o partidos concretos), <strong>rango de ticket mínimo</strong> por proyecto, <strong>tipo de proyecto</strong> (piscina, reforma, cerramiento, muebles), <strong>señales de comportamiento</strong> que indiquen capacidad de inversión (zona residencial premium, interés en arquitectura, diseño de interiores), y <strong>criterio de descalificación</strong> (quién definitivamente no es tu cliente).<br><br>Este perfil es el input que define la segmentación de la campaña y el tono del anuncio. Sin él, la campaña atrae a todos y convierte a pocos.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            Tenés un documento de una página con los 5 elementos del perfil completados. Lo revisó alguien del equipo de ventas que conoce al cliente real.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="2">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">02</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Crear y configurar la cuenta de Kommo CRM</div>
+          <div class="check-desc">Crear la cuenta en kommo.com (hay plan gratuito para empezar). Configurar el pipeline de 4 etapas: Nuevo Lead, Contactado, Presupuestado, Cerrado/Perdido. Crear etiquetas básicas: fuente del lead (Meta Ads / Referido / Orgánico), tipo de proyecto, y vendedor asignado. <strong>No avanzar sin que el pipeline esté visible en pantalla y funcione.</strong></div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            La cuenta existe, el pipeline tiene las 4 etapas creadas, y todos los vendedores tienen acceso y saben cómo mover un lead de una etapa a la siguiente.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="3">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">03</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Conectar WhatsApp Business API con Kommo</div>
+          <div class="check-desc">Kommo se integra con WhatsApp Business API a través de su conector nativo. Esta integración permite que cada mensaje que llega por WhatsApp aparezca automáticamente en Kommo como un nuevo lead, y que el mensaje automático de bienvenida se dispare sin intervención humana. <strong>Esta integración es el corazón del sistema: sin ella, el primer mensaje siempre va a llegar tarde.</strong><br><br>El proceso de integración toma entre 1 y 3 días hábiles e incluye verificación de la cuenta de WhatsApp Business.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            Hiciste una prueba: mandaste un mensaje al WhatsApp de la empresa desde otro teléfono y aparece automáticamente en Kommo como nuevo lead en menos de 2 minutos.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="4">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">04</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Escribir el mensaje automático de primer contacto</div>
+          <div class="check-desc">El primer mensaje automático tiene que cumplir tres funciones: <strong>confirmar que recibieron el contacto</strong> (reduce la ansiedad del lead), <strong>establecer expectativa de tiempo de respuesta</strong> ("en breve te contacta uno de nuestros asesores"), y <strong>hacer una pregunta de calificación inicial</strong> que permita al vendedor llegar a la segunda conversación con contexto.<br><br>Ejemplo: "Hola [nombre], gracias por contactarnos. Recibimos tu consulta y en breve te responde uno de nuestros asesores. Para poder ayudarte mejor: ¿podés contarnos brevemente qué proyecto tenés en mente y en qué zona está la propiedad?"<br><br>Este mensaje se carga en Kommo y se dispara automáticamente para cada lead nuevo.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            El mensaje está cargado en Kommo, se dispara automáticamente en menos de 5 minutos del contacto inicial, y el texto fue revisado por alguien del equipo de ventas.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="checklist-section">
+      <div class="checklist-phase">Fase 2 — Configuración (Días 7 a 14)</div>
+
+      <div class="check-item" data-step="5">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">05</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Producir los creativos del anuncio con el ángulo correcto</div>
+          <div class="check-desc">El anuncio tiene que hacer una sola cosa: detener el scroll de alguien que encaja con tu perfil de cliente ideal y generar suficiente curiosidad para que mande un mensaje. El ángulo más efectivo para alto ticket en construcción no es el producto: es el resultado. No "instalamos piscinas" sino "cómo se ve un jardín con piscina en [zona]".<br><br>El copy sigue esta estructura: <strong>gancho</strong> (pregunta o afirmación que genera identificación), <strong>problema</strong> (lo que el cliente está experimentando), <strong>solución</strong> (lo que hacés), <strong>CTA</strong> (acción clara y única). Un anuncio, un CTA. Nunca dos opciones en el mismo anuncio.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            Tenés al menos 2 versiones del anuncio con ángulos distintos, listas para publicar. Fueron revisadas por alguien externo al negocio que encaja con el perfil de cliente ideal.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="6">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">06</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Configurar la segmentación de audiencia en Meta Ads</div>
+          <div class="check-desc">La segmentación tiene que ser lo suficientemente específica para no desperdiciar presupuesto en personas que no son tu cliente, y lo suficientemente amplia para que el algoritmo de Meta tenga margen para optimizar.<br><br>Para negocios de construcción y home improvement de alto ticket: <strong>ubicación</strong> (zonas geográficas específicas donde vive tu cliente ideal), <strong>intereses</strong> (arquitectura, diseño de interiores, jardines, propiedades premium), <strong>comportamiento</strong> (propietarios de vivienda, ingreso estimado alto según zona). Excluir: personas menores de 28 años, zonas fuera del radio de operación.<br><br>Audiencia mínima recomendada: 50.000 personas. Por debajo de ese número, Meta no tiene suficiente margen para optimizar.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            La audiencia está configurada, el tamaño estimado está entre 50.000 y 500.000 personas, y las exclusiones están activas.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="7">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">07</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Capacitar al equipo de ventas en el script de calificación</div>
+          <div class="check-desc">Un lead que llega por Meta Ads tiene un perfil completamente distinto al que llega por referido. No conoce la empresa, probablemente comparó precios antes de escribir, y tiene menor temperatura de compra. El equipo de ventas tiene que saber cómo manejar esa diferencia.<br><br>El script de calificación inicial tiene cuatro preguntas: (1) ¿Qué tipo de proyecto tenés en mente?, (2) ¿En qué zona está la propiedad?, (3) ¿Tenés una idea del presupuesto que querés invertir?, (4) ¿Cuándo estarías pensando en arrancar?. Las respuestas a esas cuatro preguntas determinan si el lead califica o no antes de invertir tiempo en una visita o un presupuesto.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            Todos los vendedores participaron de al menos una sesión de roleplay usando el script. La sesión fue grabada para uso futuro en inducción.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="8">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">08</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Definir el dashboard de métricas semanales</div>
+          <div class="check-desc">Cuatro métricas, una vez por semana, todos los lunes: <strong>CPL</strong> (inversión en ads / leads generados), <strong>tasa de presupuestación</strong> (leads que llegaron a propuesta / leads totales), <strong>tasa de cierre</strong> (cierres / presupuestos enviados), <strong>ROI estimado</strong> (ingresos de cierres digitales / inversión total en captación).<br><br>Estas cuatro métricas se leen juntas, no por separado. Un CPL bajo con tasa de cierre baja indica problema de calidad. Un CPL alto con tasa de cierre alta puede ser el canal más rentable del negocio.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            Existe un documento o tablero compartido con las 4 métricas, con la fórmula de cálculo de cada una, y con el responsable de completarlo cada lunes definido.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="checklist-section">
+      <div class="checklist-phase">Fase 3 — Lanzamiento y medición (Días 14 a 30)</div>
+
+      <div class="check-item" data-step="9">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">09</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Lanzar la campaña con presupuesto mínimo de validación</div>
+          <div class="check-desc">El presupuesto mínimo para obtener datos estadísticamente útiles en Meta Ads para este segmento es <strong>USD 400 por mes</strong> (aproximadamente USD 13 por día). Por debajo de ese número, el algoritmo no tiene suficiente volumen para optimizar y los resultados son ruidosos.<br><br>El primer mes es de calibración, no de escala. El objetivo es encontrar el ángulo de anuncio y la segmentación que genera el CPL más bajo para el perfil definido. No cambiar ninguna variable durante los primeros 14 días — el algoritmo necesita ese tiempo para aprender. Los cambios antes de los 14 días reinician el período de aprendizaje y invalidan los datos.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            La campaña está activa, el presupuesto diario está configurado, y existe un acuerdo interno de no modificar ninguna variable durante los primeros 14 días salvo error técnico evidente.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="10">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">10</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Configurar el retargeting para leads que no convirtieron</div>
+          <div class="check-desc">No todos los leads que entran van a convertirse en el primer contacto. El retargeting permite recuperar a los que mostraron interés pero no avanzaron. Se configura una audiencia personalizada de personas que interactuaron con el anuncio original (hicieron click, miraron el video más del 50%, o mandaron un mensaje) y se les muestra un segundo anuncio con un ángulo diferente: en general, más específico, con un caso de resultado o un beneficio concreto.<br><br>El retargeting se puede activar a partir del día 15, cuando ya hay suficiente audiencia acumulada para que funcione.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            La audiencia de retargeting está creada en Meta Ads y el segundo anuncio está listo para activarse cuando la audiencia supere las 1.000 personas.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="11">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">11</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Revisar las métricas al día 14 y decidir si ajustar</div>
+          <div class="check-desc">Al día 14, hacer la primera revisión de datos con los cuatro indicadores. El objetivo no es que los números sean perfectos: es entender si el sistema está funcionando en la dirección correcta.<br><br>Señales de que algo no está bien: CPL mayor de USD 60 sostenido por más de 7 días, tasa de respuesta del equipo menor al 70% en horario comercial, o ningún lead avanzó a la etapa de presupuesto. Señales de que el sistema está calibrando: CPL estable o bajando, leads respondidos en menos de 2 horas, al menos 2-3 en etapa de contactado o presupuestado.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            Se hizo la revisión con el equipo, se documentaron los números del día 14, y se tomó una decisión explícita: continuar sin cambios, ajustar el anuncio, o ajustar la segmentación.
+          </div>
+        </div>
+      </div>
+
+      <div class="check-item" data-step="12">
+        <div class="check-box" onclick="toggleCheck(this)">
+          <span class="num">12</span>
+          <span class="tick">✓</span>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Evaluar el sistema al día 30 y definir el criterio de escala</div>
+          <div class="check-desc">Al día 30, hacer la evaluación completa del mes. Cuatro preguntas: ¿el CPL está dentro del rango USD 22-60 para el segmento?, ¿la tasa de presupuestación supera el 40%?, ¿hay al menos un cierre atribuible al canal digital?, ¿el equipo está usando Kommo correctamente?.<br><br>Si las respuestas son afirmativas: el sistema está funcionando y es momento de definir el criterio de escala. <strong>El criterio de escala es simple: si el ROI del canal es positivo y el equipo puede procesar más demanda, duplicar el presupuesto de ads.</strong> Si las respuestas son negativas: identificar en cuál de las cuatro preguntas está el problema antes de invertir más.</div>
+          <div class="check-criteria">
+            <div class="check-criteria-label">Criterio de completitud</div>
+            Existe un reporte del mes 1 con los 4 indicadores completados, una conclusión explícita sobre el estado del sistema, y una decisión documentada para el mes 2.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><span class="divider-icon">◆ ◆ ◆</span></div>
+
+  <!-- CTA FINAL -->
+  <div class="cta-final">
+    <div class="cta-eyebrow">Próximo paso</div>
+    <h2 class="cta-title">Creá tu cuenta de Kommo y <em>arrancamos juntos</em></h2>
+    <p class="cta-sub">Kommo tiene un plan gratuito para empezar. Si querés que te ayudemos a configurarlo sin costo — pipeline, integración con WhatsApp, y primer mensaje automático — escribinos.</p>
+    <div class="cta-items">
+      <div class="cta-item">Configuramos el pipeline con las 4 etapas de tu negocio específico</div>
+      <div class="cta-item">Conectamos WhatsApp Business con Kommo y testeamos el flujo</div>
+      <div class="cta-item">Escribimos el mensaje automático de primer contacto con vos</div>
+      <div class="cta-item">Capacitamos a tu equipo en el uso básico en una sesión de 60 minutos</div>
+    </div>
+    <a class="cta-btn" href="https://wa.me/5491155557890?text=KOMMO" target="_blank" rel="noopener">Quiero la ayuda con Kommo →</a>
+    <p class="cta-note">Sin costo · Sin compromiso · Solo para empresas de construcción y home improvement</p>
+  </div>
+
+  <div class="footnote">
+    <p>Fuentes de datos citadas en este documento: HubSpot State of Sales Report 2024, HubSpot Pipeline Management Research 2024, WordStream Facebook Ads Benchmarks 2025, LocaliQ Home Services Search Advertising Benchmarks 2025, InsideSales.com Lead Response Management Study. Los benchmarks de CPL corresponden al mercado de Estados Unidos y pueden variar en el mercado argentino. Los principios de configuración del sistema son aplicables independientemente del mercado geográfico.</p>
+  </div>
+
+</div>
+
+<script>
+  let completed = 0;
+  const total = 12;
+
+  function toggleCheck(box) {
+    box.classList.toggle('done');
+    completed = document.querySelectorAll('.check-box.done').length;
+    const pct = Math.round((completed / total) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = completed + ' de ' + total + ' completados';
+  }
+</script>
+
+</body>
+</html>

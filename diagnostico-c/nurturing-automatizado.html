@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo automatizar el nurturing sin perder el trato personal · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red: rgba(255,100,100,0.85);
+    --red-dim: rgba(255,80,80,0.07);
+    --red-border: rgba(255,80,80,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+
+  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+
+  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
+  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
+  .logo span { color: var(--green); }
+  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+
+  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
+  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
+  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
+  h1 em { font-style: normal; color: var(--green); }
+  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
+  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
+  .content p { margin-bottom: 24px; }
+  .content p strong { color: var(--white); font-weight: 600; }
+  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+
+  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
+  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+
+  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+
+  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
+  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 72px; }
+  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
+  .data-text strong { color: var(--white); font-weight: 600; }
+
+  /* SPLIT TABLE */
+  .split-table { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin: 48px 0; border: 1px solid var(--border); }
+  .split-col { background: var(--card-dark); padding: 0; }
+  .split-header { padding: 14px 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .split-col.automate .split-header { color: var(--green); background: var(--green-dim); }
+  .split-col.human .split-header { color: rgba(255,160,100,0.9); background: rgba(255,140,60,0.06); }
+  .split-item { padding: 14px 20px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-body); line-height: 1.55; display: flex; gap: 10px; align-items: flex-start; }
+  .split-item:last-child { border-bottom: none; }
+  .split-col.automate .split-item::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .split-col.human .split-item::before { content: '◎'; color: rgba(255,160,100,0.9); font-weight: 700; flex-shrink: 0; }
+
+  /* AUTOMATION CARDS */
+  .auto-card { background: var(--card-dark); border: 1px solid var(--border); margin: 24px 0; overflow: hidden; }
+  .auto-header { display: flex; align-items: center; gap: 0; border-bottom: 1px solid var(--border); }
+  .auto-tag { background: var(--card-mid); border-right: 1px solid var(--border); padding: 14px 16px; font-size: 10px; font-weight: 700; color: var(--green); letter-spacing: 0.18em; text-transform: uppercase; flex-shrink: 0; min-width: 100px; text-align: center; }
+  .auto-title { padding: 14px 20px; font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
+  .auto-body { padding: 20px 24px; }
+  .auto-trigger { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+  .auto-trigger strong { color: var(--green); font-weight: 600; }
+  .auto-desc { font-size: 15px; color: var(--text-body); line-height: 1.7; margin-bottom: 14px; }
+  .auto-desc strong { color: var(--white); font-weight: 600; }
+  .auto-msg { font-size: 13px; color: var(--text-muted); font-style: italic; border-left: 2px solid var(--green-border); padding-left: 12px; line-height: 1.65; }
+
+  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .warning strong { color: var(--red); font-weight: 600; }
+
+  /* LEAD MAGNET */
+  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
+  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
+  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
+  .lm-body { padding: 28px; }
+  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+
+  .preview-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 0; }
+  .preview-item { background: var(--card-dark); padding: 14px 20px; display: flex; gap: 12px; font-size: 14px; color: var(--text-body); line-height: 1.55; }
+  .preview-item::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  .lm-gate { position: relative; overflow: hidden; border-top: 1px solid var(--border); }
+  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.4; }
+  .lm-gate-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: linear-gradient(to bottom, transparent, rgba(9,20,14,0.98) 30%); }
+  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
+  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
+  .gate-kw { display: inline-block; background: var(--green); color: var(--brand-dark); padding: 5px 16px; font-size: 13px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; margin-bottom: 8px; transition: background 0.2s, transform 0.2s; }
+  .gate-kw:hover { background: #4eff8a; transform: translateY(-1px); }
+  .gate-note { font-size: 11px; color: var(--text-muted); }
+
+  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .split-table { grid-template-columns: 1fr; }
+    .data-callout { flex-direction: column; gap: 10px; }
+    .lm-body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Nurturing Automatizado</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Diagnóstico C, Seguimiento</div>
+    <h1>Cómo automatizar el nurturing <em>sin perder el trato personal</em> que requiere el alto ticket</h1>
+    <p class="hero-subtitle">La automatización mal hecha destruye la confianza que el alto ticket requiere. La bien hecha libera al vendedor para hacer exactamente lo que un bot nunca puede reemplazar.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>10 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Fuentes: HubSpot · Forrester · Annuitas Group · Gartner</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Hay dos tipos de automatización en ventas de alto ticket. La primera es la que intenta reemplazar al vendedor, mensajes genéricos disparados por tiempo, sin contexto, sin personalización real. Roberto la detecta en el segundo mensaje y la ignora. La segunda es la que hace posible que el vendedor esté presente en el momento correcto, con el mensaje correcto, sin tener que recordarlo manualmente.</p>
+
+    <p>La diferencia entre las dos no es tecnológica. Es de criterio: qué automatizás y qué no.</p>
+
+    <p>En negocios de construcción y home improvement de alto ticket, la confianza es el activo más valioso del proceso de venta. Cada mensaje que suena a robot erosiona esa confianza. Cada mensaje que suena a que alguien se acordó de vos en el momento adecuado la construye. El trabajo de la automatización es hacer que lo segundo sea posible a escala, no reemplazar lo primero.</p>
+
+    <div class="pull-quote reveal">
+      <p>Las empresas que automatizan el nurturing generan 50% más leads listos para comprar, a un 33% menos de costo. Los leads nutridos hacen compras 47% más grandes que los no nutridos. El problema no es si automatizar, es saber exactamente qué. <span class="source-tag">Forrester / Annuitas Group</span></p>
+    </div>
+
+    <h2>La regla fundamental: qué automatizar y qué nunca delegar</h2>
+
+    <p>Antes de configurar cualquier automatización, hay una pregunta que filtrar cada acción: ¿el cliente sentiría que esto lo escribió una persona que lo recuerda, o que lo generó un sistema que procesa contactos?</p>
+
+    <p>Si la respuesta es lo segundo, ese mensaje no se automatiza, o se automatiza solo como recordatorio interno para que el vendedor lo escriba manualmente.</p>
+
+    <div class="split-table reveal">
+      <div class="split-col automate">
+        <div class="split-header">Automatizar sin hesitar</div>
+        <div class="split-item">Primer mensaje de bienvenida cuando entra una consulta nueva, velocidad de respuesta crítica</div>
+        <div class="split-item">Confirmación de recepción de presupuesto enviado, es logístico, no relacional</div>
+        <div class="split-item">Recordatorio interno al vendedor cuando un lead no fue contactado en X horas</div>
+        <div class="split-item">Movimiento de lead de etapa en el pipeline cuando se registra una acción específica</div>
+        <div class="split-item">Envío de contenido educativo a leads en nurturing de largo plazo, bajo umbral de personalización</div>
+        <div class="split-item">Alerta al vendedor cuando un lead frío vuelve a interactuar con la empresa</div>
+      </div>
+      <div class="split-col human">
+        <div class="split-header">Nunca delegar a un bot</div>
+        <div class="split-item">La conversación de calificación inicial, las preguntas requieren escucha activa</div>
+        <div class="split-item">El seguimiento del Día 10 post-presupuesto, es donde aparece la objeción real</div>
+        <div class="split-item">Cualquier mensaje que menciona algo específico de la conversación previa</div>
+        <div class="split-item">La respuesta a una objeción, nunca hay un script que funcione para todas</div>
+        <div class="split-item">El cierre, la conversación final antes de firmar requiere presencia humana</div>
+        <div class="split-item">El mensaje de reactivación del Día 21, el tono personal en ese momento es decisivo</div>
+      </div>
+    </div>
+
+    <h2>Las seis automatizaciones que sí funcionan en Kommo</h2>
+
+    <p>En Kommo CRM, las automatizaciones se configuran como disparadores con condición y acción. Cada una de las siguientes tiene una lógica específica de cuándo se activa, qué hace, y por qué no erosiona la confianza del lead.</p>
+
+    <div class="auto-card reveal">
+      <div class="auto-header">
+        <div class="auto-tag">Auto 01</div>
+        <div class="auto-title">Bienvenida inmediata al lead nuevo</div>
+      </div>
+      <div class="auto-body">
+        <div class="auto-trigger"><strong>Disparador:</strong> Lead nuevo entra al pipeline desde Meta Ads o cualquier fuente</div>
+        <div class="auto-desc">El primer mensaje llega en menos de 5 minutos, independientemente del horario. <strong>El 91% de los leads que reciben respuesta en menos de 5 minutos son más propensos a avanzar en el proceso de venta</strong>. Sin automatización, ese primer mensaje siempre llega tarde, o no llega fuera del horario comercial. El mensaje no intenta calificar ni vender: confirma la recepción y hace una sola pregunta abierta sobre el proyecto.</div>
+        <div class="auto-msg">"Hola [nombre], gracias por contactarnos 👋 Recibimos tu mensaje y en breve te responde uno de nuestros asesores. Para poder ayudarte mejor cuando hablemos: ¿podés contarnos brevemente qué proyecto tenés en mente y en qué zona está la propiedad?"</div>
+      </div>
+    </div>
+
+    <div class="auto-card reveal">
+      <div class="auto-header">
+        <div class="auto-tag">Auto 02</div>
+        <div class="auto-title">Alerta al vendedor cuando el lead responde fuera de horario</div>
+      </div>
+      <div class="auto-body">
+        <div class="auto-trigger"><strong>Disparador:</strong> Lead responde al mensaje de bienvenida entre las 22hs y las 8hs</div>
+        <div class="auto-desc">El bot no intenta tener una conversación real a las 11 de la noche. Pero el vendedor necesita saber que hay un lead caliente esperando respuesta cuando arranque su jornada. <strong>Esta automatización no reemplaza al vendedor, lo informa para que sea el primero en responder a la mañana.</strong> El lead que escribió a las 23hs y recibe respuesta humana a las 8:30hs tiene una experiencia radicalmente mejor que el que espera hasta el mediodía.</div>
+        <div class="auto-msg">Notificación interna al vendedor asignado: "Lead [nombre] respondió fuera de horario. Proyecto: [texto de la respuesta]. Primer contacto mañana antes de las 9am."</div>
+      </div>
+    </div>
+
+    <div class="auto-card reveal">
+      <div class="auto-header">
+        <div class="auto-tag">Auto 03</div>
+        <div class="auto-title">Recordatorio de seguimiento cuando un lead presupuestado no se mueve</div>
+      </div>
+      <div class="auto-body">
+        <div class="auto-trigger"><strong>Disparador:</strong> Lead en etapa "Presupuestado" sin actividad registrada por 48 horas</div>
+        <div class="auto-desc">El vendedor no tiene que recordar manualmente cuándo hacer cada seguimiento. Kommo crea una tarea con el nombre del lead, el texto de la propuesta enviada, y la fecha del último contacto. <strong>El vendedor ve la tarea, la abre, y escribe un mensaje personal</strong>, no lo manda el bot. La automatización es solo el recordatorio; el contacto es humano.</div>
+        <div class="auto-msg">Tarea interna: "Seguimiento Día 2, [nombre lead]. Última interacción: [fecha]. Propuesta enviada el [fecha]. Verificar recepción y ofrecer llamada de 15 min."</div>
+      </div>
+    </div>
+
+    <div class="auto-card reveal">
+      <div class="auto-header">
+        <div class="auto-tag">Auto 04</div>
+        <div class="auto-title">Contenido educativo para leads en nurturing de largo plazo</div>
+      </div>
+      <div class="auto-body">
+        <div class="auto-trigger"><strong>Disparador:</strong> Lead movido a etapa "Nurturing" + 21 días desde último contacto</div>
+        <div class="auto-desc">Los leads que no están listos para comprar ahora pero que calificaron correctamente en la consulta inicial merecen seguir recibiendo valor. Esta automatización envía contenido educativo relevante según la etiqueta de tipo de proyecto, no un mensaje genérico de "¿te acordás de nosotros?". <strong>Los leads nutridos con contenido relevante hacen compras 47% más grandes que los no nutridos</strong>. El contenido lleva el nombre del vendedor en el mensaje, no un alias genérico.</div>
+        <div class="auto-msg">Para etiqueta "piscinas": "Hola [nombre], te mando algo que puede ser útil para cuando retomes el proyecto: [link a artículo o foto de proyecto]. [Nombre vendedor]"</div>
+      </div>
+    </div>
+
+    <div class="auto-card reveal">
+      <div class="auto-header">
+        <div class="auto-tag">Auto 05</div>
+        <div class="auto-title">Alerta de reactivación cuando un lead frío vuelve a interactuar</div>
+      </div>
+      <div class="auto-body">
+        <div class="auto-trigger"><strong>Disparador:</strong> Lead en etapa "Nurturing" responde a un mensaje o hace click en un link</div>
+        <div class="auto-desc">Un lead que llevaba semanas sin responder y de repente reacciona a algo es la señal más clara de que su timing cambió. <strong>El 47% de las empresas con automatización madura contacta a estos leads en menos de 24 horas de la señal</strong>, comparado con solo el 10% sin automatización (Forrester). Sin esta alerta, ese momento se pierde y el lead vuelve a enfriarse.</div>
+        <div class="auto-msg">Notificación urgente al vendedor: "⚡ Lead reactivado: [nombre] respondió/interactuó. Última conversación fue sobre [tipo de proyecto]. Contactar hoy."</div>
+      </div>
+    </div>
+
+    <div class="auto-card reveal">
+      <div class="auto-header">
+        <div class="auto-tag">Auto 06</div>
+        <div class="auto-title">Solicitud de feedback post-cierre</div>
+      </div>
+      <div class="auto-body">
+        <div class="auto-trigger"><strong>Disparador:</strong> Lead movido a etapa "Cerrado/Ganado" + 7 días</div>
+        <div class="auto-desc">Una semana después del cierre, cuando el proyecto ya arrancó y el cliente está entusiasmado, es el mejor momento para pedir una referencia o un testimonio. <strong>Este mensaje tiene que sonar como el vendedor, no como una encuesta automática.</strong> La automatización envía el recordatorio y prepara el draft, el vendedor lo personaliza y lo manda manualmente o con un click.</div>
+        <div class="auto-msg">Tarea interna: "Pedir feedback a [nombre], proyecto [tipo]. Llevan una semana. Preguntar cómo va la obra y si estarían dispuestos a comentarle a alguien de su entorno."</div>
+      </div>
+    </div>
+
+    <h2>El error más frecuente: automatizar el momento equivocado</h2>
+
+    <p>La mayoría de los sistemas de automatización fallan no porque automaticen demasiado, sino porque automatizan en el momento equivocado del proceso de decisión. Hay momentos en que el lead necesita sentir que hay una persona del otro lado, y si en ese momento recibe un mensaje claramente automatizado, la confianza se rompe de una forma que es muy difícil de reparar.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-num">91%</div>
+      <div class="data-text"><p><strong>De los marketers dice que la personalización mejora el engagement</strong>, pero solo el 12.6% usa personalización basada en comportamiento. La mayoría todavía usa "campos dinámicos" básicos como [nombre] en un mensaje genérico. En alto ticket, eso se siente vacío. La personalización real es referenciar el proyecto específico, la zona, y la conversación anterior. <span class="source-tag">HubSpot State of Marketing 2026</span></p></div>
+    </div>
+
+    <p>Los dos momentos críticos donde nunca debe llegar un mensaje automatizado:</p>
+
+    <p><strong>Después de que el lead expresó una objeción.</strong> Si alguien dijo "el precio me parece alto" y la respuesta siguiente llega en 3 segundos con un texto perfectamente formateado, el lead sabe que nadie leyó su objeción. Esa respuesta tiene que demorar lo que demora un humano en leerla y pensar cómo responder.</p>
+
+    <p><strong>Justo antes del cierre.</strong> El último paso antes de firmar es el momento de mayor incertidumbre para el cliente. Un mensaje de seguimiento automatizado en ese momento puede destruir semanas de trabajo de construcción de confianza. El cierre siempre es humano.</p>
+
+    <div class="warning reveal">
+      <strong>La señal de que una automatización está dañando la relación:</strong> el lead empieza a responder con monosílabos o deja de responder del todo después de haber tenido conversaciones fluidas. Eso suele ser señal de que algún mensaje en la secuencia rompió el ritmo natural de la conversación y el lead se dio cuenta de que estaba hablando con un sistema, no con una persona.
+    </div>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <!-- LEAD MAGNET -->
+    <div class="lm-teaser reveal">
+      <div class="lm-header">
+        <div class="lm-eyebrow">Mapa incluido</div>
+        <div class="lm-title">El mapa completo de automatizaciones de Kommo: qué configurar, con qué mensaje, y en qué momento exacto</div>
+      </div>
+      <div class="lm-body">
+        <p class="lm-intro">Este documento incluye la configuración exacta de las 6 automatizaciones en Kommo, disparadores, condiciones, mensajes, y el árbol de decisión para saber cuándo la respuesta tiene que ser manual y cuándo puede ser automática.</p>
+
+        <div class="preview-list">
+          <div class="preview-item">Automatización 01: configuración del mensaje de bienvenida, campo de disparador, condición de horario, y texto del mensaje adaptable por rubro</div>
+          <div class="preview-item">Automatización 02: alerta nocturna al vendedor, condición de horario y template de notificación interna</div>
+        </div>
+
+        <!-- GATE -->
+        <div class="lm-gate">
+          <div class="lm-gate-blur">
+            <div class="preview-list" style="margin-top:1px">
+              <div class="preview-item">Automatización 03: recordatorio de seguimiento post-presupuesto, configuración de los 5 momentos del sistema C1</div>
+              <div class="preview-item">Automatización 04: nurturing de largo plazo, segmentación por tipo de proyecto y frecuencia de envío</div>
+              <div class="preview-item">Automatización 05: alerta de reactivación de lead frío, configuración del disparador y protocolo de respuesta</div>
+              <div class="preview-item">Automatización 06: feedback post-cierre, timing y template de mensaje personalizable</div>
+              <div class="preview-item">Árbol de decisión completo: manual vs. automático para cada momento del proceso de venta</div>
+            </div>
+          </div>
+          <div class="lm-gate-overlay">
+            <div class="gate-label">Mapa completo disponible por WhatsApp</div>
+            <div class="gate-title">Recibí el mapa de automatizaciones con configuración paso a paso</div>
+            <div class="gate-sub">Incluye las 6 automatizaciones completas, el árbol de decisión manual/automático, y los templates de cada mensaje.</div>
+            <a class="gate-kw" href="https://wa.me/5491155557890?text=AUTOMATIZACION" target="_blank" rel="noopener">AUTOMATIZACION</a>
+            <div class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Fuentes citadas: Forrester Research, empresas que automatizan nurturing generan 50% más leads listos a 33% menos costo; 47% de marketers con procesos maduros contactan más del 75% de leads generados; 47% de marketers con automatización madura contactan leads en menos de 24 horas de reactivación. Annuitas Group, leads nutridos hacen compras 47% más grandes; automatización de nurturing produce 451% más leads calificados. Gartner Research, empresas que automatizan lead management ven 10%+ de incremento en ingresos en 6 a 9 meses. HubSpot State of Marketing 2026, 91% de marketers reporta que personalización mejora engagement; solo 12.6% usa personalización basada en comportamiento. Los datos corresponden principalmente a mercados de EE.UU. y Europa; los principios de automatización son aplicables independientemente del mercado geográfico.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    document.getElementById('progress-bar').style.width =
+      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo filtrar sin friccionar: calificar sin perder a los buenos · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red: rgba(255,100,100,0.85);
+    --red-dim: rgba(255,80,80,0.07);
+    --red-border: rgba(255,80,80,0.18);
+    --yellow: #F5C842;
+    --yellow-dim: rgba(245,200,66,0.07);
+    --yellow-border: rgba(245,200,66,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+
+  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+
+  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
+  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
+  .logo span { color: var(--green); }
+  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+
+  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
+  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
+  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
+  h1 em { font-style: normal; color: var(--green); }
+  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
+  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
+  .content p { margin-bottom: 24px; }
+  .content p strong { color: var(--white); font-weight: 600; }
+  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+
+  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
+  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+
+  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+
+  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
+  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 72px; }
+  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
+  .data-text strong { color: var(--white); font-weight: 600; }
+
+  /* FRICTION VS FILTER */
+  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin: 48px 0; border: 1px solid var(--border); }
+  .concept-col { background: var(--card-dark); padding: 28px 24px; }
+  .concept-col.bad { border-top: 2px solid var(--red); }
+  .concept-col.good { border-top: 2px solid var(--green); }
+  .concept-label { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 12px; }
+  .concept-col.bad .concept-label { color: var(--red); }
+  .concept-col.good .concept-label { color: var(--green); }
+  .concept-title { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 12px; line-height: 1.3; letter-spacing: -0.01em; }
+  .concept-body { font-size: 14px; color: var(--text-body); line-height: 1.7; }
+  .concept-body strong { color: var(--white); font-weight: 600; }
+
+  /* PRINCIPLE CARDS */
+  .principle { background: var(--card-dark); border: 1px solid var(--border); margin: 24px 0; overflow: hidden; }
+  .principle-header { display: flex; align-items: center; gap: 16px; padding: 18px 24px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
+  .principle-num { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand-dark); background: var(--green); padding: 3px 9px; flex-shrink: 0; }
+  .principle-title { font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
+  .principle-body { padding: 22px 24px; font-size: 15px; color: var(--text-body); line-height: 1.75; }
+  .principle-body strong { color: var(--white); font-weight: 600; }
+
+  .example-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin-top: 14px; border: 1px solid var(--border); }
+  .ex-col { padding: 14px 16px; font-size: 14px; line-height: 1.6; }
+  .ex-col.before { background: var(--red-dim); color: var(--text-muted); }
+  .ex-col.before::before { content: '✗ '; color: var(--red); font-weight: 700; }
+  .ex-col.after { background: var(--green-dim); color: var(--text-body); }
+  .ex-col.after::before { content: '→ '; color: var(--green); font-weight: 700; }
+  .ex-header { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-bottom: none; }
+  .ex-head { padding: 8px 16px; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .ex-head.bad { background: var(--card-mid); color: var(--red); }
+  .ex-head.ok { background: var(--card-mid); color: var(--green); }
+
+  /* NURTURING SEQUENCE */
+  .nurture-timeline { margin: 32px 0; }
+  .nurture-step { display: flex; gap: 20px; margin-bottom: 1px; }
+  .nurture-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 56px; }
+  .nurture-day { background: var(--card-mid); border: 1px solid var(--green-border); font-size: 10px; font-weight: 700; color: var(--green); padding: 6px 4px; text-align: center; letter-spacing: 0.05em; width: 100%; }
+  .nurture-line { width: 1px; background: var(--border); flex: 1; min-height: 16px; }
+  .nurture-content { background: var(--card-dark); border: 1px solid var(--border); padding: 16px 20px; flex: 1; margin-bottom: 0; }
+  .nurture-content-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .nurture-content-body { font-size: 13px; color: var(--text-body); line-height: 1.65; }
+  .nurture-content-msg { font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 8px; border-left: 2px solid var(--green-border); padding-left: 10px; line-height: 1.55; }
+
+  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .warning strong { color: var(--red); font-weight: 600; }
+
+  /* LEAD MAGNET */
+  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
+  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
+  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
+  .lm-body { padding: 28px; }
+  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+  .lm-intro strong { color: var(--white); font-weight: 600; }
+
+  .lm-gate { position: relative; overflow: hidden; border-top: 1px solid var(--border); }
+  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.4; }
+  .lm-gate-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: linear-gradient(to bottom, transparent, rgba(9,20,14,0.98) 30%); }
+  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
+  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
+  .gate-kw { display: inline-block; background: var(--green); color: var(--brand-dark); padding: 5px 16px; font-size: 13px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; margin-bottom: 8px; transition: background 0.2s, transform 0.2s; }
+  .gate-kw:hover { background: #4eff8a; transform: translateY(-1px); }
+  .gate-note { font-size: 11px; color: var(--text-muted); }
+
+  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .concept-grid { grid-template-columns: 1fr; }
+    .example-pair, .ex-header { grid-template-columns: 1fr; }
+    .data-callout { flex-direction: column; gap: 10px; }
+    .lm-body { padding: 20px; }
+    .nurture-step { flex-direction: column; gap: 8px; }
+    .nurture-left { flex-direction: row; width: 100%; }
+    .nurture-line { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Calificación de Leads</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Diagnóstico B — Calificación</div>
+    <h1>Cómo filtrar sin friccionar: calificar <em>sin perder a los buenos</em></h1>
+    <p class="hero-subtitle">Hay una tensión real entre calificar con rigor y no espantar a leads que sí tienen potencial. Este artículo resuelve esa tensión con una distinción que cambia la forma de calificar sin cambiar los criterios.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>10 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Fuentes: HubSpot · Forrester Research · CSO Insights</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Cuando un equipo de ventas empieza a calificar activamente las consultas, aparece un miedo legítimo: "¿Y si descarto a alguien que en realidad sí podría haber cerrado?" Es un miedo que lleva a dos comportamientos opuestos. Algunos equipos se vuelven demasiado estrictos y descartan consultas que simplemente necesitaban más tiempo. Otros equipos evitan calificar del todo y terminan persiguiendo todo con la misma energía.</p>
+
+    <p>Los dos extremos tienen el mismo resultado: baja tasa de cierre.</p>
+
+    <p>La solución no está en aflojar los criterios de calificación ni en endurecerlos. Está en entender la diferencia entre friccionar al lead y friccionar al proceso. Son dos cosas distintas con efectos opuestos.</p>
+
+    <div class="pull-quote reveal">
+      <p>El 50% de los leads están calificados pero no listos para comprar todavía. Descartarlos es perder la mitad del potencial del canal. Ignorarlos también lo es. La respuesta es un sistema de nurturing que los mantiene vivos sin consumir tiempo del equipo de ventas. <span class="source-tag">HubSpot / Forrester Research</span></p>
+    </div>
+
+    <h2>La distinción que lo cambia todo</h2>
+
+    <p>Friccionar al lead significa hacerlo sentir interrogado, juzgado, o forzado a demostrar que merece atención. El lead siente resistencia en la conversación y se va. No porque no tuviera intención de comprar — sino porque la experiencia fue incómoda.</p>
+
+    <p>Friccionar al proceso significa poner filtros que el lead ni siquiera percibe como tales. El lead vive una conversación natural y fluida. Pero internamente, el vendedor está evaluando en tiempo real si vale la pena invertir el tiempo completo o si esa consulta entra a una secuencia de nurturing.</p>
+
+    <div class="concept-grid reveal">
+      <div class="concept-col bad">
+        <div class="concept-label">Fricción al lead (destruye conversiones)</div>
+        <div class="concept-title">El lead siente el filtro</div>
+        <div class="concept-body">Preguntas frías al inicio sin contexto. Tono transaccional. Pedir datos antes de dar valor. Responder con formularios. <strong>El lead siente que tiene que "pasar un examen" antes de recibir ayuda.</strong> En alto ticket, eso espanta exactamente al tipo de cliente que tiene más opciones y menos paciencia para proveedores que no lo tratan bien desde el primer mensaje.</div>
+      </div>
+      <div class="concept-col good">
+        <div class="concept-label">Fricción al proceso (invisible para el lead)</div>
+        <div class="concept-title">El proceso filtra, el lead no lo siente</div>
+        <div class="concept-body">Preguntas abiertas envueltas en interés genuino. El vendedor escucha y evalúa al mismo tiempo. La decisión de avanzar o nutrir ocurre internamente, sin comunicársela al lead. <strong>El lead vive una conversación consultiva. El equipo obtiene la información que necesita para priorizar.</strong> La calidad de la experiencia es la misma para todos — la inversión de tiempo no lo es.</div>
+      </div>
+    </div>
+
+    <h2>Los cinco principios de calificar sin friccionar</h2>
+
+    <p>Estos principios no reemplazan las preguntas de calificación del artículo anterior. Las complementan. Son el marco que convierte esas preguntas de un interrogatorio en una conversación.</p>
+
+    <div class="principle reveal">
+      <div class="principle-header">
+        <div class="principle-num">01</div>
+        <div class="principle-title">Siempre dar valor antes de pedir información</div>
+      </div>
+      <div class="principle-body">
+        La resistencia a responder preguntas desaparece cuando el lead siente que la conversación le está siendo útil. Antes de la primera pregunta de calificación, el vendedor hace una observación o comparte algo relevante sobre el tipo de proyecto descrito. No es un truco — es el orden lógico de una conversación entre alguien que sabe y alguien que quiere aprender. <strong>El lead que siente que está recibiendo asesoramiento responde con más detalle, más honestidad, y más disposición a avanzar.</strong>
+        <div class="ex-header">
+          <div class="ex-head bad">Orden que genera fricción</div>
+          <div class="ex-head ok">Orden que genera confianza</div>
+        </div>
+        <div class="example-pair">
+          <div class="ex-col before">"Hola, ¿cuál es tu presupuesto para el proyecto?"</div>
+          <div class="ex-col after">"Para terrazas con esa orientación, lo que mejor funciona son los cerramientos con vidrio templado — tienen mejor balance entre luz y privacidad. ¿Qué tan importante es la privacidad en tu caso?"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle reveal">
+      <div class="principle-header">
+        <div class="principle-num">02</div>
+        <div class="principle-title">Preguntar por el proyecto, no por el presupuesto</div>
+      </div>
+      <div class="principle-body">
+        Preguntar directamente por el presupuesto en los primeros intercambios es la causa número uno de leads que se cierran antes de tiempo. El presupuesto se infiere del proyecto — y se confirma más tarde, cuando ya hay confianza establecida. <strong>Un lead que describió un proyecto en una propiedad en country en zona norte ya te dio toda la información presupuestaria que necesitás para decidir si califica.</strong> No hace falta preguntarlo directamente.
+        <div class="ex-header">
+          <div class="ex-head bad">Genera fricción</div>
+          <div class="ex-head ok">No genera fricción</div>
+        </div>
+        <div class="example-pair">
+          <div class="ex-col before">"¿Cuánto tenés pensado invertir en el proyecto?"</div>
+          <div class="ex-col after">"¿Qué dimensiones tiene el espacio aproximadamente?" → inferís el alcance → inferís el rango de inversión</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle reveal">
+      <div class="principle-header">
+        <div class="principle-num">03</div>
+        <div class="principle-title">Usar el silencio como información, no como rechazo</div>
+      </div>
+      <div class="principle-body">
+        Cuando un lead no responde no significa necesariamente que perdió interés. <strong>Según HubSpot, los leads suelen "desaparecer" por razones que no tienen nada que ver con el proveedor: cambios de prioridad, imprevistos, o simplemente el volumen de mensajes en la bandeja de entrada.</strong> El equipo que interpreta el silencio como rechazo y descarta el lead está perdiendo una fracción importante de oportunidades reales. El equipo que tiene un sistema de reactivación estructurado recupera esas oportunidades sin esfuerzo adicional.
+        <div class="ex-header">
+          <div class="ex-head bad">Respuesta al silencio que genera más silencio</div>
+          <div class="ex-head ok">Respuesta al silencio que reabre la conversación</div>
+        </div>
+        <div class="example-pair">
+          <div class="ex-col before">"Hola, ¿pudiste ver mi mensaje?" (día 2) → "Por favor confirmame si seguís interesado" (día 4) → silencio → se archiva</div>
+          <div class="ex-col after">"Hola [nombre], estaba revisando proyectos similares al tuyo y encontré algo que puede interesarte — [referencia específica]. ¿Sigue siendo un proyecto que estás evaluando?" (día 5)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle reveal">
+      <div class="principle-header">
+        <div class="principle-num">04</div>
+        <div class="principle-title">Separar "no ahora" de "no nunca"</div>
+      </div>
+      <div class="principle-body">
+        <strong>El 28% de los prospects abandonan el proceso de venta cuando sienten que el ritmo es demasiado acelerado para su momento de decisión.</strong> Un lead que no está listo para avanzar esta semana no es un lead perdido — es un lead en nurturing. La diferencia entre los dos es cómo se lo trata después del primer intento. El que se descarta desaparece del pipeline. El que entra a nurturing recibe contenido relevante, y cuando su timing cambia, ya tiene confianza construida con tu empresa. Ese lead vuelve solo.
+      </div>
+    </div>
+
+    <div class="principle reveal">
+      <div class="principle-header">
+        <div class="principle-num">05</div>
+        <div class="principle-title">Definir el próximo paso siempre, no dejar la conversación abierta</div>
+      </div>
+      <div class="principle-body">
+        Cada intercambio con un lead tiene que terminar con un próximo paso definido — aunque ese paso sea "te contacto en tres semanas". La conversación abierta es la que se pierde. <strong>HubSpot documenta que uno de los errores más frecuentes en seguimiento de ventas es no acordar el próximo paso al final de cada contacto.</strong> El lead que no tiene un "próximo paso" en el radar no es que se fue — es que no tenía nada concreto a qué volver.
+        <div class="ex-header">
+          <div class="ex-head bad">Conversación sin próximo paso</div>
+          <div class="ex-head ok">Conversación con próximo paso</div>
+        </div>
+        <div class="example-pair">
+          <div class="ex-col before">"Buenísimo, cualquier consulta avisame." → lead nunca más vuelve a escribir</div>
+          <div class="ex-col after">"Perfecto. Lo que te propongo es esto: la semana que viene coordino una visita rápida de 30 minutos para ver el espacio. ¿El martes o el jueves te queda mejor?"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-callout reveal">
+      <div class="data-num">28%</div>
+      <div class="data-text"><p><strong>De los prospects abandona el proceso de venta cuando siente que avanza demasiado rápido para su momento de decisión.</strong> Calificar no es solo identificar quién está listo — es ajustar el ritmo de la conversación al ritmo del lead. Forzar el avance en el momento equivocado pierde más oportunidades que no calificar. <span class="source-tag">HubSpot State of Sales 2024</span></p></div>
+    </div>
+
+    <h2>El sistema de nurturing para leads que no están listos</h2>
+
+    <p>Un lead que entra a nurturing no desaparece del pipeline. Entra a una secuencia de contactos espaciados que mantienen la relación viva sin consumir tiempo activo del vendedor. El objetivo no es venderle — es estar presente cuando su timing cambia.</p>
+
+    <p>La secuencia tiene que cumplir dos condiciones: aportar valor real en cada contacto (no solo "¿seguís interesado?"), y respetar el silencio si el lead no responde. El lead que en algún momento está listo va a responder. El que no responde nunca probablemente nunca estuvo calificado.</p>
+
+    <div class="nurture-timeline reveal">
+
+      <div class="nurture-step">
+        <div class="nurture-left">
+          <div class="nurture-day">Día 3</div>
+          <div class="nurture-line"></div>
+        </div>
+        <div class="nurture-content">
+          <div class="nurture-content-title">Contenido educativo relevante al proyecto</div>
+          <div class="nurture-content-body">Un artículo, una foto de proyecto similar, o un dato específico sobre el tipo de obra que describió. No es un recordatorio de que existís — es algo útil para alguien en esa etapa.</div>
+          <div class="nurture-content-msg">"Hola [nombre], vi que te interesaba el tema de cerramientos para terraza. Esto puede ser útil para cuando estés evaluando opciones: [link o imagen]. Sin apuro, quedo disponible cuando quieras retomar."</div>
+        </div>
+      </div>
+
+      <div class="nurture-step">
+        <div class="nurture-left">
+          <div class="nurture-day">Día 10</div>
+          <div class="nurture-line"></div>
+        </div>
+        <div class="nurture-content">
+          <div class="nurture-content-title">Caso de proyecto similar completado</div>
+          <div class="nurture-content-body">Una foto antes/después de un proyecto que se parece al que describió, con el contexto de la obra. No es publicidad — es prueba social relevante para su situación específica.</div>
+          <div class="nurture-content-msg">"[Nombre], terminamos esta semana un proyecto en [zona similar] que me recordó lo que me habías contado. Por si te sirve de referencia."</div>
+        </div>
+      </div>
+
+      <div class="nurture-step">
+        <div class="nurture-left">
+          <div class="nurture-day">Día 21</div>
+          <div class="nurture-line"></div>
+        </div>
+        <div class="nurture-content">
+          <div class="nurture-content-title">Pregunta abierta de reactivación</div>
+          <div class="nurture-content-body">No "¿seguís interesado?" — eso pone al lead en posición de tener que justificar por qué no avanzó. Mejor una pregunta que abre la conversación sin presión ni culpa.</div>
+          <div class="nurture-content-msg">"Hola [nombre], ¿cómo viene el proyecto? ¿Siguió avanzando la planificación o quedó en pausa por el momento?"</div>
+        </div>
+      </div>
+
+      <div class="nurture-step">
+        <div class="nurture-left">
+          <div class="nurture-day">Día 45</div>
+          <div class="nurture-line"></div>
+        </div>
+        <div class="nurture-content">
+          <div class="nurture-content-title">Reactivación final con permiso explícito</div>
+          <div class="nurture-content-body">Si no hubo respuesta en ninguno de los tres contactos anteriores, un último mensaje que cierra el loop con elegancia. Esto tiene dos efectos: algunos leads responden porque el mensaje los "libera" de la obligación de responder antes, y el equipo sabe cuáles archivar definitivamente.</div>
+          <div class="nurture-content-msg">"[Nombre], voy a dejar de escribirte para no saturarte. Si en algún momento retomás el proyecto y querés ver opciones, acá estamos. ¡Que te vaya bien!"</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="warning reveal">
+      <strong>El error más caro:</strong> tratar igual a un lead que "desapareció después de mostrar interés real" y a uno que nunca respondió con detalle. El primero merece la secuencia completa de nurturing. El segundo merece un máximo de dos intentos y luego se archiva. Hacer cuatro contactos a alguien que nunca calificó es tiempo perdido — y puede generar una mala experiencia que dañe la reputación del negocio.
+    </div>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <!-- LEAD MAGNET -->
+    <div class="lm-teaser reveal">
+      <div class="lm-header">
+        <div class="lm-eyebrow">Protocolo incluido</div>
+        <div class="lm-title">Protocolo completo de reactivación: qué escribir exactamente en cada día de silencio</div>
+      </div>
+      <div class="lm-body">
+        <p class="lm-intro">Este protocolo incluye los mensajes exactos para cada momento de silencio, variantes según el tipo de proyecto, y el criterio de cuándo archivar definitivamente. Está escrito en el tono conversacional que funciona en WhatsApp para negocios de alto ticket en Argentina.</p>
+
+        <div class="nurture-timeline">
+          <div class="nurture-step">
+            <div class="nurture-left">
+              <div class="nurture-day">Día 3</div>
+              <div class="nurture-line"></div>
+            </div>
+            <div class="nurture-content">
+              <div class="nurture-content-title">Primer contacto post-silencio — Contenido de valor</div>
+              <div class="nurture-content-body">Envío de contenido relevante sin presión. Variante según tipo de proyecto: piscinas, cerramientos, reformas, muebles.</div>
+              <div class="nurture-content-msg">"Hola [nombre], te mando esto por si te sirve mientras evaluás opciones: [contenido relevante]. Sin apuro — cuando quieras retomar, estamos acá."</div>
+            </div>
+          </div>
+          <div class="nurture-step">
+            <div class="nurture-left">
+              <div class="nurture-day">Día 10</div>
+              <div class="nurture-line"></div>
+            </div>
+            <div class="nurture-content">
+              <div class="nurture-content-title">Segundo contacto — Caso real de proyecto similar</div>
+              <div class="nurture-content-body">Foto o descripción de proyecto terminado que se parece al que describió, con zona y contexto.</div>
+              <div class="nurture-content-msg">"Terminamos esta semana un proyecto que me hizo acordar a lo que me habías contado..."</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GATE -->
+        <div class="lm-gate">
+          <div class="lm-gate-blur">
+            <div class="nurture-timeline" style="margin-top:0">
+              <div class="nurture-step">
+                <div class="nurture-left">
+                  <div class="nurture-day">Día 21</div>
+                  <div class="nurture-line"></div>
+                </div>
+                <div class="nurture-content">
+                  <div class="nurture-content-title">Tercer contacto — Reactivación sin presión</div>
+                  <div class="nurture-content-body">Mensaje completo con variantes según si el lead había mostrado interés alto, medio o bajo en el primer intercambio.</div>
+                  <div class="nurture-content-msg">████████████████████████████████████</div>
+                </div>
+              </div>
+              <div class="nurture-step">
+                <div class="nurture-left">
+                  <div class="nurture-day">Día 45</div>
+                  <div class="nurture-line"></div>
+                </div>
+                <div class="nurture-content">
+                  <div class="nurture-content-title">Cierre del loop — Mensaje final con permiso explícito</div>
+                  <div class="nurture-content-body">Protocolo de archivo definitivo + criterio de cuándo y cómo volver a activar si el lead reaparece meses después.</div>
+                  <div class="nurture-content-msg">████████████████████████████████████</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lm-gate-overlay">
+            <div class="gate-label">Protocolo completo disponible por WhatsApp</div>
+            <div class="gate-title">Recibí el protocolo de 4 contactos con mensajes exactos</div>
+            <div class="gate-sub">Incluye variantes por tipo de proyecto, criterio de archivo, y guía de reactivación si el lead vuelve meses después.</div>
+            <a class="gate-kw" href="https://wa.me/5491155557890?text=REACTIVACION" target="_blank" rel="noopener">REACTIVACION</a>
+            <div class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Fuentes citadas: HubSpot State of Sales Report 2024 — datos sobre abandono de prospects por ritmo acelerado del proceso de venta. Forrester Research — 50% de los leads están calificados pero no listos para comprar, citado en HubSpot Lead Nurturing Guide. CSO Insights — empresas con procesos maduros de lead management tienen 9.3% mayor tasa de cumplimiento de cuota de ventas. HubSpot Follow-Up Best Practices 2025 — datos sobre silencio de leads y patrones de reengagement. Los porcentajes corresponden a estudios con muestras documentadas en mercados de EE.UU.; los principios de calificación son aplicables independientemente del mercado geográfico.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    document.getElementById('progress-bar').style.width =
+      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo estructurar un sistema de captación que no dependa de tu red · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red: rgba(255,100,100,0.85);
+    --red-dim: rgba(255,80,80,0.07);
+    --red-border: rgba(255,80,80,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--brand-dark);
+    color: var(--text-body);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.85;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--green);
+    z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(1,7,7,0.97);
+    backdrop-filter: blur(12px);
+    z-index: 50;
+  }
+
+  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
+  .logo span { color: var(--green); }
+  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
+
+  .hero {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 40px 56px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .article-category {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px; font-weight: 600;
+  }
+  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 48px); font-weight: 900;
+    line-height: 1.07; color: var(--white);
+    margin-bottom: 28px; letter-spacing: -0.03em;
+  }
+  h1 em { font-style: normal; color: var(--green); }
+
+  .hero-subtitle {
+    font-size: 18px; font-weight: 300; color: var(--text-muted);
+    line-height: 1.65; margin-bottom: 40px;
+    border-left: 3px solid var(--green); padding-left: 20px;
+  }
+
+  .article-meta {
+    display: flex; align-items: center; gap: 20px;
+    font-size: 13px; color: var(--text-muted);
+    padding-bottom: 40px; border-bottom: 1px solid var(--border);
+  }
+  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+  .content {
+    max-width: 760px; margin: 0 auto;
+    padding: 48px 40px 80px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards 0.5s;
+  }
+
+  .content p { margin-bottom: 24px; color: var(--text-body); }
+  .content p strong { color: var(--white); font-weight: 600; }
+
+  h2 {
+    font-size: clamp(20px, 3vw, 28px); font-weight: 900;
+    color: var(--white); margin: 64px 0 20px;
+    line-height: 1.12; letter-spacing: -0.025em;
+  }
+
+  .pull-quote {
+    border-left: 3px solid var(--green); padding: 22px 28px;
+    margin: 48px 0; background: var(--card-dark);
+  }
+  .pull-quote p {
+    font-size: clamp(17px, 2.2vw, 21px); font-weight: 600;
+    color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em;
+  }
+
+  .source-tag {
+    display: inline-block; font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--green);
+    background: var(--green-dim); border: 1px solid var(--green-border);
+    padding: 2px 7px; font-weight: 600; vertical-align: middle;
+    margin-left: 5px; position: relative; top: -1px;
+  }
+
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1px; background: var(--border); margin: 48px 0; border: 1px solid var(--border);
+  }
+  .stat-item { background: var(--card-dark); padding: 28px 20px; text-align: center; }
+  .stat-number {
+    font-size: clamp(44px, 6vw, 58px); font-weight: 900;
+    color: var(--green); line-height: 1; margin-bottom: 10px;
+    display: block; letter-spacing: -0.04em;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); line-height: 1.5; font-weight: 400; }
+  .stat-source { font-size: 10px; color: rgba(255,255,255,0.18); margin-top: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .data-callout {
+    background: var(--card-dark); border: 1px solid var(--border);
+    border-left: 3px solid var(--green); padding: 20px 24px;
+    margin: 32px 0; display: flex; gap: 20px; align-items: flex-start;
+  }
+  .data-callout .data-num {
+    font-size: 36px; font-weight: 900; color: var(--green);
+    line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 80px;
+  }
+  .data-callout .data-text { flex: 1; padding-top: 4px; }
+  .data-callout .data-text p { margin: 0; font-size: 15px; line-height: 1.6; }
+
+  /* PILLAR CARDS */
+  .pillar-stack { display: flex; flex-direction: column; gap: 1px; background: var(--border); margin: 48px 0; border: 1px solid var(--border); }
+  .pillar-card { background: var(--card-dark); padding: 26px 28px; position: relative; border-left: 3px solid transparent; transition: border-color 0.2s, background 0.2s; }
+  .pillar-card:hover { border-left-color: var(--green); background: var(--card-mid); }
+  .pillar-num { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); background: var(--green-dim); padding: 3px 8px; display: inline-block; margin-bottom: 10px; }
+  .pillar-title { font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 8px; letter-spacing: -0.01em; line-height: 1.3; }
+  .pillar-body { font-size: 15px; color: var(--text-body); line-height: 1.7; }
+  .pillar-body strong { color: var(--white); font-weight: 600; }
+
+  /* COMPARISON */
+  .comparison { margin: 48px 0; overflow-x: auto; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  thead tr { background: var(--card-mid); border-bottom: 1px solid var(--green-border); }
+  th { padding: 14px 20px; text-align: left; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green); font-weight: 700; }
+  td { padding: 15px 20px; border-bottom: 1px solid var(--border); color: var(--text-body); background: var(--card-dark); font-size: 15px; }
+  td:first-child { color: var(--white); font-weight: 500; }
+  td.g { color: var(--green); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+
+  /* LEAD MAGNET TEASER */
+  .lm-teaser {
+    background: var(--card-dark); border: 1px solid var(--border);
+    border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden;
+  }
+  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
+  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
+  .lm-body { padding: 28px; }
+  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+  .lm-intro strong { color: var(--white); font-weight: 600; }
+
+  .checklist { display: flex; flex-direction: column; gap: 1px; background: var(--border); margin-bottom: 24px; }
+  .check-item { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; background: var(--card-dark); font-size: 14px; color: var(--text-body); line-height: 1.55; }
+  .check-num { font-size: 10px; font-weight: 900; color: var(--green); min-width: 20px; flex-shrink: 0; padding-top: 3px; letter-spacing: 0.05em; }
+  .check-text strong { color: var(--white); font-weight: 600; }
+
+  /* BLUR GATE */
+  .lm-gate {
+    position: relative; overflow: hidden;
+    border-top: 1px solid var(--border);
+  }
+  .lm-gate-items { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.5; }
+  .lm-gate-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 28px;
+    background: linear-gradient(to bottom, transparent, rgba(9,20,14,0.97) 40%);
+  }
+  .lm-gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .lm-gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
+  .lm-gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+  .lm-gate-kw {
+    background: var(--green); color: var(--brand-dark);
+    padding: 5px 16px; font-size: 14px; font-weight: 900;
+    letter-spacing: 0.12em; text-transform: uppercase; display: inline-block; margin-bottom: 8px;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .lm-gate-kw:hover { background: #4eff8a; transform: translateY(-1px); }
+  .lm-gate-note { font-size: 11px; color: var(--text-muted); }
+
+  /* DIVIDER */
+  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+
+  /* FOOTNOTE */
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .data-callout { flex-direction: column; gap: 10px; }
+    .lm-body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Sistema de Captación</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Diagnóstico A — Captación</div>
+    <h1>Cómo estructurar un sistema de captación que <em>no dependa de tu red</em></h1>
+    <p class="hero-subtitle">Los referidos son el canal más eficiente que existe, hasta que se cortan. Este artículo explica cómo construir un canal paralelo que genere demanda predecible, sin reemplazar lo que ya funciona.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>12 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Fuentes: HubSpot · WordStream · Meta · LocaliQ</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Hay un momento específico en la trayectoria de cualquier empresa de construcción o home improvement en el que el modelo de referidos muestra su límite. No es cuando las cosas van mal. Es cuando van bien y querés ir más rápido.</p>
+
+    <p>En ese momento, la pregunta que aparece inevitablemente es: ¿cómo genero más clientes sin depender de que alguien me recomiende?</p>
+
+    <p>La respuesta no es abandonar los referidos. Es construir un canal paralelo que opere con su propia lógica, sus propias métricas, y su propio ritmo. Un canal que puedas encender, optimizar y escalar independientemente de lo que pase con tu red.</p>
+
+    <div class="pull-quote reveal">
+      <p>Un sistema de captación no reemplaza los referidos. Los hace prescindibles. Esa diferencia, entre necesitarlos y no necesitarlos, cambia completamente la posición de negociación frente a cada cliente.</p>
+    </div>
+
+    <h2>Por qué el canal digital falla en la mayoría de los casos</h2>
+
+    <p>La mayoría de las empresas de construcción que intentaron publicidad digital y no vieron resultados cometieron una de estas dos variantes del mismo error: o trataron los anuncios como una campaña con fecha de vencimiento, o los desconectaron del proceso de ventas.</p>
+
+    <p>Una campaña se lanza, se espera, y si en 30 días no hay resultado visible se corta. Un sistema se construye, se mide, se optimiza, y mejora con el tiempo. Son dos modelos completamente distintos con resultados completamente distintos.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-num">10%+</div>
+      <div class="data-text"><p>Las empresas que implementan automatización para gestionar los leads generados por publicidad ven un incremento de más del 10% en ingresos dentro de los primeros seis a nueve meses. El canal digital no falla por el canal. Falla por lo que pasa después del click. <span class="source-tag">HubSpot 2024</span></p></div>
+    </div>
+
+    <p>El segundo error es más costoso: invertir en captar consultas sin tener un sistema para procesarlas. Meta puede generar 100 consultas en un mes. Si el equipo responde el 40% fuera de horario sin automatización, si no hay CRM que registre cada interacción, y si el seguimiento depende de la memoria de cada vendedor, el canal digital va a parecer que no funciona cuando en realidad el problema es lo que ocurre después del primer mensaje.</p>
+
+    <h2>Los tres pilares de un sistema que funciona</h2>
+
+    <p>Un sistema de captación que genera demanda predecible no es una herramienta ni una plataforma. Es la combinación de tres componentes que operan de forma integrada.</p>
+
+    <div class="pillar-stack reveal">
+      <div class="pillar-card">
+        <div class="pillar-num">Pilar 01</div>
+        <div class="pillar-title">Captación con costo por lead conocido</div>
+        <div class="pillar-body">Meta Ads es el canal con mejor relación costo-resultado para negocios de construcción y home improvement de alto ticket en Argentina. <strong>El CPL promedio en home improvement en Meta es de USD 22 a 41 según el nivel de optimización de la campaña</strong>, con tasas de conversión del 5.2% para campañas de leads bien configuradas. El objetivo no es conseguir el CPL más bajo posible: es conseguir el CPL más bajo posible para el perfil de cliente que efectivamente puede pagar tu ticket. Esa distinción separa las campañas que generan ruido de las que generan negocio.<span class="source-tag">WordStream 2025</span></div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Pilar 02</div>
+        <div class="pillar-title">Respuesta automatizada en menos de 5 minutos</div>
+        <div class="pillar-body">El 50% de las ventas va al proveedor que responde primero. Eso no es posible sin automatización. El primer mensaje al lead tiene que llegar en menos de 5 minutos del contacto inicial, independientemente del horario. No tiene que ser una respuesta humana completa: tiene que ser un mensaje que confirme la recepción, establezca expectativas, y haga una pregunta de calificación inicial. <strong>Ese primer mensaje automatizado reduce la tasa de abandono de leads en más del 60%</strong> versus no responder hasta el día siguiente. <span class="source-tag">InsideSales / HubSpot</span></div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Pilar 03</div>
+        <div class="pillar-title">Visibilidad completa del embudo</div>
+        <div class="pillar-body">Sin datos, no hay sistema. Hay actividad. La diferencia es que la actividad se repite indefinidamente sin mejorar. Un sistema registra cada consulta, cada presupuesto enviado, cada cierre, y el tiempo entre cada etapa. <strong>Las empresas que gestionan activamente su pipeline crecen un 28% más rápido</strong> que las que no lo hacen, según HubSpot. Esa gestión activa no es posible sin visibilidad en tiempo real de lo que pasa en cada etapa del embudo. <span class="source-tag">HubSpot 2024</span></div>
+      </div>
+    </div>
+
+    <h2>El canal correcto para tu rubro y tu ticket</h2>
+
+    <p>No todos los canales digitales funcionan igual para todos los rubros. Para empresas de construcción y home improvement de alto ticket, la evidencia apunta consistentemente en la misma dirección.</p>
+
+    <div class="comparison reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Canal</th>
+            <th>CPL referencia</th>
+            <th>Calidad del lead</th>
+            <th>Tiempo de resultados</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Meta Ads (Facebook/Instagram)</td>
+            <td class="g">USD 22–41</td>
+            <td>Alta con segmentación correcta</td>
+            <td>30–60 días</td>
+          </tr>
+          <tr>
+            <td>Google Ads (Search)</td>
+            <td>USD 165–200</td>
+            <td>Muy alta (intención activa)</td>
+            <td>15–30 días</td>
+          </tr>
+          <tr>
+            <td>SEO / Contenido orgánico</td>
+            <td>Menor de USD 30 a largo plazo</td>
+            <td>Alta (intención educativa)</td>
+            <td>6–12 meses</td>
+          </tr>
+          <tr>
+            <td>Referidos sistematizados</td>
+            <td>Casi cero</td>
+            <td>Muy alta (confianza previa)</td>
+            <td>Variable e impredecible</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Meta Ads es el punto de entrada recomendado para la mayoría de las empresas del sector por tres razones: el CPL es manejable en relación al ticket de venta, el tiempo hasta los primeros resultados es corto, y la segmentación por comportamiento e intereses permite apuntar a propietarios de viviendas en zonas premium con capacidad de inversión comprobable.</p>
+
+    <p>Google Search tiene un CPL más alto pero leads de mayor intención. Para una empresa con ticket de $5M a $15M por proyecto, pagar USD 165–200 por un lead que ya buscó activamente el servicio puede ser una inversión perfectamente racional. El error es comparar el CPL sin comparar la tasa de cierre de cada canal.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-num">5.2%</div>
+      <div class="data-text"><p><strong>Tasa de conversión promedio de campañas de leads bien optimizadas en Meta para home improvement</strong>, con un CPL de USD 22 en el mejor percentil. Campañas genéricas sin landing page ni segmentación específica convierten menos del 1%. La diferencia no es el presupuesto. Es la estructura. <span class="source-tag">WordStream / Meta 2025</span></p></div>
+    </div>
+
+    <h2>El error de medir solo el costo del lead</h2>
+
+    <p>El CPL es la métrica más visible y la más mal interpretada del canal digital. Un lead de USD 40 que cierra en un proyecto de $5M tiene un retorno infinitamente superior a un lead de USD 10 que nunca fue calificado correctamente y consumió tres horas del equipo de ventas sin convertirse.</p>
+
+    <p>La métrica que importa no es el costo del lead. Es el costo de adquisición del cliente, que incluye el CPL más el tiempo del equipo dedicado a procesar, calificar y seguir cada lead hasta el cierre o el descarte.</p>
+
+    <p>Cuando se calcula correctamente, el costo de adquisición de un sistema digital bien estructurado para empresas de alto ticket es significativamente menor que el de la mayoría de los canales alternativos, incluyendo los referidos cuando se cuenta el tiempo invertido en relaciones, eventos, y mantenimiento de red.</p>
+
+    <div class="stat-grid reveal">
+      <div class="stat-item">
+        <span class="stat-number">USD 22</span>
+        <span class="stat-label">CPL promedio en home improvement con Meta Ads optimizado</span>
+        <div class="stat-source">WordStream 2025</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">USD 165</span>
+        <span class="stat-label">CPL promedio en construcción con Google Search Ads</span>
+        <div class="stat-source">LocaliQ 2025</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">28%</span>
+        <span class="stat-label">Más rápido crecen las empresas que gestionan activamente su pipeline</span>
+        <div class="stat-source">HubSpot 2024</div>
+      </div>
+    </div>
+
+    <h2>Cómo se construye el sistema paso a paso</h2>
+
+    <p>El orden importa. El error más frecuente es invertir en captación antes de tener el sistema de procesamiento listo. El resultado es leads que entran y se pierden, lo que genera la conclusión incorrecta de que "el digital no funciona".</p>
+
+    <p>El orden correcto es el inverso: primero se construye la capacidad de procesar, después se enciende la captación.</p>
+
+    <div class="pillar-stack reveal">
+      <div class="pillar-card">
+        <div class="pillar-num">Paso 01</div>
+        <div class="pillar-title">Definir el perfil exacto del cliente que querés atraer</div>
+        <div class="pillar-body">No "propietarios de viviendas". No "empresas en zona norte". El perfil tiene que incluir: zona geográfica específica, rango de ticket mínimo por proyecto, tipo de proyecto (piscina, reforma, cerramiento), y señales de comportamiento que indiquen capacidad de inversión. <strong>Ese perfil es el input que define la segmentación de la campaña y el copy del anuncio.</strong> Sin ese perfil, la campaña atrae a todos y convierte a pocos.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Paso 02</div>
+        <div class="pillar-title">Configurar el CRM y la automatización de primer contacto</div>
+        <div class="pillar-body">Antes de lanzar cualquier anuncio, el pipeline tiene que estar funcionando. Cuatro etapas mínimas: nuevo lead, contactado, presupuestado, cerrado. El primer mensaje automático por WhatsApp tiene que estar configurado para dispararse en menos de 5 minutos del contacto. <strong>Sin esto, cada lead que entre fuera del horario comercial se enfría antes de que alguien lo atienda.</strong></div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Paso 03</div>
+        <div class="pillar-title">Lanzar la campaña con presupuesto mínimo de validación</div>
+        <div class="pillar-body">El presupuesto mínimo para obtener datos estadísticamente válidos en Meta Ads para este segmento es USD 400 por mes. Por debajo de ese número, el algoritmo no tiene suficiente volumen para optimizar y los resultados son ruidosos. <strong>El primer mes es de calibración, no de escala.</strong> El objetivo es encontrar el ángulo de anuncio y la segmentación que genera el CPL más bajo para el perfil definido. La escala viene en el mes dos una vez validado el costo.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Paso 04</div>
+        <div class="pillar-title">Medir las cuatro métricas clave cada semana</div>
+        <div class="pillar-body">CPL (costo por lead), tasa de presupuestación (leads que llegan a propuesta), tasa de cierre sobre presupuestados, y ROI cruzando inversión en ads con ingresos cerrados. <strong>Esas cuatro métricas se miden juntas, no por separado.</strong> Un CPL bajo con tasa de cierre baja es un problema de calidad. Un CPL alto con tasa de cierre alta puede ser el canal más rentable del negocio.</div>
+      </div>
+    </div>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <!-- LEAD MAGNET TEASER -->
+    <div class="lm-teaser reveal">
+      <div class="lm-header">
+        <div class="lm-eyebrow">Guía práctica incluida</div>
+        <div class="lm-title">Checklist de lanzamiento: los 12 pasos para activar tu primer sistema de captación en 30 días</div>
+      </div>
+      <div class="lm-body">
+        <p class="lm-intro">Este checklist está diseñado para que cualquier empresa de construcción o home improvement pueda activar su primer sistema de captación digital en 30 días, sin necesidad de conocimientos técnicos previos. Cada paso incluye el criterio de completitud para saber cuándo está realmente listo antes de pasar al siguiente.</p>
+
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-num">01</div>
+            <div class="check-text"><strong>Definir el perfil de cliente ideal con los 5 criterios obligatorios</strong> — zona, ticket mínimo, tipo de proyecto, señales de comportamiento, y criterio de descalificación.</div>
+          </div>
+          <div class="check-item">
+            <div class="check-num">02</div>
+            <div class="check-text"><strong>Configurar el pipeline de CRM con las 4 etapas mínimas</strong> — nuevo lead, contactado, presupuestado, cerrado. Incluye definición de qué acción mueve un lead de cada etapa a la siguiente.</div>
+          </div>
+          <div class="check-item">
+            <div class="check-num">03</div>
+            <div class="check-text"><strong>Escribir y configurar el mensaje automático de primer contacto</strong> — debe llegar en menos de 5 minutos, confirmar la recepción, y hacer una pregunta de calificación inicial.</div>
+          </div>
+          <div class="check-item">
+            <div class="check-num">04</div>
+            <div class="check-text"><strong>Definir el presupuesto de validación y el período de calibración</strong> — mínimo USD 400 durante 30 días, con criterios claros de qué métricas determinan si el canal es viable.</div>
+          </div>
+        </div>
+
+        <!-- BLURRED GATE -->
+        <div class="lm-gate">
+          <div class="lm-gate-items">
+            <div class="checklist">
+              <div class="check-item">
+                <div class="check-num">05</div>
+                <div class="check-text"><strong>Producir los creativos del anuncio con el ángulo correcto</strong> — estructura del copy, formato visual, y CTA optimizado para el perfil definido.</div>
+              </div>
+              <div class="check-item">
+                <div class="check-num">06</div>
+                <div class="check-text"><strong>Configurar la segmentación de audiencia en Meta Ads</strong> — criterios de targeting, exclusiones, y configuración del píxel para retargeting.</div>
+              </div>
+              <div class="check-item">
+                <div class="check-num">07</div>
+                <div class="check-text"><strong>Capacitar al equipo de ventas en el script de calificación</strong> — diferencia entre un lead de digital y un referido, preguntas de calificación por tipo de proyecto.</div>
+              </div>
+              <div class="check-item">
+                <div class="check-num">08</div>
+                <div class="check-text"><strong>Definir el dashboard de métricas semanales</strong> — CPL, tasa de presupuestación, tasa de cierre, y ROI. Formato y frecuencia de revisión.</div>
+              </div>
+              <div class="check-item">
+                <div class="check-num">09</div>
+                <div class="check-text"><strong>Establecer el criterio de escala del presupuesto</strong> — en qué condiciones específicas se aumenta la inversión y en cuánto.</div>
+              </div>
+              <div class="check-item">
+                <div class="check-num">10</div>
+                <div class="check-text"><strong>Configurar el retargeting para leads que no convirtieron</strong> — secuencia, tiempo, y mensaje diferencial para la segunda y tercera exposición.</div>
+              </div>
+              <div class="check-item">
+                <div class="check-num">11</div>
+                <div class="check-text"><strong>Documentar el proceso completo para el equipo</strong> — quién hace qué, en qué tiempo, y con qué herramientas para cada etapa del embudo.</div>
+              </div>
+              <div class="check-item">
+                <div class="check-num">12</div>
+                <div class="check-text"><strong>Definir el criterio de evaluación al día 30</strong> — qué número de CPL, tasa de cierre y ROI determina si el sistema está funcionando o necesita ajuste.</div>
+              </div>
+            </div>
+          </div>
+          <div class="lm-gate-overlay">
+            <div class="lm-gate-label">Pasos 05 a 12 disponibles por WhatsApp</div>
+            <div class="lm-gate-title">Recibí el checklist completo de 12 pasos</div>
+            <div class="lm-gate-sub">Escribí la palabra clave por WhatsApp y recibís el documento completo en formato editable.</div>
+            <a class="lm-gate-kw" href="https://wa.me/5491155557890?text=SISTEMA" target="_blank" rel="noopener" style="text-decoration:none;cursor:pointer">SISTEMA</a>
+            <div class="lm-gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Fuentes citadas: HubSpot State of Sales 2024, HubSpot Pipeline Management Research 2024, WordStream Facebook Ads Benchmarks 2025, LocaliQ Home Services Search Advertising Benchmarks 2025, Meta Business Insights 2025, InsideSales.com Lead Response Management Study. Los rangos de CPL presentados corresponden a mercados de Estados Unidos y pueden variar en el mercado argentino según competencia, segmentación, y presupuesto disponible. Los principios de estructura del sistema son aplicables independientemente del mercado.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    document.getElementById('progress-bar').style.width = (scrollTop / scrollHeight * 100) + '%';
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

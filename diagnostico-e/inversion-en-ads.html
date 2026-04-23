@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuándo y cómo invertir más en ads sin destruir el CPL actual · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red: rgba(255,100,100,0.85);
+    --red-dim: rgba(255,80,80,0.07);
+    --red-border: rgba(255,80,80,0.18);
+    --yellow: #F5C842;
+    --yellow-dim: rgba(245,200,66,0.07);
+    --yellow-border: rgba(245,200,66,0.22);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+
+  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+
+  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
+  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
+  .logo span { color: var(--green); }
+  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+
+  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
+  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
+  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
+  h1 em { font-style: normal; color: var(--green); }
+  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
+  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
+  .content p { margin-bottom: 24px; }
+  .content p strong { color: var(--white); font-weight: 600; }
+  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+
+  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
+  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+
+  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+
+  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
+  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 72px; }
+  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
+  .data-text strong { color: var(--white); font-weight: 600; }
+
+  /* RULE BOX */
+  .rule-box { background: var(--card-dark); border: 1px solid var(--border); border-top: 3px solid var(--green); padding: 28px; margin: 40px 0; }
+  .rule-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .rule-text { font-size: clamp(18px, 2.5vw, 24px); font-weight: 900; color: var(--white); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .rule-desc { font-size: 15px; color: var(--text-body); line-height: 1.7; }
+  .rule-desc strong { color: var(--white); font-weight: 600; }
+
+  /* SIGNAL TABLE */
+  .signal-table { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 40px 0; }
+  .signal-col { background: var(--card-dark); }
+  .signal-header { padding: 12px 18px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .signal-col.go .signal-header { color: var(--green); background: var(--green-dim); }
+  .signal-col.stop .signal-header { color: var(--red); background: var(--red-dim); }
+  .signal-item { padding: 12px 18px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-body); line-height: 1.55; display: flex; gap: 10px; }
+  .signal-item:last-child { border-bottom: none; }
+  .signal-col.go .signal-item::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .signal-col.stop .signal-item::before { content: '×'; color: var(--red); font-weight: 700; flex-shrink: 0; }
+
+  /* STEPS */
+  .step-block { background: var(--card-dark); border: 1px solid var(--border); margin: 20px 0; overflow: hidden; }
+  .step-header { display: flex; align-items: center; gap: 0; border-bottom: 1px solid var(--border); }
+  .step-tag { background: var(--card-mid); border-right: 1px solid var(--border); padding: 14px 16px; font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 0.15em; text-transform: uppercase; flex-shrink: 0; min-width: 80px; text-align: center; }
+  .step-title { padding: 14px 20px; font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
+  .step-body { padding: 18px 22px; font-size: 15px; color: var(--text-body); line-height: 1.7; }
+  .step-body strong { color: var(--white); font-weight: 600; }
+  .step-example { font-size: 13px; color: var(--text-muted); border-left: 2px solid var(--green-border); padding-left: 12px; margin-top: 12px; line-height: 1.65; font-style: italic; }
+
+  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .warning strong { color: var(--red); font-weight: 600; }
+
+  .insight { background: var(--green-dim); border: 1px solid var(--green-border); border-left: 3px solid var(--green); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .insight strong { color: var(--green); font-weight: 600; }
+
+  /* LEAD MAGNET */
+  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
+  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
+  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
+  .lm-body { padding: 28px; }
+  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+
+  .preview-steps { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .preview-step { background: var(--card-dark); padding: 14px 20px; display: flex; gap: 12px; font-size: 14px; color: var(--text-body); line-height: 1.55; }
+  .preview-step-num { font-size: 11px; font-weight: 700; color: var(--green); flex-shrink: 0; min-width: 28px; }
+
+  .lm-gate { position: relative; border-top: 1px solid var(--border); }
+  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.45; max-height: 160px; overflow: hidden; }
+  .lm-gate-overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: var(--card-dark); border-top: 1px solid var(--green-border); }
+  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
+  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
+  .gate-instruction { font-size: 13px; color: var(--text-body); margin-bottom: 14px; line-height: 1.6; background: var(--card-mid); border: 1px solid var(--green-border); padding: 10px 14px; }
+  .gate-instruction strong { color: var(--green); font-weight: 700; }
+  .gate-kw { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--green); color: var(--brand-dark); padding: 14px 28px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; margin-bottom: 10px; transition: background 0.2s, transform 0.2s; cursor: pointer; }
+  .gate-kw:hover { background: #4eff8a; transform: translateY(-2px); }
+  .gate-note { font-size: 11px; color: var(--text-muted); }
+
+  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .signal-table { grid-template-columns: 1fr; }
+    .data-callout { flex-direction: column; gap: 10px; }
+    .lm-body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Escalado de Inversión en Ads</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Diagnóstico E — Escala</div>
+    <h1>Cuándo y cómo invertir más en ads <em>sin destruir el CPL actual</em></h1>
+    <p class="hero-subtitle">Escalar el presupuesto de ads sin una lógica de escalado produce exactamente lo que se teme: más inversión, peor costo por lead, y resultados que no crecen en proporción. El algoritmo de Meta tiene reglas propias y ignorarlas sale caro.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>10 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Fuentes: Meta Ads Docs · AdStellar · Modern Marketing Institute · GeistM</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Hay un error que cometen casi todos los dueños de empresa cuando una campaña de Meta Ads empieza a funcionar bien. Ven que el costo por lead está en rango, que los leads tienen calidad, y que el equipo de ventas está convirtiendo. La conclusión parece obvia: invertir más.</p>
+
+    <p>El problema es cómo se invierte más. Si el presupuesto diario pasa de USD 400 a USD 1.000 de un día para el otro, el algoritmo de Meta no interpreta eso como "más de lo mismo". Lo interpreta como una campaña diferente. Resetea su fase de aprendizaje, empieza a buscar audiencias en un radio más amplio y menos calificado, y el costo por lead sube. A veces al doble.</p>
+
+    <p>No porque la campaña dejara de funcionar. Sino porque no se respetó la lógica de escalado del sistema.</p>
+
+    <div class="pull-quote reveal">
+      <p>Aumentar el presupuesto de Meta Ads en más de un 20% en un solo ajuste resetea la fase de aprendizaje del algoritmo. Todo el historial de optimización acumulado se descarta y la campaña empieza desde cero. El costo por lead que tardó semanas en calibrarse desaparece en un día. <span class="source-tag">Meta Ads / AdStellar 2025</span></p>
+    </div>
+
+    <h2>Cómo funciona la fase de aprendizaje de Meta</h2>
+
+    <p>Cuando se lanza una campaña nueva, el algoritmo de Meta entra en una fase de aprendizaje. Durante esa fase, el sistema prueba distintas combinaciones de audiencia, horario, y placement para descubrir quiénes convierten mejor. La performance durante ese período es inestable: el costo por lead puede variar significativamente de un día a otro.</p>
+
+    <p>Para salir de la fase de aprendizaje y entrar en entrega estable, el sistema necesita acumular datos suficientes — típicamente alrededor de 50 eventos de conversión por semana. Una vez que los tiene, el algoritmo "sabe" a quién mostrarle el anuncio y a qué hora, y el costo por lead se estabiliza en su nivel óptimo para ese presupuesto.</p>
+
+    <p><strong>El problema del escalado brusco es que cualquier cambio mayor al 20% del presupuesto reinicia ese proceso desde cero.</strong> Todo el aprendizaje acumulado se descarta. La campaña vuelve a explorar, los costos suben, y la performance cae hasta que el algoritmo recupera el nivel que tenía antes del cambio.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-num">20%</div>
+      <div class="data-text"><p><strong>Es el máximo incremento de presupuesto que Meta permite sin resetear la fase de aprendizaje.</strong> Superar ese umbral en un solo ajuste activa un recalibrado completo del algoritmo. La regla no es arbitraria: es la documentación oficial de Meta sobre el comportamiento del sistema. <span class="source-tag">Meta Ads Documentation / Code3 2025</span></p></div>
+    </div>
+
+    <h2>Cuándo el sistema está listo para escalar</h2>
+
+    <p>Antes de aumentar el presupuesto, hay señales concretas que indican que la campaña está en condiciones de absorber más inversión sin deteriorar el costo por lead. Y hay señales que indican que escalar en ese momento va a amplificar problemas, no resultados.</p>
+
+    <div class="signal-table reveal">
+      <div class="signal-col go">
+        <div class="signal-header">El sistema está listo para escalar</div>
+        <div class="signal-item">El CPL se mantuvo estable durante al menos 2 semanas consecutivas</div>
+        <div class="signal-item">La campaña tiene más de 50 conversiones registradas en los últimos 7 días</div>
+        <div class="signal-item">El close rate del equipo de ventas se mantuvo o mejoró en el último mes</div>
+        <div class="signal-item">La frecuencia del anuncio (cuántas veces lo ve la misma persona) es menor a 2.5</div>
+        <div class="signal-item">El proceso de ventas puede absorber más volumen sin deteriorar el seguimiento</div>
+      </div>
+      <div class="signal-col stop">
+        <div class="signal-header">No escalar todavía</div>
+        <div class="signal-item">El CPL fluctúa más de un 30% semana a semana — la campaña todavía no se estabilizó</div>
+        <div class="signal-item">La campaña tiene menos de 30 días activa — el algoritmo todavía está aprendiendo</div>
+        <div class="signal-item">El close rate cayó en el último mes — hay un problema de proceso sin resolver</div>
+        <div class="signal-item">La frecuencia supera 3.5 — la audiencia está saturada, no se puede escalar sin refrescar creative</div>
+        <div class="signal-item">El pipeline tiene más de 5 leads estancados — el sistema de ventas ya está saturado</div>
+      </div>
+    </div>
+
+    <h2>La regla del 20% y por qué existe</h2>
+
+    <div class="rule-box reveal">
+      <div class="rule-label">La regla fundamental del escalado en Meta Ads</div>
+      <div class="rule-text">Nunca aumentar el presupuesto en más de un 20% por ajuste, con al menos 3 a 4 días entre cada incremento.</div>
+      <div class="rule-desc">Cuando el presupuesto sube más del 20% de golpe, Meta necesita encontrar más personas que vean el anuncio. Al presupuesto original encontraba los 500 perfiles más calificados. Al nuevo presupuesto necesita encontrar 1.500. <strong>Esos 1.000 adicionales son, por definición, menos calificados que los originales.</strong> El algoritmo los incluye porque tiene que gastar el presupuesto, no porque sean el perfil correcto. El CPL sube porque la audiencia se diluyó.</div>
+    </div>
+
+    <p>La regla del 20% no es una recomendación. Es la documentación oficial de Meta sobre el umbral a partir del cual el sistema considera que el cambio es suficientemente significativo para resetear el aprendizaje acumulado. Por debajo del 20%, el algoritmo adapta gradualmente su estrategia de entrega. Por encima, descarta lo que aprendió y empieza desde cero.</p>
+
+    <h2>Cómo escalar el presupuesto paso a paso</h2>
+
+    <p>El escalado correcto es lento comparado con lo que la intuición indica. Pero es el único método que preserva el rendimiento de la campaña mientras aumenta el volumen de leads.</p>
+
+    <div class="step-block reveal">
+      <div class="step-header">
+        <div class="step-tag">Paso 1</div>
+        <div class="step-title">Verificar que la campaña está en entrega estable</div>
+      </div>
+      <div class="step-body">
+        Antes de tocar el presupuesto, confirmar que la campaña salió de la fase de aprendizaje. En el Administrador de Anuncios de Meta, el estado del conjunto de anuncios debe decir "Activo" sin ninguna advertencia de "Aprendizaje" o "Aprendizaje limitado". Si dice cualquiera de los dos, <strong>no escalar hasta que esa advertencia desaparezca.</strong>
+        <div class="step-example">Si la campaña lleva más de 7 días activa y todavía dice "Aprendizaje", el problema es que no está generando suficientes conversiones por semana. Puede ser un problema de presupuesto demasiado bajo, de audiencia demasiado pequeña, o de creative que no convierte. Resolver eso antes de escalar.</div>
+      </div>
+    </div>
+
+    <div class="step-block reveal">
+      <div class="step-header">
+        <div class="step-tag">Paso 2</div>
+        <div class="step-title">Aumentar el presupuesto en un 20% — exactamente</div>
+      </div>
+      <div class="step-body">
+        Ir al Administrador de Anuncios, seleccionar el conjunto de anuncios que funciona bien, y editar el presupuesto diario. <strong>Calcular el 20% del presupuesto actual y aplicar ese incremento exacto.</strong> Si el presupuesto actual es USD 400/día, el nuevo presupuesto es USD 480/día. No USD 500, no USD 600.
+        <div class="step-example">Meta incluso muestra una notificación del tipo "Podés aumentar tu presupuesto hasta $X sin reiniciar el aprendizaje". Ese número es el techo seguro para ese ajuste específico. Usarlo como referencia.</div>
+      </div>
+    </div>
+
+    <div class="step-block reveal">
+      <div class="step-header">
+        <div class="step-tag">Paso 3</div>
+        <div class="step-title">Esperar 3 a 4 días antes del siguiente incremento</div>
+      </div>
+      <div class="step-body">
+        Después de cada ajuste, dejar que el algoritmo se adapte al nuevo nivel de gasto durante al menos 3 días antes de volver a cambiar el presupuesto. <strong>No revisar el CPL al día siguiente del ajuste — es normal que haya volatilidad mientras el sistema recalibra.</strong> El CPL del día 1 post-incremento no es representativo del nuevo nivel de rendimiento.
+        <div class="step-example">Si al tercer o cuarto día el CPL volvió al rango estable previo al ajuste, el algoritmo absorbió el incremento correctamente. Si el CPL sigue elevado después de 5 días, el incremento fue demasiado o la audiencia está alcanzando su techo.</div>
+      </div>
+    </div>
+
+    <div class="step-block reveal">
+      <div class="step-header">
+        <div class="step-tag">Paso 4</div>
+        <div class="step-title">Repetir el ciclo hasta el presupuesto objetivo</div>
+      </div>
+      <div class="step-body">
+        Continuar el patrón: +20% → esperar 3-4 días → verificar CPL → +20% nuevamente si está estable. <strong>Este proceso tarda más de lo que la intuición indica, pero es el único que no destruye el rendimiento de la campaña.</strong> Duplicar el presupuesto de USD 400 a USD 800 a través de incrementos del 20% cada 4 días toma aproximadamente 3 semanas. Hacerlo de golpe puede costar el doble del CPL por varias semanas de recalibrado.
+        <div class="step-example">Semana 1: $400 → $480 → $576. Semana 2: $576 → $691 → $829. Semana 3: el presupuesto duplicado está alcanzado sin un solo reset del algoritmo.</div>
+      </div>
+    </div>
+
+    <h2>Qué hacer cuando el CPL sube al escalar</h2>
+
+    <p>Si el CPL sube después de un incremento y no regresa al nivel anterior en 5 días, hay tres posibles causas con diagnósticos distintos.</p>
+
+    <p><strong>La audiencia está alcanzando su techo.</strong> Cuando el algoritmo no puede encontrar más personas calificadas dentro de la audiencia configurada, muestra el anuncio a personas menos calificadas para gastar el presupuesto. La señal es que la frecuencia también sube (la misma persona ve el anuncio más de 3 veces en una semana). La solución es expandir la audiencia horizontalmente — agregar una segunda campaña con una audiencia similar pero diferente, en lugar de seguir escalando la existente.</p>
+
+    <p><strong>El creative está fatigado.</strong> A mayor presupuesto, mayor velocidad de consumo del creative. Un anuncio que funcionó bien durante 6 semanas a USD 400/día puede fatigarse en 3 semanas a USD 800/día. <strong>La señal es que el CTR cae pero la audiencia no está saturada.</strong> La solución es introducir nuevas variantes del anuncio antes de continuar escalando el presupuesto.</p>
+
+    <p><strong>Se superó el umbral del 20% sin quererlo.</strong> Si se hicieron varios ajustes pequeños en pocos días, la suma puede haber superado el umbral que desencadena el reset. La solución es dejar la campaña sin tocar durante al menos 7 días para que el algoritmo se reestablezca.</p>
+
+    <div class="warning reveal">
+      <strong>El error más costoso:</strong> ver que el CPL subió después de un incremento y bajar el presupuesto de vuelta al nivel anterior para "corregirlo". Bajar el presupuesto es también un cambio significativo que resetea el aprendizaje. Cada subida y bajada de presupuesto reinicia el ciclo completo. La regla aplica en ambas direcciones: cambios menores al 20%, en una sola dirección, con tiempo entre cada uno.
+    </div>
+
+    <div class="insight reveal">
+      <strong>La estrategia que más escalan las agencias especializadas:</strong> en lugar de escalar verticalmente una sola campaña, duplicar el conjunto de anuncios con una audiencia similar y escalar ambos en paralelo. Cada uno mantiene su propio historial de aprendizaje, el presupuesto total crece, y el riesgo de resetear el rendimiento de una campaña que funciona se elimina completamente.
+    </div>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <!-- LEAD MAGNET -->
+    <div class="lm-teaser reveal">
+      <div class="lm-header">
+        <div class="lm-eyebrow">Protocolo incluido</div>
+        <div class="lm-title">El protocolo de incremento de presupuesto en Meta Ads: los pasos exactos para escalar sin romper el rendimiento</div>
+      </div>
+      <div class="lm-body">
+        <p class="lm-intro">Este protocolo incluye el checklist de verificación antes de cada incremento, la secuencia de pasos exacta con los porcentajes y los tiempos, el criterio para saber si el incremento fue absorbido correctamente, y qué hacer cuando el CPL no vuelve al nivel anterior.</p>
+
+        <div class="preview-steps">
+          <div class="preview-step"><span class="preview-step-num">01</span>Verificación pre-escalado: los 5 indicadores que tiene que mostrar la campaña antes de tocar el presupuesto</div>
+          <div class="preview-step"><span class="preview-step-num">02</span>Cálculo del incremento seguro: cómo encontrar el techo exacto que Meta indica sin resetear el aprendizaje</div>
+        </div>
+
+        <div class="lm-gate">
+          <div class="lm-gate-blur">
+            <div class="preview-steps">
+              <div class="preview-step"><span class="preview-step-num">03</span>Calendario de incrementos: el cronograma semana a semana para duplicar el presupuesto en 3 semanas sin un solo reset</div>
+              <div class="preview-step"><span class="preview-step-num">04</span>Criterio de evaluación post-incremento: cómo leer el CPL de los primeros 5 días y cuándo preocuparse</div>
+              <div class="preview-step"><span class="preview-step-num">05</span>Diagnóstico de CPL elevado: árbol de decisión para los 3 escenarios posibles cuando el costo sube y no baja</div>
+              <div class="preview-step"><span class="preview-step-num">06</span>Estrategia de escalado horizontal: cómo duplicar campañas para crecer sin poner en riesgo las que ya funcionan</div>
+            </div>
+          </div>
+          <div class="lm-gate-overlay">
+            <div class="gate-label">Protocolo completo disponible por WhatsApp</div>
+            <div class="gate-title">Recibí el protocolo de incremento de presupuesto con los 6 pasos completos</div>
+            <div class="gate-sub">Incluye calendario de incrementos, criterio de evaluación post-ajuste, y diagnóstico de CPL elevado.</div>
+            <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito. <strong>La respuesta llega automáticamente.</strong></p>
+            <a class="gate-kw" href="https://wa.me/5491155557890?text=PRESUPUESTO" target="_blank" rel="noopener">
+              Escribir PRESUPUESTO por WhatsApp <span style="font-size:16px">→</span>
+            </a>
+            <p class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Fuentes citadas: Meta Ads official documentation — la regla del 20% como umbral máximo de incremento sin resetear la fase de aprendizaje. Code3 Agency (2025) — cada cambio mayor al 20% del presupuesto, swap de creativos, o modificación de audiencia resetea la fase de aprendizaje; agrupar cambios para minimizar disrupciones. AdStellar (2025-2026) — mecánica del reset de aprendizaje y estrategias de escalado vertical; el ritmo correcto de +20% cada 3-4 días como mecanismo de escalado más confiable. Modern Marketing Institute (2026) — nunca aumentar más del 20% en un solo ajuste; escalar incrementalmente para preservar el historial de optimización. GeistM (2025) — aumentar no más del 10-20% cada 48-72 horas para mantener eficiencia sin disrupciones algorítmicas. Dancing Chicken (2025) — meta Ads en 2025 requiere al menos 50 conversiones semanales para una campaña estable lista para escalar. DataSlayer (2026) — cambios en Meta Ads 2025-2026: el algoritmo ahora muestra el límite exacto de incremento sin reset en el panel de campañas.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    document.getElementById('progress-bar').style.width =
+      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El presupuesto mínimo para generar consultas predecibles en tu rubro · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red: rgba(255,100,100,0.85);
+    --red-dim: rgba(255,80,80,0.07);
+    --red-border: rgba(255,80,80,0.18);
+    --yellow: #F5C842;
+    --yellow-dim: rgba(245,200,66,0.07);
+    --yellow-border: rgba(245,200,66,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--brand-dark);
+    color: var(--text-body);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.85;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+
+  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
+  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
+  .logo span { color: var(--green); }
+  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
+
+  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
+
+  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
+
+  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
+  h1 em { font-style: normal; color: var(--green); }
+
+  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
+
+  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
+  .content p { margin-bottom: 24px; }
+  .content p strong { color: var(--white); font-weight: 600; }
+
+  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+
+  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
+  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+
+  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+
+  /* BUDGET CARDS */
+  .budget-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); margin: 48px 0; border: 1px solid var(--border); }
+
+  .budget-card { background: var(--card-dark); padding: 28px 22px; position: relative; }
+  .budget-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .budget-card.red::before { background: var(--red); }
+  .budget-card.yellow::before { background: var(--yellow); }
+  .budget-card.green::before { background: var(--green); }
+
+  .budget-label { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 12px; }
+  .budget-card.red .budget-label { color: var(--red); }
+  .budget-card.yellow .budget-label { color: var(--yellow); }
+  .budget-card.green .budget-label { color: var(--green); }
+
+  .budget-amount { font-size: 28px; font-weight: 900; color: var(--white); letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+  .budget-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .budget-desc strong { color: var(--text-body); font-weight: 500; }
+
+  /* DATA CALLOUT */
+  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
+  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 80px; }
+  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
+  .data-text strong { color: var(--white); font-weight: 600; }
+
+  /* WARNING */
+  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .warning strong { color: var(--red); font-weight: 600; }
+
+  /* ROI TABLE */
+  .roi-table { margin: 48px 0; overflow-x: auto; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead tr { background: var(--card-mid); border-bottom: 1px solid var(--green-border); }
+  th { padding: 12px 16px; text-align: left; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green); font-weight: 700; }
+  td { padding: 13px 16px; border-bottom: 1px solid var(--border); color: var(--text-body); background: var(--card-dark); }
+  td:first-child { color: var(--white); font-weight: 500; }
+  td.g { color: var(--green); font-weight: 600; }
+  td.m { color: var(--text-muted); }
+  tr:last-child td { border-bottom: none; }
+
+  /* STEP LIST */
+  .step-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); margin: 32px 0; border: 1px solid var(--border); }
+  .step-item { background: var(--card-dark); padding: 22px 24px; display: flex; gap: 18px; align-items: flex-start; border-left: 3px solid transparent; transition: border-color 0.2s, background 0.2s; }
+  .step-item:hover { border-left-color: var(--green); background: var(--card-mid); }
+  .step-num { font-size: 10px; font-weight: 900; color: var(--green); min-width: 24px; flex-shrink: 0; letter-spacing: 0.05em; padding-top: 3px; }
+  .step-content .step-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 6px; letter-spacing: -0.01em; }
+  .step-content .step-desc { font-size: 14px; color: var(--text-body); line-height: 1.65; }
+  .step-content .step-desc strong { color: var(--white); font-weight: 600; }
+
+  /* CALCULATOR TEASER */
+  .calc-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
+  .calc-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
+  .calc-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .calc-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
+  .calc-body { padding: 28px; }
+  .calc-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+
+  /* CALC INPUTS */
+  .calc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .calc-field { display: flex; flex-direction: column; gap: 6px; }
+  .calc-field label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+  .calc-input { background: var(--brand-dark); border: 1px solid var(--border); color: var(--white); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; padding: 12px 14px; outline: none; transition: border-color 0.2s; width: 100%; }
+  .calc-input:focus { border-color: var(--green-border); }
+  select.calc-input { cursor: pointer; appearance: none; }
+
+  .calc-btn { width: 100%; background: var(--green); color: var(--brand-dark); border: none; padding: 15px; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; margin-top: 4px; }
+  .calc-btn:hover { background: #4eff8a; transform: translateY(-1px); }
+
+  /* CALC RESULT */
+  .calc-result { display: none; background: var(--brand-dark); border: 1px solid var(--green-border); padding: 24px; margin-top: 20px; animation: fadeUp 0.4s ease forwards; }
+  .calc-result.visible { display: block; }
+  .result-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .result-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .result-label { color: var(--text-muted); }
+  .result-value { font-weight: 700; color: var(--white); }
+  .result-value.green { color: var(--green); }
+  .result-highlight { margin-top: 16px; padding: 16px; background: var(--green-dim); border: 1px solid var(--green-border); font-size: 14px; color: var(--text-body); line-height: 1.6; }
+  .result-highlight strong { color: var(--green); font-weight: 700; }
+
+  /* GATE */
+  .calc-gate { position: relative; overflow: hidden; border-top: 1px solid var(--border); margin-top: 20px; }
+  .calc-gate-blur { filter: blur(5px); user-select: none; pointer-events: none; opacity: 0.4; padding: 20px 0 8px; }
+  .calc-gate-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; background: linear-gradient(to bottom, transparent, rgba(9,20,14,0.98) 35%); }
+  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .gate-title { font-size: 17px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
+  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; }
+  .gate-kw { display: inline-block; background: var(--green); color: var(--brand-dark); padding: 5px 16px; font-size: 13px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; margin-bottom: 8px; transition: background 0.2s, transform 0.2s; }
+  .gate-kw:hover { background: #4eff8a; transform: translateY(-1px); }
+  .gate-note { font-size: 11px; color: var(--text-muted); }
+
+  /* DIVIDER */
+  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .budget-grid { grid-template-columns: 1fr; }
+    .calc-fields { grid-template-columns: 1fr; }
+    .data-callout { flex-direction: column; gap: 10px; }
+    .calc-body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Presupuesto y ROI</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Diagnóstico A — Captación</div>
+    <h1>El presupuesto mínimo para generar consultas <em>predecibles</em> en tu rubro</h1>
+    <p class="hero-subtitle">La pregunta más frecuente y más mal respondida del marketing digital. Acá no hay "depende". Hay números reales, por canal, con el razonamiento detrás de cada cifra.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>10 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Fuentes: WordStream · HubSpot · Meta Business</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Cuando un dueño de empresa de construcción o home improvement pregunta "¿cuánto tengo que invertir para que funcione?", la respuesta habitual de las agencias es "depende de tus objetivos". Esa respuesta es verdadera y completamente inútil.</p>
+
+    <p>Este artículo da números concretos. No proyecciones optimistas ni rangos tan amplios que no sirven para planificar. Números respaldados por el análisis de más de mil campañas reales, con metodología publicada y auditable.</p>
+
+    <p>La respuesta corta: <strong>el presupuesto mínimo para obtener datos válidos en Meta Ads es USD 400 por mes</strong>. Pero entender por qué ese número es el umbral correcto, y qué pasa por encima y por debajo, es lo que convierte un gasto en una inversión con lógica.</p>
+
+    <div class="pull-quote reveal">
+      <p>El presupuesto de publicidad no determina si el sistema funciona. Determina qué tan rápido el algoritmo aprende a optimizarlo. Con muy poco, no hay aprendizaje. Con suficiente, la eficiencia mejora con el tiempo.</p>
+    </div>
+
+    <h2>Por qué existe un presupuesto mínimo</h2>
+
+    <p>Meta Ads opera sobre un sistema de subasta en tiempo real. Cada vez que alguien que encaja con tu audiencia objetivo usa Facebook o Instagram, hay una subasta en milisegundos donde tu anuncio compite contra otros por ese espacio. El resultado de esa subasta determina si tu anuncio se muestra o no, y a qué costo.</p>
+
+    <p>El algoritmo de Meta aprende de los resultados de esas subastas. Cuando alguien hace click en tu anuncio, cuando alguien completa el formulario, cuando alguien manda un mensaje, el algoritmo registra esa señal y empieza a entender mejor a qué tipo de persona mostrarle tu anuncio en el futuro.</p>
+
+    <p>Ese proceso de aprendizaje tiene un costo: <strong>Meta recomienda obtener al menos 50 conversiones por semana por conjunto de anuncios para salir del período de aprendizaje</strong>. Por debajo de ese umbral, el algoritmo está en modo experimental y los resultados son inconsistentes e ineficientes.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-num">50</div>
+      <div class="data-text"><p><strong>Conversiones mínimas por semana que Meta recomienda para que el algoritmo salga del período de aprendizaje</strong> y empiece a optimizar de forma consistente. Con un CPL de USD 27 promedio en todas las industrias, eso implica al menos USD 1.350 por semana para alcanzar ese umbral de forma estricta. Para negocios de alto ticket con leads de menor volumen pero mayor valor, el umbral operativo real es más bajo. <span class="source-tag">Meta Business / WordStream 2025</span></p></div>
+    </div>
+
+    <p>Para negocios de construcción y home improvement de alto ticket, ese umbral de 50 conversiones semanales no es realista ni necesario. El ticket de cada proyecto justifica un costo por lead significativamente más alto que el promedio de otras industrias, lo que cambia el cálculo de manera fundamental.</p>
+
+    <p>El umbral operativo real para este segmento es diferente: con <strong>8 a 12 leads calificados por mes</strong>, hay suficiente información para evaluar si el canal está funcionando, ajustar la segmentación, y tomar decisiones de presupuesto para el mes siguiente.</p>
+
+    <h2>Los tres umbrales de presupuesto y qué pasa en cada uno</h2>
+
+    <p>No hay un único presupuesto correcto. Hay tres zonas, cada una con sus implicancias y sus resultados esperados.</p>
+
+    <div class="budget-grid reveal">
+      <div class="budget-card red">
+        <div class="budget-label">Zona de ruido</div>
+        <div class="budget-amount">Menos de USD 400/mes</div>
+        <div class="budget-desc">El algoritmo no tiene suficiente volumen para aprender. Los resultados son inconsistentes y no representativos. <strong>Cualquier conclusión que saques de este nivel de inversión es estadísticamente inválida.</strong> Si probaste con este presupuesto y concluiste que "el digital no funciona para mi rubro", la conclusión correcta es que el experimento fue insuficiente.</div>
+      </div>
+      <div class="budget-card yellow">
+        <div class="budget-label">Zona de validación</div>
+        <div class="budget-amount">USD 500 a 1.000/mes</div>
+        <div class="budget-desc">Es posible obtener datos útiles y estadísticamente válidos. <strong>USD 500 por mes es el punto de entrada recomendado</strong> para negocios de alto ticket. Con ese presupuesto y una campaña bien configurada, es posible generar entre 10 y 20 leads calificados por mes en el segmento de construcción.</div>
+      </div>
+      <div class="budget-card green">
+        <div class="budget-label">Zona de escala</div>
+        <div class="budget-amount">USD 1.000 a 2.000/mes</div>
+        <div class="budget-desc">Con datos del mes de validación, se puede escalar el presupuesto con lógica. <strong>El criterio de escala es simple: si el ROI del canal es positivo, duplicar el presupuesto produce aproximadamente el doble de leads</strong> a un costo similar. La escala no se hace de golpe: en incrementos del 20 al 30% por semana para no perturbar el aprendizaje del algoritmo.</div>
+      </div>
+    </div>
+
+
+    <p>Para negocios de construcción y home improvement en Argentina, el CPL en pesos va a ser diferente al benchmark en USD por la dinámica del mercado local. Sin embargo, la <strong>relación entre CPL y ticket de venta</strong> es el número que realmente importa, y ese ratio es favorable en rubros de alto ticket independientemente de la moneda.</p>
+
+    <h2>La pregunta correcta no es cuánto cuesta un lead. Es cuánto vale.</h2>
+
+    <p>El error más frecuente es mirar el costo de la publicidad de forma aislada. Pero ese número solo tiene sentido cuando lo comparás con lo que te deja cada cierre.</p>
+
+    <p>Hagamos el cálculo con un ejemplo concreto. Imaginá que invertís el equivalente a <strong>USD 500 por mes en Meta Ads</strong>. Con un costo por consulta de entre USD 2 y 4, eso te genera entre <strong>125 y 250 consultas nuevas</strong> en el mes — gente que escribe por WhatsApp o Instagram preguntando por tu producto.</p>
+
+    <p>De esas consultas, tu equipo califica y manda presupuesto a la mitad: entre 62 y 125 propuestas. De esas, con una tasa de cierre del 25%, cerrás entre 15 y 31 proyectos. Si tu ticket promedio es <strong>$3M por proyecto</strong>, esos cierres representan entre <strong>$47M y $93M de facturación</strong>.</p>
+
+    <p>Invertiste el equivalente a unos $600.000 en publicidad. El retorno potencial es de entre 78 y 155 veces esa inversión.</p>
+
+    <p>Ahora la parte que la mayoría ignora: <strong>tus vendedores ya cobran su sueldo</strong> independientemente de cuántas consultas procesen. Cada consulta que llega por el canal digital es trabajo adicional para un equipo que ya está pagado. No agregás un costo de ventas nuevo: aprovechás capacidad que de otra forma estaría subutilizada o dedicada a perseguir referidos.</p>
+
+    <div class="roi-table reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Inversión en ads / mes</th>
+            <th>Consultas generadas (a USD 2–4 c/u)</th>
+            <th>Presupuestos enviados (50%)</th>
+            <th>Proyectos cerrados (25–30%)</th>
+            <th>Facturación (ticket $3M)</th>
+            <th>Retorno sobre inversión en ads</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>USD 500</td>
+            <td>125 a 250</td>
+            <td>62 a 125</td>
+            <td>15 a 37</td>
+            <td class="g">$47M a $112M</td>
+            <td class="g">94x a 224x</td>
+          </tr>
+          <tr>
+            <td>USD 800</td>
+            <td>200 a 400</td>
+            <td>100 a 200</td>
+            <td>25 a 60</td>
+            <td class="g">$75M a $180M</td>
+            <td class="g">94x a 225x</td>
+          </tr>
+          <tr>
+            <td>USD 1.500</td>
+            <td>375 a 750</td>
+            <td>187 a 375</td>
+            <td>47 a 112</td>
+            <td class="g">$140M a $337M</td>
+            <td class="g">93x a 225x</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Estos números asumen un costo por consulta de entre USD 2 y 4, que es el rango documentado para campañas de home improvement en Meta Ads bien configuradas. La tasa de presupuestación es del 50% y la tasa de cierre del 25 al 30%, que son los promedios del sector sin sistema optimizado. Con seguimiento activo y CRM, la tasa de cierre sube al 35 al 45%, lo que mejora todos los números.</p>
+
+    <div class="warning reveal">
+      <strong>Lo que no funciona:</strong> invertir menos del mínimo para "probar si sirve" y concluir que no sirve cuando el algoritmo nunca tuvo suficiente presupuesto para aprender. Es como contratar a un vendedor por dos semanas y despedirlo porque todavía no cerró nada.
+    </div>
+
+    <h2>Cuándo y cómo escalar el presupuesto</h2>
+
+    <p>La escala del presupuesto no se hace por intuición ni por confianza. Se hace cuando los datos del período anterior justifican el incremento.</p>
+
+    <p>Los tres criterios que habilitan la escala:</p>
+
+    <div class="step-list reveal">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">CPL estable o decreciente en las últimas 2 semanas</div>
+          <div class="step-desc">Indica que el algoritmo terminó el período de aprendizaje y está optimizando. Un CPL que baja semana a semana es la señal más clara de que el canal está madurando. <strong>Escalar antes de que el CPL se estabilice puede interrumpir el aprendizaje y resetear el proceso.</strong></div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">Al menos 1 cierre atribuible al canal digital</div>
+          <div class="step-desc">Antes de escalar, necesitás confirmar que el embudo completo funciona: que los leads del canal digital llegan, son atendidos, presupuestados, y al menos algunos cierran. <strong>Escalar el presupuesto sin haber validado el embudo completo solo amplifica los problemas existentes.</strong></div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">Capacidad operativa para procesar más leads</div>
+          <div class="step-desc">Si el equipo de ventas ya está al límite con el volumen actual, duplicar el presupuesto genera leads que no van a ser bien atendidos. Antes de escalar la inversión, confirmar que la capacidad de respuesta en menos de 2 horas está garantizada para el volumen adicional esperado.</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Cuando los tres criterios están cumplidos, el incremento recomendado es del <strong>20 al 30% por semana</strong>, no de golpe. Los incrementos bruscos de presupuesto (más del 50% de una vez) pueden sacar al conjunto de anuncios del período de optimización y hacer que el algoritmo empiece a aprender de nuevo desde cero.</p>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <!-- CALCULATOR TEASER -->
+    <div class="calc-teaser reveal">
+      <div class="calc-header">
+        <div class="calc-eyebrow">Próximo paso</div>
+        <div class="calc-title">¿Cuánto tendría que invertir tu negocio específicamente?</div>
+      </div>
+      <div class="calc-body">
+        <p class="calc-intro">Los números de este artículo son promedios del sector. El número real para tu negocio depende de tu rubro, tu zona, tu ticket, y tu capacidad operativa actual. En 20 minutos calculamos ese número con tus datos específicos, sin proyecciones genéricas.</p>
+        <p class="calc-intro">No es una reunión de ventas. Es un diagnóstico donde te decimos exactamente cuánto invertir para empezar, qué resultado podés esperar en el primer mes, y qué tiene que estar listo antes de encender el canal.</p>
+        <a class="calc-btn" href="https://wa.me/5491155557890?text=PRESUPUESTO" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none">
+          Quiero calcular mi presupuesto →
+        </a>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:14px;text-align:center">Sin propuesta de venta · Sin compromiso · 20 minutos</p>
+      </div>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Fuentes citadas: WordStream Facebook Ads Benchmarks 2025 (análisis de 1.180 campañas activas entre abril 2024 y junio 2025, medianas por industria en USD), HubSpot Facebook Ads Budget Guide 2024, Meta Business advertising guidelines 2025. Los CPL en USD corresponden al mercado de Estados Unidos. En Argentina, los CPL en pesos varían según competencia local, segmentación, y tipo de cambio vigente. Los escenarios de ROI presentados son proyecciones basadas en benchmarks del sector y no constituyen garantía de resultados.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const pct = (doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

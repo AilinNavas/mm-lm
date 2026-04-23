@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo construir visibilidad total del embudo sin tecnología compleja · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red: rgba(255,100,100,0.85);
+    --red-dim: rgba(255,80,80,0.07);
+    --red-border: rgba(255,80,80,0.18);
+    --yellow: #F5C842;
+    --yellow-dim: rgba(245,200,66,0.07);
+    --yellow-border: rgba(245,200,66,0.22);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+
+  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+
+  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
+  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
+  .logo span { color: var(--green); }
+  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+
+  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
+  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
+  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
+  h1 em { font-style: normal; color: var(--green); }
+  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
+  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
+  .content p { margin-bottom: 24px; }
+  .content p strong { color: var(--white); font-weight: 600; }
+  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+
+  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
+  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+
+  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+
+  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
+  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 72px; }
+  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
+  .data-text strong { color: var(--white); font-weight: 600; }
+
+  /* DASHBOARD CARDS */
+  .dash-card { background: var(--card-dark); border: 1px solid var(--border); margin: 28px 0; overflow: hidden; }
+  .dash-header { display: flex; align-items: stretch; border-bottom: 1px solid var(--border); }
+  .dash-num { background: var(--card-mid); padding: 18px 20px; font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 0.15em; text-transform: uppercase; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--border); flex-shrink: 0; width: 80px; writing-mode: vertical-rl; text-orientation: mixed; }
+  .dash-title-block { padding: 18px 22px; flex: 1; }
+  .dash-name { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; letter-spacing: -0.01em; }
+  .dash-sub { font-size: 13px; color: var(--text-muted); font-style: italic; }
+  .dash-body { padding: 20px 24px; }
+  .dash-desc { font-size: 15px; color: var(--text-body); line-height: 1.7; margin-bottom: 16px; }
+  .dash-desc strong { color: var(--white); font-weight: 600; }
+
+  .dash-fields { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .dash-field { background: var(--card-dark); padding: 10px 16px; display: flex; gap: 12px; align-items: flex-start; }
+  .dash-field-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+  .dash-field-text { font-size: 14px; color: var(--text-body); line-height: 1.55; }
+  .dash-field-text strong { color: var(--white); font-weight: 600; }
+  .dash-question { font-size: 13px; color: var(--text-muted); border-left: 2px solid var(--green-border); padding-left: 12px; margin-top: 14px; line-height: 1.65; font-style: italic; }
+  .dash-question strong { color: var(--green); font-weight: 600; }
+
+  /* RITUAL STEPS */
+  .ritual-step { display: flex; gap: 20px; margin-bottom: 2px; }
+  .ritual-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 56px; }
+  .ritual-time { background: var(--card-mid); border: 1px solid var(--green-border); font-size: 11px; font-weight: 700; color: var(--green); padding: 8px 4px; text-align: center; width: 100%; letter-spacing: 0.05em; line-height: 1.3; }
+  .ritual-line { width: 1px; background: var(--border); flex: 1; min-height: 12px; }
+  .ritual-content { background: var(--card-dark); border: 1px solid var(--border); padding: 16px 20px; flex: 1; border-left: 3px solid transparent; margin-bottom: 2px; }
+  .ritual-content:hover { border-left-color: var(--green); }
+  .ritual-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .ritual-body { font-size: 14px; color: var(--text-body); line-height: 1.7; }
+  .ritual-body strong { color: var(--white); font-weight: 600; }
+  .ritual-q { font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 10px; border-left: 2px solid var(--green-border); padding-left: 10px; line-height: 1.6; }
+
+  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .warning strong { color: var(--red); font-weight: 600; }
+
+  .insight { background: var(--green-dim); border: 1px solid var(--green-border); border-left: 3px solid var(--green); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .insight strong { color: var(--green); font-weight: 600; }
+
+  /* LEAD MAGNET */
+  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
+  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
+  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
+  .lm-body { padding: 28px; }
+  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+
+  .preview-items { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .preview-item { background: var(--card-dark); padding: 14px 20px; display: flex; gap: 12px; font-size: 14px; color: var(--text-body); line-height: 1.55; }
+  .preview-item::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  .lm-gate { position: relative; border-top: 1px solid var(--border); }
+  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.45; max-height: 160px; overflow: hidden; }
+  .lm-gate-overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: var(--card-dark); border-top: 1px solid var(--green-border); }
+  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
+  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
+  .gate-instruction { font-size: 13px; color: var(--text-body); margin-bottom: 14px; line-height: 1.6; background: var(--card-mid); border: 1px solid var(--green-border); padding: 10px 14px; }
+  .gate-instruction strong { color: var(--green); font-weight: 700; }
+  .gate-kw { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--green); color: var(--brand-dark); padding: 14px 28px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; margin-bottom: 10px; transition: background 0.2s, transform 0.2s; cursor: pointer; }
+  .gate-kw:hover { background: #4eff8a; transform: translateY(-2px); }
+  .gate-note { font-size: 11px; color: var(--text-muted); }
+
+  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .data-callout { flex-direction: column; gap: 10px; }
+    .dash-num { writing-mode: horizontal-tb; width: auto; padding: 12px 16px; }
+    .ritual-step { flex-direction: column; gap: 8px; }
+    .ritual-left { flex-direction: row; width: 100%; }
+    .ritual-line { display: none; }
+    .lm-body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Visibilidad del Embudo</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Diagnóstico D — Optimización</div>
+    <h1>Cómo construir <em>visibilidad total del embudo</em> sin implementar tecnología compleja</h1>
+    <p class="hero-subtitle">La visibilidad no es un problema de herramientas. Es un problema de disciplina de proceso. Tres vistas en Kommo y un ritual semanal de 20 minutos son suficientes para tomar decisiones con datos reales.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>10 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Fuentes: HubSpot · Xactly · Ebsta</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Cuando un dueño de empresa de construcción o home improvement dice que no tiene visibilidad de su proceso de ventas, generalmente no es un problema de tecnología. Es que nunca le dedicó 20 minutos a configurar las tres vistas que necesita en su CRM, y nunca estableció el hábito semanal de revisarlas.</p>
+
+    <p>El resultado es predecible: se enteran de los problemas cuando ya es tarde. Un presupuesto que nadie siguió. Un lead caliente que se fue a la competencia. Un mes de facturación por debajo del objetivo que nadie anticipó porque nadie miró el pipeline con anticipación.</p>
+
+    <p>La solución no es un stack tecnológico más sofisticado. Es saber exactamente qué mirar, en qué orden, y qué decisión tomar según lo que se ve.</p>
+
+    <div class="pull-quote reveal">
+      <p>El 45% de los profesionales de ventas se siente abrumado por la cantidad de herramientas en su stack. Los sales managers que no usan software especializado gastan entre 2 y 3 horas por semana compilando datos de forecasting a mano. El problema nunca fue falta de tecnología. <span class="source-tag">HubSpot 2025 / Xactly 2024</span></p>
+    </div>
+
+    <h2>El error de confundir visibilidad con complejidad</h2>
+
+    <p>Hay una trampa frecuente en negocios que empiezan a escalar: agregar herramientas y dashboards con la idea de que más datos equivale a más visibilidad. El efecto suele ser el contrario. Con 15 métricas en pantalla, ninguna tiene el peso suficiente para generar una decisión.</p>
+
+    <p>La visibilidad real es mucho más simple: en cualquier momento del mes, el dueño o el responsable de ventas debería poder responder tres preguntas en menos de dos minutos.</p>
+
+    <p><strong>¿Cuántos presupuestos activos tenemos ahora mismo y cuál es el valor total?</strong> Si no se puede responder esto sin abrir el CRM y hacer cálculos, el pipeline no está bien organizado.</p>
+
+    <p><strong>¿Cuál es el lead más caliente que no avanzó esta semana y por qué?</strong> Si no se puede identificar rápido cuál es la oportunidad más urgente, se está gestionando por intuición, no por datos.</p>
+
+    <p><strong>¿Qué está pasando con los leads que llegaron hace más de 10 días sin cerrarse?</strong> Si no hay una vista clara de los leads estancados, hay facturación que se está perdiendo sin que nadie lo note.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-num">61%</div>
+      <div class="data-text"><p><strong>De los deals perdidos se atribuyen a la indecisión del comprador</strong> según Ebsta — no al precio, no a la competencia, no a la calidad del producto. La indecisión es casi siempre consecuencia de falta de seguimiento activo. Y el seguimiento activo requiere visibilidad sobre qué lead necesita atención hoy. <span class="source-tag">Ebsta 2024</span></p></div>
+    </div>
+
+    <h2>Las tres vistas en Kommo que reemplazan cualquier dashboard complejo</h2>
+
+    <p>Kommo organiza los leads en un pipeline por etapas. La mayoría de los negocios lo configura una vez y nunca lo vuelve a tocar. El resultado es un pipeline que crece sin control y deja de reflejar la realidad.</p>
+
+    <p>Estas tres vistas no requieren integraciones ni configuraciones avanzadas. Son filtros sobre el pipeline existente que responden las tres preguntas de visibilidad.</p>
+
+    <!-- DASH 1 -->
+    <div class="dash-card reveal">
+      <div class="dash-header">
+        <div class="dash-num">Vista 01</div>
+        <div class="dash-title-block">
+          <div class="dash-name">Pipeline activo por valor</div>
+          <div class="dash-sub">Todos los leads en etapa "Presupuestado" ordenados por valor de proyecto</div>
+        </div>
+      </div>
+      <div class="dash-body">
+        <p class="dash-desc">Esta vista muestra el pipeline real: qué oportunidades están sobre la mesa ahora mismo y cuánto vale cada una. Ordenar por valor permite priorizar instantáneamente. <strong>El lead de $5M merece más atención esta semana que el de $500K</strong>, independientemente de en qué orden llegaron.</p>
+        <div class="dash-fields">
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Filtro:</strong> Etapa = "Presupuestado". Fecha de entrada al pipeline = últimos 30 días.</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Ordenar por:</strong> Valor del proyecto (mayor a menor).</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Ver:</strong> Nombre, valor estimado, fecha de último contacto, etiqueta de tipo de proyecto.</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Señal de alerta:</strong> cualquier lead sin actividad registrada en los últimos 3 días.</div></div>
+        </div>
+        <div class="dash-question"><strong>La pregunta que responde:</strong> "¿Cuál es mi oportunidad más valiosa que no avanzó esta semana y qué necesito hacer hoy para moverla?"</div>
+      </div>
+    </div>
+
+    <!-- DASH 2 -->
+    <div class="dash-card reveal">
+      <div class="dash-header">
+        <div class="dash-num">Vista 02</div>
+        <div class="dash-title-block">
+          <div class="dash-name">Leads estancados</div>
+          <div class="dash-sub">Oportunidades sin actividad en más de 5 días en cualquier etapa activa</div>
+        </div>
+      </div>
+      <div class="dash-body">
+        <p class="dash-desc">Esta es la vista más importante y la que más se subestima. Un lead estancado no es un lead inactivo, es un lead que alguien olvidó. <strong>Cada lead que aparece acá es una decisión pendiente: seguir, archivar, o pasar a nurturing.</strong> Sin esta vista, esas decisiones nunca se toman y el pipeline se llena de ruido que distorsiona el forecast.</p>
+        <div class="dash-fields">
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Filtro:</strong> Etapa = cualquier etapa activa (no cerrado). Última actividad = hace más de 5 días.</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Ordenar por:</strong> Fecha de último contacto (más antiguo primero).</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Ver:</strong> Nombre, etapa actual, días sin actividad, última nota registrada.</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Regla de higiene:</strong> ningún lead debería estar en esta vista por más de 7 días sin una decisión tomada.</div></div>
+        </div>
+        <div class="dash-question"><strong>La pregunta que responde:</strong> "¿Qué oportunidades están muriendo en silencio y cuáles de esas todavía tienen chances reales?"</div>
+      </div>
+    </div>
+
+    <!-- DASH 3 -->
+    <div class="dash-card reveal">
+      <div class="dash-header">
+        <div class="dash-num">Vista 03</div>
+        <div class="dash-title-block">
+          <div class="dash-name">Forecast del mes</div>
+          <div class="dash-sub">Proyección de cierre para los próximos 30 días basada en el pipeline activo</div>
+        </div>
+      </div>
+      <div class="dash-body">
+        <p class="dash-desc">La Vista 03 responde la pregunta que más le importa a Roberto: ¿vamos a llegar al objetivo del mes? No con exactitud matemática, pero sí con suficiente claridad para saber si hay que acelerar la captación o si el pipeline actual alcanza para cubrir el objetivo. <strong>Un forecast que se revisa semanalmente permite corregir a tiempo, no a fin de mes cuando ya es tarde.</strong></p>
+        <div class="dash-fields">
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Filtro:</strong> Etapa = "Presupuestado" o "Negociación". Fecha estimada de cierre = próximos 30 días.</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Cálculo:</strong> Suma del valor de todos los leads activos × el close rate histórico del negocio.</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Ver:</strong> Total proyectado vs. objetivo del mes. Brecha positiva o negativa en pesos.</div></div>
+          <div class="dash-field"><div class="dash-field-dot"></div><div class="dash-field-text"><strong>Señal de alerta:</strong> si el forecast proyectado es menos del 80% del objetivo, hay que activar más captación esta semana, no la próxima.</div></div>
+        </div>
+        <div class="dash-question"><strong>La pregunta que responde:</strong> "¿Necesito generar más leads esta semana o el pipeline actual es suficiente para cerrar el mes?"</div>
+      </div>
+    </div>
+
+    <h2>El ritual semanal de 20 minutos</h2>
+
+    <p>Las tres vistas solo tienen valor si se revisan con regularidad y se convierten en decisiones. El ritual semanal es la práctica que transforma datos en acciones. Sin él, el pipeline se convierte en un registro histórico en lugar de una herramienta de gestión.</p>
+
+    <p>El ritual ocurre todos los lunes entre 9 y 9:20am, antes de responder mensajes o atender cualquier consulta. Es el primer acto de la semana de ventas.</p>
+
+    <div class="ritual-step reveal">
+      <div class="ritual-left">
+        <div class="ritual-time">Min 1–5</div>
+        <div class="ritual-line"></div>
+      </div>
+      <div class="ritual-content">
+        <div class="ritual-title">Abrir la Vista 03 — Forecast del mes</div>
+        <div class="ritual-body">Revisar el número proyectado versus el objetivo. <strong>Si el forecast cubre el objetivo, el foco de la semana es cerrar.</strong> Si no lo cubre, el foco es activar más captación esta misma semana, no esperar a ver cómo evoluciona. Esta decisión se toma en los primeros 5 minutos, no al final del mes.</div>
+        <div class="ritual-q">"¿El pipeline actual es suficiente para cerrar el mes o necesito más leads entrando esta semana?"</div>
+      </div>
+    </div>
+
+    <div class="ritual-step reveal">
+      <div class="ritual-left">
+        <div class="ritual-time">Min 6–12</div>
+        <div class="ritual-line"></div>
+      </div>
+      <div class="ritual-content">
+        <div class="ritual-title">Revisar la Vista 02 — Leads estancados</div>
+        <div class="ritual-body">Para cada lead que aparece en esta vista, tomar una decisión inmediata entre tres opciones: contactar hoy (si el lead todavía tiene potencial), mover a nurturing (si el timing cambió pero el lead puede volver), o archivar (si no hay señales de interés real). <strong>Ningún lead sale de esta revisión sin una decisión tomada.</strong> Los leads que quedan en un limbo indefinido son los que más distorsionan el forecast.</div>
+        <div class="ritual-q">"¿Seguir, mover a nurturing, o archivar? Hay que responder esa pregunta para cada uno."</div>
+      </div>
+    </div>
+
+    <div class="ritual-step reveal">
+      <div class="ritual-left">
+        <div class="ritual-time">Min 13–18</div>
+        <div class="ritual-line"></div>
+      </div>
+      <div class="ritual-content">
+        <div class="ritual-title">Revisar la Vista 01 — Pipeline activo por valor</div>
+        <div class="ritual-body">Identificar los tres leads de mayor valor sin actividad en los últimos 3 días. Para cada uno, definir el mensaje o acción de seguimiento concreto para esta semana. No es planificar, es ejecutar: <strong>en esta misma revisión se redacta o se agenda el próximo contacto.</strong> Los leads de alta prioridad nunca deberían quedar sin un próximo paso definido.</div>
+        <div class="ritual-q">"¿Cuál es el próximo paso concreto para este lead y cuándo ocurre?"</div>
+      </div>
+    </div>
+
+    <div class="ritual-step reveal">
+      <div class="ritual-left">
+        <div class="ritual-time">Min 19–20</div>
+        <div class="ritual-line"></div>
+      </div>
+      <div class="ritual-content">
+        <div class="ritual-title">Registrar el número de la semana</div>
+        <div class="ritual-body">Anotar en una nota o en la plantilla de seguimiento tres datos: presupuestos activos totales, valor total del pipeline, y leads estancados que quedaron sin decisión. <strong>Esos tres números, revisados semana a semana, muestran si el sistema está mejorando o deteriorándose.</strong> Sin ese registro, es imposible saber si los cambios que se implementaron están teniendo efecto.</div>
+        <div class="ritual-q">"¿Cuántos presupuestos activos, cuánto vale el pipeline, cuántos leads estancados?"</div>
+      </div>
+    </div>
+
+    <div class="insight reveal">
+      <strong>El cambio que más impacto tiene:</strong> hacer el ritual el lunes a primera hora, antes de atender consultas. Cuando el ritual se hace "cuando hay tiempo", invariablemente no se hace. La disciplina de hacerlo primero es lo que lo convierte en un sistema en lugar de una intención.
+    </div>
+
+    <div class="warning reveal">
+      <strong>La señal de que el ritual no está funcionando:</strong> el pipeline tiene más de 20 leads activos y el responsable de ventas no puede nombrar los 5 más calientes sin abrir el CRM. Si eso ocurre, el pipeline no está siendo gestionado activamente, está siendo registrado.
+    </div>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <!-- LEAD MAGNET -->
+    <div class="lm-teaser reveal">
+      <div class="lm-header">
+        <div class="lm-eyebrow">Plantilla incluida</div>
+        <div class="lm-title">La plantilla del ritual semanal: qué mirar, en qué orden, y qué decisión tomar en cada etapa</div>
+      </div>
+      <div class="lm-body">
+        <p class="lm-intro">Esta plantilla incluye la guía paso a paso del ritual de 20 minutos, las preguntas exactas para cada vista, el criterio de decisión para leads estancados (seguir, nurturing, o archivar), y la configuración de las tres vistas en Kommo.</p>
+
+        <div class="preview-items">
+          <div class="preview-item">Guía de configuración de las tres vistas en Kommo: filtros exactos, campos a mostrar, y orden de visualización</div>
+          <div class="preview-item">Ritual paso a paso con timer: qué hacer en cada bloque de tiempo y las preguntas concretas de cada etapa</div>
+        </div>
+
+        <div class="lm-gate">
+          <div class="lm-gate-blur">
+            <div class="preview-items">
+              <div class="preview-item">Criterio de decisión para leads estancados: árbol de decisión seguir / nurturing / archivar con criterios específicos</div>
+              <div class="preview-item">Plantilla de registro semanal: los 3 números a anotar cada lunes y cómo leer la tendencia a lo largo del mes</div>
+              <div class="preview-item">Señales de alerta por vista: qué buscar en cada dashboard y qué acción tomar según lo que se ve</div>
+            </div>
+          </div>
+          <div class="lm-gate-overlay">
+            <div class="gate-label">Plantilla completa disponible por WhatsApp</div>
+            <div class="gate-title">Recibí la plantilla del ritual semanal con configuración en Kommo</div>
+            <div class="gate-sub">Incluye árbol de decisión para leads estancados y plantilla de registro semanal.</div>
+            <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito. <strong>La respuesta llega automáticamente.</strong></p>
+            <a class="gate-kw" href="https://wa.me/5491155557890?text=VISIBILIDAD" target="_blank" rel="noopener">
+              Escribir VISIBILIDAD por WhatsApp <span style="font-size:16px">→</span>
+            </a>
+            <p class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Fuentes citadas: HubSpot Sales Statistics 2025 — 45% de profesionales de ventas abrumados por cantidad de herramientas en stack. Xactly 2024 Sales Forecasting Benchmark Report — sales managers gastan 2 a 3 horas semanales compilando datos de forecasting manualmente; 4 de cada 5 líderes de ventas y finanzas perdieron su forecast trimestral al menos una vez en el último año. Ebsta 2024 — 61% de deals perdidos atribuidos a indecisión del comprador. HubSpot Sales Pipeline Guide — cadencia semanal de revisión de pipeline recomendada de 30 a 60 minutos. HubSpot Sales Pipeline Management — 80% de los leads no se convierten sin nurturing activo.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    document.getElementById('progress-bar').style.width =
+      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

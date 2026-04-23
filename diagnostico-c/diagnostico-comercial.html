@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los 4 números que todo dueño de empresa debería saber de memoria · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red-dim: rgba(255,80,80,0.08);
+    --red: rgba(255,100,100,0.85);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--brand-dark);
+    color: var(--text-body);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.85;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--green);
+    z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(1,7,7,0.97);
+    backdrop-filter: blur(12px);
+    z-index: 50;
+  }
+
+  .logo {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .logo span { color: var(--green); }
+
+  .header-tag {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  /* HERO */
+  .hero {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 40px 56px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .article-category {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+  }
+
+  .article-category::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    line-height: 1.07;
+    color: var(--white);
+    margin-bottom: 28px;
+    letter-spacing: -0.03em;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 40px;
+    border-left: 3px solid var(--green);
+    padding-left: 20px;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meta-dot {
+    width: 3px;
+    height: 3px;
+    background: var(--green);
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* CONTENT */
+  .content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards 0.5s;
+  }
+
+  .content p {
+    margin-bottom: 24px;
+    color: var(--text-body);
+  }
+
+  .content p strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 900;
+    color: var(--white);
+    margin: 64px 0 20px;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 3px solid var(--green);
+    padding: 22px 28px;
+    margin: 48px 0;
+    background: var(--card-dark);
+  }
+
+  .pull-quote p {
+    font-size: clamp(17px, 2.2vw, 21px);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.45;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  /* NUMBER CARD - the main feature */
+  .number-card {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    margin: 48px 0;
+    overflow: hidden;
+  }
+
+  .number-card-header {
+    background: var(--card-mid);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .number-badge {
+    width: 36px;
+    height: 36px;
+    background: var(--green);
+    color: var(--brand-dark);
+    font-size: 14px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .number-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+
+  .number-card-title span {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--green);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .number-card-body {
+    padding: 28px;
+  }
+
+  .number-card-body p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* FORMULA BOX */
+  .formula {
+    background: var(--brand-dark);
+    border: 1px solid var(--green-border);
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .formula-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .formula-equation {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+
+  .formula-equation .op {
+    color: var(--green);
+    font-weight: 900;
+  }
+
+  /* EXAMPLE BOX */
+  .example {
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    padding: 18px 22px;
+    margin: 16px 0 0;
+  }
+
+  .example-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .example p {
+    font-size: 14px;
+    color: var(--text-body);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .example p strong {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* BENCHMARK BAR */
+  .benchmark {
+    margin: 20px 0 0;
+    padding: 16px 20px;
+    background: var(--brand-dark);
+    border: 1px solid var(--border);
+  }
+
+  .benchmark-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .benchmark-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .benchmark-row:last-child { margin-bottom: 0; }
+
+  .benchmark-label-text {
+    width: 120px;
+    color: var(--text-muted);
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .benchmark-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .benchmark-bar-fill {
+    height: 100%;
+    background: var(--green);
+    opacity: 0.4;
+    transition: width 1s ease;
+  }
+
+  .benchmark-bar-fill.high { opacity: 1; }
+  .benchmark-bar-fill.low { opacity: 0.2; background: var(--red); }
+
+  .benchmark-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    width: 60px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* WARNING BOX */
+  .warning-box {
+    background: var(--red-dim);
+    border: 1px solid rgba(255,80,80,0.15);
+    border-left: 3px solid var(--red);
+    padding: 18px 22px;
+    margin: 16px 0 0;
+  }
+
+  .warning-box p {
+    font-size: 14px;
+    color: var(--text-body);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .warning-box p strong {
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 56px 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .divider-icon {
+    color: var(--green);
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    font-weight: 700;
+  }
+
+  /* SUMMARY CALCULATOR */
+  .calculator {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--green);
+    margin: 48px 0;
+    overflow: hidden;
+  }
+
+  .calculator-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--card-mid);
+  }
+
+  .calculator-header-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .calculator-header-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.015em;
+  }
+
+  .calculator-body {
+    padding: 28px;
+  }
+
+  .calc-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .calc-row:last-child { border-bottom: none; }
+
+  .calc-number {
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--green);
+    min-width: 24px;
+    padding-top: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .calc-content { flex: 1; }
+
+  .calc-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .calc-formula-inline {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .calc-formula-inline strong {
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .calc-input-area {
+    margin-top: 10px;
+    background: var(--brand-dark);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .calc-input-area span {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .calc-blank {
+    flex: 1;
+    height: 1px;
+    background: rgba(39,222,107,0.2);
+    border-bottom: 1px dashed rgba(39,222,107,0.3);
+  }
+
+  /* SOURCE TAG */
+  .source-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    padding: 2px 7px;
+    font-weight: 600;
+    vertical-align: middle;
+    margin-left: 5px;
+    position: relative;
+    top: -1px;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--green);
+    padding: 52px 40px;
+    margin: 64px 0 0;
+    text-align: center;
+  }
+
+  .cta-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    font-weight: 700;
+    display: inline-block;
+    background: var(--green-dim);
+    padding: 4px 12px;
+  }
+
+  .cta-title {
+    font-size: clamp(20px, 3vw, 30px);
+    color: var(--white);
+    margin: 16px 0;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
+
+  .cta-subtitle {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: var(--green);
+    color: var(--brand-dark);
+    padding: 16px 40px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .cta-button:hover {
+    background: #4eff8a;
+    transform: translateY(-1px);
+  }
+
+  .cta-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 16px;
+  }
+
+  /* FOOTNOTE */
+  .footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    margin-top: 48px;
+    line-height: 1.8;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal.visible .benchmark-bar-fill[data-width] {
+    width: attr(data-width);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .number-card-body { padding: 20px; }
+    .calculator-body { padding: 20px; }
+    .cta-section { padding: 36px 20px; }
+    .benchmark-label-text { width: 90px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Herramienta Práctica</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Diagnóstico Comercial</div>
+    <h1>Los <em>4 números</em> que todo dueño de empresa debería saber de memoria</h1>
+    <p class="hero-subtitle">No necesitás un contador ni un software complejo. Con estos cuatro datos, calculados en 10 minutos, vas a tener más claridad sobre tu negocio que la mayoría de los empresarios del sector.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>Lectura + ejercicio: 15 min</span>
+      <span class="meta-dot"></span>
+      <span>Herramienta práctica</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Hay una pregunta que hacemos al inicio de cada diagnóstico: "¿Cuánto te cuesta conseguir un cliente nuevo?" De cada diez dueños de empresa de construcción y home improvement con los que hablamos, ocho no la pueden responder con precisión.</p>
+
+    <p>No porque no sean buenos empresarios. Sino porque nadie les enseñó cuáles son los números que importan, cómo calcularlos, y qué hacer con ellos una vez que los tienen.</p>
+
+    <p>Este artículo resuelve eso. Cuatro números, cuatro fórmulas, cuatro benchmarks. Al final vas a poder calcular el tuyo y saber exactamente dónde estás parado.</p>
+
+    <div class="pull-quote reveal">
+      <p>El 68% de las empresas no ha intentado medir su embudo de ventas. Las que sí lo hacen crecen un 28% más rápido que las que no. <span class="source-tag">HubSpot 2024</span></p>
+    </div>
+
+    <p>Ese dato no habla de tecnología ni de sistemas complejos. Habla de visibilidad básica. De saber cuántos leads entran, cuántos avanzan, y cuántos se convierten en ventas. Sin esa visibilidad, las decisiones de inversión se toman por intuición. Y la intuición raramente identifica los problemas que ocurren en silencio.</p>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <!-- NÚMERO 1 -->
+    <div class="number-card reveal">
+      <div class="number-card-header">
+        <div class="number-badge">01</div>
+        <div class="number-card-title">
+          <span>El primer número</span>
+          Volumen de consultas mensual
+        </div>
+      </div>
+      <div class="number-card-body">
+        <p>Es el número más básico del embudo y el que más frecuentemente se desconoce con precisión. No basta con "más o menos unas 60 o 70". Necesitás saber exactamente cuántos contactos nuevos interesados en tu producto o servicio recibís por mes, sumando todos los canales.</p>
+
+        <p>Incluye WhatsApp directo, Instagram DMs, llamadas entrantes, formularios del sitio web, referidos que contactan por primera vez, y cualquier otra vía por la que llegue alguien que no conocías antes.</p>
+
+        <div class="formula">
+          <div class="formula-label">Cómo calcularlo</div>
+          <div class="formula-equation">
+            Consultas mensuales <span class="op">=</span> Suma de todos los contactos nuevos de los últimos 30 días por canal
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-label">Ejemplo concreto</div>
+          <p>WhatsApp directo: 35 · Instagram DMs: 18 · Llamadas: 12 · Formulario web: 5 · Referidos nuevos: 10<br><strong>Total: 80 consultas por mes</strong></p>
+        </div>
+
+        <div class="benchmark">
+          <div class="benchmark-label">Referencia del sector (construcción y home improvement)</div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Bajo</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill low" style="width:25%"></div></div>
+            <span class="benchmark-value">Menos de 40</span>
+          </div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Promedio</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill" style="width:60%"></div></div>
+            <span class="benchmark-value">60 a 100</span>
+          </div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Con sistema</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill high" style="width:100%"></div></div>
+            <span class="benchmark-value">120 a 200</span>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <p><strong>Señal de alerta:</strong> Si más del 70% de tus consultas vienen de referidos, tu crecimiento depende de variables que no controlás. El canal de referidos es valioso, pero no es escalable ni predecible.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NÚMERO 2 -->
+    <div class="number-card reveal">
+      <div class="number-card-header">
+        <div class="number-badge">02</div>
+        <div class="number-card-title">
+          <span>El segundo número</span>
+          Tasa de presupuestación
+        </div>
+      </div>
+      <div class="number-card-body">
+        <p>De todas las consultas que recibís, ¿a cuántas les mandás un presupuesto formal? Ese porcentaje es tu tasa de presupuestación. Revela dos cosas: qué tan bien está calificando tu equipo las consultas que entran, y cuántas oportunidades se están perdiendo antes de llegar siquiera a una propuesta.</p>
+
+        <p>Una tasa baja puede significar que llegan muchos leads no calificados. Una tasa alta puede ser buena señal o puede indicar que tu equipo presupuesta todo sin criterio, perdiendo tiempo en proyectos que no van a cerrar.</p>
+
+        <div class="formula">
+          <div class="formula-label">Cómo calcularlo</div>
+          <div class="formula-equation">
+            Tasa de presupuestación <span class="op">=</span> (Presupuestos enviados <span class="op">÷</span> Consultas recibidas) <span class="op">×</span> 100
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-label">Ejemplo concreto</div>
+          <p>Recibís 80 consultas. Mandás 45 presupuestos.<br><strong>Tasa de presupuestación: 56%</strong> — dentro del rango esperado para alto ticket.</p>
+        </div>
+
+        <div class="benchmark">
+          <div class="benchmark-label">Referencia del sector</div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Baja calificación</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill low" style="width:30%"></div></div>
+            <span class="benchmark-value">Menos de 35%</span>
+          </div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Rango saludable</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill" style="width:65%"></div></div>
+            <span class="benchmark-value">45 a 65%</span>
+          </div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Con filtro activo</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill high" style="width:85%"></div></div>
+            <span class="benchmark-value">65 a 80%</span>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <p><strong>Señal de alerta:</strong> Si tu tasa baja de 40%, hay un problema en la calificación inicial. O estás atrayendo a las personas equivocadas o tu equipo no tiene criterio para filtrar antes de invertir tiempo en una propuesta.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NÚMERO 3 -->
+    <div class="number-card reveal">
+      <div class="number-card-header">
+        <div class="number-badge">03</div>
+        <div class="number-card-title">
+          <span>El tercer número</span>
+          Tasa de cierre sobre presupuestados
+        </div>
+      </div>
+      <div class="number-card-body">
+        <p>Este es el número más revelador de los cuatro. De todos los presupuestos que mandás, ¿cuántos terminan en proyecto firmado? La tasa de cierre sobre presupuestados mide la efectividad real del proceso de ventas, incluyendo el seguimiento post-propuesta.</p>
+
+        <p>Es importante distinguirlo de la tasa de cierre sobre consultas totales, que mezcla dos problemas distintos. Este número aísla específicamente lo que pasa después de que ya hiciste el trabajo de calificar y presupuestar.</p>
+
+        <div class="formula">
+          <div class="formula-label">Cómo calcularlo</div>
+          <div class="formula-equation">
+            Tasa de cierre <span class="op">=</span> (Proyectos cerrados <span class="op">÷</span> Presupuestos enviados) <span class="op">×</span> 100
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-label">Ejemplo concreto</div>
+          <p>Mandás 45 presupuestos. Cerrás 12 proyectos.<br><strong>Tasa de cierre: 27%</strong> — por debajo del potencial esperado con seguimiento activo.</p>
+        </div>
+
+        <div class="benchmark">
+          <div class="benchmark-label">Referencia del sector <span class="source-tag">HubSpot 2024</span></div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Sin sistema</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill low" style="width:28%"></div></div>
+            <span class="benchmark-value">20 a 30%</span>
+          </div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Promedio general</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill" style="width:55%"></div></div>
+            <span class="benchmark-value">25 a 40%</span>
+          </div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Con seguimiento</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill high" style="width:90%"></div></div>
+            <span class="benchmark-value">40 a 50%</span>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <p><strong>Lo que dice la investigación:</strong> El 80% de las ventas requiere 5 o más seguimientos, pero el 44% de los vendedores abandona después del primer intento. <span class="source-tag">RAIN Group 2024</span> Si tu tasa de cierre está por debajo del 35%, el problema casi siempre está en el seguimiento post-presupuesto, no en la calidad del producto ni en el precio.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NÚMERO 4 -->
+    <div class="number-card reveal">
+      <div class="number-card-header">
+        <div class="number-badge">04</div>
+        <div class="number-card-title">
+          <span>El cuarto número</span>
+          Costo de adquisición por cliente (CAC)
+        </div>
+      </div>
+      <div class="number-card-body">
+        <p>El CAC es el número que convierte todo lo anterior en una decisión de inversión. Responde la pregunta que todo dueño de empresa debería poder contestar sin dudar: ¿cuánto me cuesta conseguir un cliente nuevo?</p>
+
+        <p>Sin este número, es imposible evaluar si una inversión en marketing tiene sentido. No porque el número tenga que ser bajo, sino porque necesitás saber cuánto vale para poder compararlo con lo que ese cliente deja.</p>
+
+        <div class="formula">
+          <div class="formula-label">Cómo calcularlo (versión simplificada)</div>
+          <div class="formula-equation">
+            CAC <span class="op">=</span> (Inversión total en captación del mes) <span class="op">÷</span> (Clientes nuevos cerrados ese mes)
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-label">Ejemplo concreto</div>
+          <p>Google Ads: $2.000.000 · Horas de agencia, CM y vendedores (estimativo): $800.000<br>Total inversión en captación: <strong>$2.800.000 por mes</strong>. Cerrás 12 proyectos nuevos.<br><strong>CAC: $233.333 por cliente</strong></p>
+          <p style="margin-top:8px">Con un ticket promedio de $3.000.000, cada cliente nuevo genera una relación de <strong>13:1 entre ingreso y costo de adquisición.</strong> Si el margen bruto es del 40%, el margen por cliente es $1.200.000, lo que da un retorno de <strong>5:1 sobre la inversión de captación.</strong></p>
+        </div>
+
+        <div class="benchmark">
+          <div class="benchmark-label">Relación CAC / Ticket promedio recomendada</div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Preocupante</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill low" style="width:20%"></div></div>
+            <span class="benchmark-value">Menos de 10:1</span>
+          </div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Aceptable</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill" style="width:55%"></div></div>
+            <span class="benchmark-value">10:1 a 30:1</span>
+          </div>
+          <div class="benchmark-row">
+            <span class="benchmark-label-text">Saludable</span>
+            <div class="benchmark-bar-wrap"><div class="benchmark-bar-fill high" style="width:100%"></div></div>
+            <span class="benchmark-value">30:1 o más</span>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <p><strong>El error más común:</strong> La mayoría de los dueños calcula el CAC incluyendo solo lo que pagan en publicidad, sin contar el tiempo del equipo de ventas ni los costos fijos de captación. Ese cálculo subestima el CAC real y distorsiona la evaluación de cualquier inversión nueva.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <h2>Cómo usar los 4 números juntos</h2>
+
+    <p>Cada número por separado dice algo. Los cuatro juntos cuentan la historia completa del negocio.</p>
+
+    <p>La lectura combinada funciona así: tomás el volumen de consultas (N1), lo multiplicás por la tasa de presupuestación (N2), obtenés los presupuestos enviados. Multiplicás eso por la tasa de cierre (N3), obtenés los clientes cerrados. Multiplicás por el ticket promedio y obtenés la facturación generada por ese canal. Dividís la inversión total en captación por los clientes cerrados y obtenés el CAC (N4). Recordá incluir no solo lo que pagás en publicidad, sino también costos de agencia, producción de contenido, y una estimación del tiempo de tu equipo de ventas dedicado a procesar esos leads.</p>
+
+    <p>Ese ejercicio, hecho con honestidad, te muestra dos cosas que ningún reporte de redes sociales va a mostrarte:</p>
+
+    <p><strong>Primero:</strong> dónde exactamente se pierden las oportunidades. Si el número cae mucho entre consultas y presupuestos, el problema es la calificación. Si cae entre presupuestos y cierres, el problema es el seguimiento. Si el volumen de consultas es bajo, el problema es la captación.</p>
+
+    <p><strong>Segundo:</strong> cuánto vale mejorar cada número. Un punto porcentual de mejora en la tasa de cierre, con 45 presupuestos mensuales y un ticket de $3M, representa $1.35M de facturación adicional por mes. Ese número convierte cualquier conversación sobre inversión en marketing en algo concreto y calculable.</p>
+
+    <div class="calculator reveal">
+      <div class="calculator-header">
+        <div class="calculator-header-label">Tu resumen</div>
+        <div class="calculator-header-title">Completá los 4 números de tu negocio</div>
+      </div>
+      <div class="calculator-body">
+        <div class="calc-row">
+          <div class="calc-number">01</div>
+          <div class="calc-content">
+            <div class="calc-name">Consultas por mes</div>
+            <div class="calc-formula-inline">Suma de todos los canales</div>
+            <div class="calc-input-area">
+              <span>Mi número:</span>
+              <div class="calc-blank"></div>
+              <span>consultas/mes</span>
+            </div>
+          </div>
+        </div>
+        <div class="calc-row">
+          <div class="calc-number">02</div>
+          <div class="calc-content">
+            <div class="calc-name">Tasa de presupuestación</div>
+            <div class="calc-formula-inline">Presupuestos <strong>÷</strong> Consultas <strong>×</strong> 100</div>
+            <div class="calc-input-area">
+              <span>Mi tasa:</span>
+              <div class="calc-blank"></div>
+              <span>%</span>
+            </div>
+          </div>
+        </div>
+        <div class="calc-row">
+          <div class="calc-number">03</div>
+          <div class="calc-content">
+            <div class="calc-name">Tasa de cierre</div>
+            <div class="calc-formula-inline">Proyectos cerrados <strong>÷</strong> Presupuestos enviados <strong>×</strong> 100</div>
+            <div class="calc-input-area">
+              <span>Mi tasa:</span>
+              <div class="calc-blank"></div>
+              <span>%</span>
+            </div>
+          </div>
+        </div>
+        <div class="calc-row">
+          <div class="calc-number">04</div>
+          <div class="calc-content">
+            <div class="calc-name">Costo de adquisición por cliente (CAC)</div>
+            <div class="calc-formula-inline">Inversión total <strong>÷</strong> Clientes nuevos</div>
+            <div class="calc-input-area">
+              <span>Mi CAC:</span>
+              <div class="calc-blank"></div>
+              <span>por cliente</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p>Si llenaste los cuatro campos, tenés el diagnóstico básico de tu negocio. Si alguno te resultó imposible de responder, eso en sí mismo es información: hay una etapa del embudo que no estás midiendo, y por lo tanto no podés mejorar.</p>
+
+    <div class="pull-quote reveal">
+      <p>No podés mejorar lo que no medís. Y no podés medir lo que no definiste cómo calcular. Estos cuatro números son el punto de partida de cualquier decisión comercial inteligente.</p>
+    </div>
+
+    <p>El paso siguiente no es implementar un CRM complejo ni contratar un analista. Es empezar a registrar estos cuatro números cada mes, aunque sea en un Excel. La tendencia, mes a mes, va a decirte más sobre la salud de tu negocio que cualquier métrica de redes sociales.</p>
+
+    <div class="cta-section reveal">
+      <div class="cta-eyebrow">Diagnóstico personalizado</div>
+      <div class="cta-title">¿Querés calcular estos números con los datos de tu negocio específico?</div>
+      <p class="cta-subtitle">En 20 minutos hacemos el ejercicio juntos, identificamos en qué número está la mayor oportunidad, y calculamos el impacto en tu facturación. Sin propuesta de venta.</p>
+      <a href="#" class="cta-button">Calculamos juntos</a>
+      <p class="cta-note">Sin propuesta de venta · Sin compromiso · 20 minutos</p>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Benchmarks y datos de referencia: HubSpot State of Sales Report 2024, HubSpot Sales Conversion Rate Research 2024, RAIN Group Sales Research 2024, Salesforce State of Sales Report Edicion 6. Los rangos presentados corresponden a promedios observados en negocios B2C de construccion y home improvement de alto ticket en Argentina. Los resultados individuales varian segun rubro, zona, ticket promedio, y capacidad del equipo comercial.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Por qué tu equipo pierde ventas que ya ganó · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--brand-dark);
+    color: var(--text-body);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.85;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--green);
+    z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(1,7,7,0.97);
+    backdrop-filter: blur(12px);
+    z-index: 50;
+  }
+
+  .logo {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .logo span { color: var(--green); }
+
+  .header-tag {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .hero {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 40px 56px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .article-category {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+  }
+
+  .article-category::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  h1 {
+    font-size: clamp(30px, 5vw, 50px);
+    font-weight: 900;
+    line-height: 1.07;
+    color: var(--white);
+    margin-bottom: 28px;
+    letter-spacing: -0.03em;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 40px;
+    border-left: 3px solid var(--green);
+    padding-left: 20px;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meta-dot {
+    width: 3px;
+    height: 3px;
+    background: var(--green);
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards 0.5s;
+  }
+
+  .content p {
+    margin-bottom: 24px;
+    color: var(--text-body);
+  }
+
+  .content p strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 900;
+    color: var(--white);
+    margin: 64px 0 20px;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 3px solid var(--green);
+    padding: 22px 28px;
+    margin: 48px 0;
+    background: var(--card-dark);
+  }
+
+  .pull-quote p {
+    font-size: clamp(17px, 2.2vw, 22px);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.45;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  /* STAT BLOCK */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin: 48px 0;
+    border: 1px solid var(--border);
+  }
+
+  .stat-item {
+    background: var(--card-dark);
+    padding: 32px 20px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: clamp(44px, 6vw, 60px);
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 10px;
+    display: block;
+    letter-spacing: -0.04em;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .stat-source {
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* SOURCE TAG */
+  .source-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    padding: 2px 8px;
+    font-weight: 600;
+    vertical-align: middle;
+    margin-left: 6px;
+    position: relative;
+    top: -1px;
+  }
+
+  /* DATA CALLOUT */
+  .data-callout {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    padding: 24px 28px;
+    margin: 32px 0;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .data-callout .data-number {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .data-callout .data-text {
+    flex: 1;
+  }
+
+  .data-callout .data-text p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  .data-callout .data-text strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* SECTION BOX */
+  .section-box {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--green);
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+
+  .section-box-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+    font-weight: 700;
+    display: inline-block;
+    background: var(--green-dim);
+    padding: 3px 10px;
+  }
+
+  .section-box p {
+    color: var(--text-body);
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .section-box p:last-child { margin-bottom: 0; }
+
+  /* NUMBERED LIST */
+  .numbered-list {
+    list-style: none;
+    margin: 32px 0;
+    counter-reset: item;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .numbered-list li {
+    counter-increment: item;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 22px 24px;
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+
+  .numbered-list li:hover {
+    border-color: var(--green-border);
+  }
+
+  .numbered-list li::before {
+    content: counter(item, decimal-leading-zero);
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 900;
+    min-width: 24px;
+    padding-top: 4px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .item-title {
+    color: var(--white);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+
+  /* COMPARISON TABLE */
+  .comparison {
+    margin: 48px 0;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  thead tr {
+    background: var(--card-mid);
+    border-bottom: 1px solid var(--green-border);
+  }
+
+  th {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  td {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-body);
+    vertical-align: top;
+    line-height: 1.5;
+    background: var(--card-dark);
+    font-size: 15px;
+  }
+
+  td:first-child {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  td.green {
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  td.red {
+    color: rgba(255, 90, 90, 0.85);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 56px 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .divider-icon {
+    color: var(--green);
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    font-weight: 700;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--green);
+    padding: 52px 40px;
+    margin: 64px 0 0;
+    text-align: center;
+  }
+
+  .cta-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    font-weight: 700;
+    display: inline-block;
+    background: var(--green-dim);
+    padding: 4px 12px;
+  }
+
+  .cta-title {
+    font-size: clamp(20px, 3vw, 30px);
+    color: var(--white);
+    margin: 16px 0;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
+
+  .cta-subtitle {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: var(--green);
+    color: var(--brand-dark);
+    padding: 16px 40px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .cta-button:hover {
+    background: #4eff8a;
+    transform: translateY(-1px);
+  }
+
+  .cta-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  /* FOOTNOTE */
+  .footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    margin-top: 48px;
+    line-height: 1.8;
+  }
+
+  .footnote a {
+    color: rgba(39,222,107,0.6);
+    text-decoration: none;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .data-callout { flex-direction: column; gap: 10px; }
+    .cta-section { padding: 36px 20px; }
+    td, th { padding: 11px 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Gestión Comercial</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Investigación Aplicada</div>
+    <h1>Por qué tu equipo pierde ventas que <em>ya ganó</em></h1>
+    <p class="hero-subtitle">La mayoría de los negocios de alto ticket no pierden clientes por falta de consultas. Los pierden por lo que hacen, o no hacen, después de que el cliente levanta la mano.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>12 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Fuentes: HubSpot · Salesforce · Harvard Business Review</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Hay un momento en el ciclo de venta que muy pocos negocios miden con precisión. No es el momento en que alguien consulta. No es el momento en que se firma el contrato. Es el momento intermedio: el espacio entre que un prospecto muestra interés y el momento en que tu equipo lo atiende.</p>
+
+    <p>En ese espacio, sin que nadie lo vea, se pierden la mayoría de las ventas.</p>
+
+    <p>No por falta de presupuesto. No por falta de producto. Por falta de sistema.</p>
+
+    <div class="pull-quote reveal">
+      <p>El 44% de los vendedores abandona después del primer intento de contacto. El 80% de las ventas requiere cinco o más seguimientos. La brecha entre esos dos números es donde se va el crecimiento.</p>
+    </div>
+
+    <p>Esa brecha no es una anécdota. Es el hallazgo más consistente de la investigación en ventas de la última década, documentado por HubSpot, Salesforce y el RAIN Group. Y en negocios de alto ticket como los de construcción y home improvement, donde cada venta vale entre $500K y $20M, el costo de ignorar ese espacio es medible al peso.</p>
+
+    <h2>El problema que nadie ve porque nadie lo mide</h2>
+
+    <p>Antes de entender por qué se pierden las ventas, hay que entender por qué la mayoría de los dueños de empresa no saben que las están perdiendo.</p>
+
+    <p>La respuesta es simple: no tienen visibilidad del embudo. Saben cuánto facturaron el mes pasado. No saben cuántas oportunidades entraron, cuántas se trabajaron, y cuántas se perdieron sin que nadie se diera cuenta.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-number">27%</div>
+      <div class="data-text"><p><strong>Solo el 27% de los leads generados llega a ser contactado alguna vez.</strong> El 73% restante entra al embudo y desaparece sin una sola interacción del equipo de ventas. <span class="source-tag">Salesforce</span></p></div>
+    </div>
+
+    <p>Eso significa que si tu empresa recibe 80 consultas por mes, estadísticamente solo 22 de ellas reciben alguna respuesta. Las otras 58 se enfriaron, encontraron a un competidor, o simplemente dejaron de interesarse porque nadie las atendió a tiempo.</p>
+
+    <p>El problema no es la captación. Es lo que pasa después.</p>
+
+    <h2>La velocidad de respuesta es la variable más subestimada</h2>
+
+    <p>Cuando alguien consulta sobre un proyecto de alto ticket, su nivel de intención es máximo en ese momento exacto. Está buscando activamente, está listo para escuchar, y probablemente está hablando con más de un proveedor al mismo tiempo.</p>
+
+    <p>Lo que pase en los minutos y horas siguientes determina, en gran medida, quién se lleva la venta.</p>
+
+    <div class="stat-grid reveal">
+      <div class="stat-item">
+        <span class="stat-number">7x</span>
+        <span class="stat-label">más probable conectar con un lead si se responde en la primera hora</span>
+        <div class="stat-source">Harvard Business Review</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">10x</span>
+        <span class="stat-label">cae la probabilidad de calificar un lead pasada la primera hora</span>
+        <div class="stat-source">MIT Sloan Management Review</div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">50%</span>
+        <span class="stat-label">de las ventas van al proveedor que responde primero</span>
+        <div class="stat-source">InsideSales.com</div>
+      </div>
+    </div>
+
+    <p>El tiempo promedio de respuesta de las empresas es 47 horas. Casi dos días. En esas 47 horas, el prospecto habló con tres competidores, recibió dos presupuestos, y probablemente ya tiene una preferencia formada.</p>
+
+    <p>El que responde primero no siempre cierra. Pero el que responde tarde rara vez tiene una segunda oportunidad.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-number">64%</div>
+      <div class="data-text"><p><strong>De los consumidores esperan respuesta en tiempo real cuando contactan a una empresa.</strong> Esa expectativa, que era aspiracional hace tres años, hoy es el estándar mínimo. <span class="source-tag">Salesforce State of Sales 2024</span></p></div>
+    </div>
+
+    <p>En negocios de alto ticket esto tiene una dimensión adicional. El cliente que busca un proyecto de $5M no está en modo impulsivo: está evaluando. Pero eso no significa que tolere la demora. Significa que la demora lo lee como una señal de cómo vas a ser como proveedor. Si tardás dos días en responder una consulta, ¿cuánto tardás en resolver un problema durante la obra?</p>
+
+    <h2>El seguimiento post-presupuesto: donde se pierde el dinero real</h2>
+
+    <p>La velocidad de respuesta es crítica. Pero hay un momento todavía más costoso en el ciclo de venta de alto ticket: el período después de que se manda el presupuesto.</p>
+
+    <p>Es el momento en que la mayoría de los equipos de ventas se detiene. Mandaron el presupuesto, hicieron su parte, y ahora esperan. Lo que no saben es que el 60% de los compradores dice "no" cuatro veces antes de decir "sí". Y la mayoría de los vendedores abandona mucho antes de llegar a ese punto.</p>
+
+    <div class="comparison reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Comportamiento</th>
+            <th>Realidad del mercado</th>
+            <th>Impacto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Vendedores que abandonan después del primer intento</td>
+            <td class="red">44%</td>
+            <td>La mitad del equipo nunca hace un segundo contacto</td>
+          </tr>
+          <tr>
+            <td>Ventas que requieren 5 o más seguimientos</td>
+            <td class="green">80%</td>
+            <td>La persistencia no es opcional, es el proceso</td>
+          </tr>
+          <tr>
+            <td>Compradores que dicen "no" 4 veces antes de comprar</td>
+            <td class="green">60%</td>
+            <td>El rechazo inicial rara vez es definitivo</td>
+          </tr>
+          <tr>
+            <td>Leads de ferias y eventos que nunca reciben seguimiento</td>
+            <td class="red">80%</td>
+            <td>Cuatro de cada cinco oportunidades se evaporan</td>
+          </tr>
+          <tr>
+            <td>Tiempo que un vendedor dedica activamente a vender</td>
+            <td class="red">30%</td>
+            <td>El 70% se va en admin, datos y reuniones internas</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Lo que muestra esta tabla no es que los vendedores sean malos. Es que sin sistema, el comportamiento por defecto es el abandono temprano. No por malicia: porque no tienen visibilidad de qué leads necesitan atención, cuándo, y con qué mensaje.</p>
+
+    <p>Un vendedor sin CRM no sabe que tiene 15 presupuestos abiertos sin respuesta. Sabe que está ocupado. Esa diferencia es la que separa a los equipos que cierran del 25% de los que cierran del 45%.</p>
+
+    <h2>Por qué el acompañamiento no es un detalle: es el modelo</h2>
+
+    <p>La investigación de Salesforce en su segundo reporte de Estado de Ventas documentó algo que cambia la forma de pensar el negocio: el 79% de los compradores dice que es absolutamente crítico o muy importante interactuar con un vendedor que funcione como asesor de confianza, no como vendedor.</p>
+
+    <p>Eso no es una preferencia de estilo. Es una descripción del modelo de ventas que funciona en alto ticket.</p>
+
+    <div class="section-box reveal">
+      <div class="section-box-label">Lo que dice Salesforce</div>
+      <p>Los compradores de alto ticket no quieren ser vendidos. Quieren ser acompañados en una decisión importante. La diferencia entre un proveedor y un partner estratégico no está en el producto: está en la calidad y consistencia del proceso de acompañamiento desde el primer contacto hasta el cierre.</p>
+      <p>Los equipos de ventas de alto rendimiento tienen 2.8 veces más probabilidad de ser sobresalientes en inteligencia predictiva, es decir, en anticipar qué necesita el cliente antes de que lo pida.</p>
+    </div>
+
+    <p>En términos prácticos, eso significa que el seguimiento no es simplemente llamar para preguntar si leyeron el presupuesto. Es agregar valor en cada contacto. Es llegar con información relevante, con una pregunta que ayude al cliente a avanzar en su decisión, con claridad sobre los próximos pasos.</p>
+
+    <p>Ese nivel de acompañamiento no es posible sin sistema. No porque los vendedores no quieran hacerlo, sino porque sin visibilidad del embudo, sin registro de cada interacción, y sin alertas de qué lead necesita contacto hoy, el seguimiento se vuelve reactivo e inconsistente.</p>
+
+    <h2>Las tres razones por las que los equipos no hacen seguimiento</h2>
+
+    <p>No es falta de motivación. En negocios de alto ticket, los vendedores saben perfectamente cuánto vale cada venta. El problema es estructural, no actitudinal.</p>
+
+    <ul class="numbered-list reveal">
+      <li>
+        <div>
+          <span class="item-title">No saben a quién contactar hoy</span>
+          Sin CRM, el vendedor no tiene una lista priorizada de seguimientos pendientes. Trabaja por memoria o por urgencia percibida, que rara vez coincide con la oportunidad real. Los leads más tibios, los que más necesitan un empujón, son exactamente los que se pierden.
+        </div>
+      </li>
+      <li>
+        <div>
+          <span class="item-title">No saben qué decir en el segundo o tercer contacto</span>
+          El primer contacto tiene un guion natural: responder la consulta, presentar la empresa, enviar el presupuesto. El segundo y el tercero no. Sin un proceso definido, el vendedor improvisa o evita el contacto para no parecer insistente. El resultado es silencio.
+        </div>
+      </li>
+      <li>
+        <div>
+          <span class="item-title">El tiempo se va en tareas que no son vender</span>
+          Salesforce documentó que los vendedores dedican solo el 30% de su tiempo a vender activamente. El 70% restante se va en registro manual, búsqueda de información, coordinación interna, y tareas administrativas. Automatizar esas tareas no es un lujo: es la condición para que el equipo pueda hacer su trabajo real.
+        </div>
+      </li>
+    </ul>
+
+    <p>La solución a los tres problemas es la misma: un sistema que dé visibilidad, que estructure el proceso de seguimiento, y que automatice todo lo que no requiere criterio humano para liberar al vendedor para las conversaciones que sí lo requieren.</p>
+
+    <h2>Lo que cambia cuando el sistema funciona</h2>
+
+    <p>La investigación de HubSpot sobre el impacto de sistemas de gestión de leads es consistente: las empresas que implementan automatización para gestionar leads ven un incremento de más del 10% en ingresos dentro de los primeros seis a nueve meses.</p>
+
+    <p>Ese número no viene de generar más consultas. Viene de trabajar mejor las que ya entran.</p>
+
+    <div class="data-callout reveal">
+      <div class="data-number">49%</div>
+      <div class="data-text"><p><strong>Es la tasa de cierre de organizaciones con programas efectivos de acompañamiento comercial,</strong> contra el 42.5% de las que no los tienen. En negocios de alto ticket, esa diferencia de 6.5 puntos porcentuales puede representar decenas de millones de pesos por año. <span class="source-tag">Spekit / HubSpot 2024</span></p></div>
+    </div>
+
+    <p>El acompañamiento estructurado no solo mejora la tasa de cierre. Cambia la naturaleza de la relación con el cliente. Un comprador que fue bien acompañado en su proceso de decisión tiene una predisposición radicalmente distinta hacia el proveedor que uno que tuvo que perseguir respuestas.</p>
+
+    <p>En negocios de proyecto donde la recomendación es el canal más valioso, esa diferencia en la experiencia de compra es la diferencia entre un cliente que vuelve y uno que no.</p>
+
+    <div class="section-box reveal">
+      <div class="section-box-label">Lo que dice HubSpot</div>
+      <p>Los equipos de ventas y marketing que están alineados en el proceso de seguimiento de leads reportan tasas de cierre más altas y mejor experiencia del cliente. La alineación no es solo organizacional: requiere un sistema compartido donde ambos equipos vean las mismas métricas y trabajen sobre los mismos datos.</p>
+      <p>Las empresas que alinean ventas y marketing ven un 36% más de retención de clientes y un 38% más de tasa de ganancia de deals.</p>
+    </div>
+
+    <h2>El embudo completo: dónde está el dinero en tu negocio</h2>
+
+    <p>Para hacer concreto lo que describimos, pensemos en el embudo típico de un negocio de alto ticket sin sistema de acompañamiento versus uno con sistema funcionando.</p>
+
+    <p>Los números son promedios observados en el segmento. Los de tu negocio específico pueden variar, pero la dirección del impacto es consistente.</p>
+
+    <div class="comparison reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Etapa del embudo</th>
+            <th>Sin sistema</th>
+            <th>Con sistema</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Leads que reciben respuesta</td>
+            <td class="red">27% de los que entran</td>
+            <td class="green">95% en menos de 2 horas</td>
+          </tr>
+          <tr>
+            <td>Presupuestos con seguimiento activo</td>
+            <td class="red">Depende del vendedor</td>
+            <td class="green">100%, con secuencia definida</td>
+          </tr>
+          <tr>
+            <td>Contactos promedio antes de cerrar</td>
+            <td class="red">1 a 2 intentos</td>
+            <td class="green">5 a 8 touchpoints</td>
+          </tr>
+          <tr>
+            <td>Tasa de cierre sobre presupuestados</td>
+            <td class="red">20 a 30%</td>
+            <td class="green">35 a 50%</td>
+          </tr>
+          <tr>
+            <td>Visibilidad del dueño sobre el embudo</td>
+            <td class="red">Estimaciones</td>
+            <td class="green">Dashboard en tiempo real</td>
+          </tr>
+          <tr>
+            <td>Tiempo del vendedor en ventas reales</td>
+            <td class="red">30%</td>
+            <td class="green">50 a 65%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>La diferencia entre el 27% de leads atendidos y el 95% no es una mejora marginal. Es recuperar oportunidades que hoy entran y salen sin que nadie las trabaje. En un negocio con ticket de $3M, cada oportunidad perdida por falta de seguimiento tiene un costo medible.</p>
+
+    <h2>Lo que esto implica para tu negocio específico</h2>
+
+    <p>La investigación es general. Tu negocio es específico. Y el primer paso para mejorar el acompañamiento no es implementar tecnología: es entender exactamente dónde está la fuga en tu embudo hoy.</p>
+
+    <p>Hay negocios donde el problema es la velocidad de respuesta inicial. Hay otros donde la respuesta inicial es buena, pero el seguimiento post-presupuesto es inexistente. Hay otros donde el seguimiento existe, pero es inconsistente porque depende del criterio de cada vendedor.</p>
+
+    <p>Cada uno de esos problemas tiene una solución distinta. Aplicar la solución equivocada, invertir en más captación cuando el problema real es el seguimiento, es la causa más frecuente de que la inversión en marketing no genere los resultados esperados.</p>
+
+    <div class="pull-quote reveal">
+      <p>Antes de invertir en traer más consultas, vale la pena saber qué está pasando con las que ya llegan.</p>
+    </div>
+
+    <p>Esa claridad no requiere meses de análisis. Requiere mapear el embudo con honestidad: cuántas consultas entran, cuántas se atienden, cuántas se presupuestan, cuántas se cierran, y qué pasa en cada una de las brechas.</p>
+
+    <p>Con ese mapa, las decisiones de inversión se vuelven obvias. Sin él, se toman por intuición, y la intuición rara vez identifica los problemas que ocurren en silencio.</p>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <div class="cta-section reveal">
+      <div class="cta-eyebrow">Diagnóstico sin costo</div>
+      <div class="cta-title">¿Qué está pasando con las consultas que ya llegan a tu negocio?</div>
+      <p class="cta-subtitle">En 20 minutos mapeamos tu embudo completo con tus números, identificamos dónde está la fuga, y calculamos el impacto en tu facturación. Sin propuesta de venta.</p>
+      <a href="#" class="cta-button">Quiero mi diagnóstico</a>
+      <p class="cta-note">Sin propuesta de venta · Sin compromiso · 20 minutos</p>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Fuentes citadas en este artículo: HubSpot State of Sales Report 2024 y 2025, Salesforce State of Sales Report (ediciones 2 y 6), Harvard Business Review (estudio de velocidad de respuesta a leads), MIT Sloan Management Review, RAIN Group Sales Research 2024, InsideSales.com Lead Response Management Study, Spekit Sales Enablement Report 2024. Los promedios de embudo presentados corresponden a rangos observados en negocios B2C de alto ticket en construccion y home improvement. Los resultados individuales varian segun el rubro, la zona, el ticket promedio, y la capacidad operativa del equipo comercial.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

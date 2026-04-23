@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La diferencia entre una agencia de marketing y un sistema de demanda predecible · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red-dim: rgba(255,80,80,0.07);
+    --red: rgba(255,100,100,0.85);
+    --red-border: rgba(255,80,80,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--brand-dark);
+    color: var(--text-body);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.85;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--green);
+    z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(1,7,7,0.97);
+    backdrop-filter: blur(12px);
+    z-index: 50;
+  }
+
+  .logo {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .logo span { color: var(--green); }
+
+  .header-tag {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .hero {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 40px 56px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .article-category {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+  }
+
+  .article-category::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    line-height: 1.07;
+    color: var(--white);
+    margin-bottom: 28px;
+    letter-spacing: -0.03em;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 40px;
+    border-left: 3px solid var(--green);
+    padding-left: 20px;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meta-dot {
+    width: 3px;
+    height: 3px;
+    background: var(--green);
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease forwards 0.5s;
+  }
+
+  .content p {
+    margin-bottom: 24px;
+    color: var(--text-body);
+  }
+
+  .content p strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 900;
+    color: var(--white);
+    margin: 64px 0 20px;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 3px solid var(--green);
+    padding: 22px 28px;
+    margin: 48px 0;
+    background: var(--card-dark);
+  }
+
+  .pull-quote p {
+    font-size: clamp(17px, 2.2vw, 21px);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.45;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  /* SOURCE TAG */
+  .source-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    padding: 2px 7px;
+    font-weight: 600;
+    vertical-align: middle;
+    margin-left: 5px;
+    position: relative;
+    top: -1px;
+  }
+
+  /* THE MAIN COMPARISON TABLE */
+  .versus {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    margin: 48px 0;
+    border: 1px solid var(--border);
+  }
+
+  .versus-header {
+    padding: 16px 20px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .versus-header.agency {
+    background: var(--red-dim);
+    color: var(--red);
+    border-bottom: 2px solid var(--red-border);
+  }
+
+  .versus-header.system {
+    background: var(--green-dim);
+    color: var(--green);
+    border-bottom: 2px solid var(--green-border);
+  }
+
+  .versus-row {
+    display: contents;
+  }
+
+  .versus-cell {
+    padding: 16px 20px;
+    font-size: 15px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .versus-cell.agency {
+    background: var(--card-dark);
+    color: var(--text-muted);
+    border-right: 1px solid var(--border);
+  }
+
+  .versus-cell.system {
+    background: var(--card-dark);
+    color: var(--text-body);
+  }
+
+  .versus-cell.system strong {
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .versus-cell.agency .strikethrough {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  /* SYMPTOM LIST */
+  .symptom-list {
+    list-style: none;
+    margin: 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .symptom-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 18px 22px;
+    background: var(--red-dim);
+    border: 1px solid var(--red-border);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  .symptom-list li::before {
+    content: '×';
+    color: var(--red);
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 1.2;
+    flex-shrink: 0;
+    min-width: 20px;
+  }
+
+  /* PILLAR CARDS */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    margin: 48px 0;
+    border: 1px solid var(--border);
+  }
+
+  .pillar-card {
+    background: var(--card-dark);
+    padding: 28px 24px;
+    position: relative;
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .pillar-card:hover {
+    border-left-color: var(--green);
+    background: var(--card-mid);
+  }
+
+  .pillar-number {
+    font-size: 10px;
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: inline-block;
+    background: var(--green-dim);
+    padding: 3px 8px;
+  }
+
+  .pillar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .pillar-body {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* STAT INLINE */
+  .stat-inline {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    padding: 20px 24px;
+    margin: 32px 0;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .stat-inline .stat-num {
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+
+  .stat-inline .stat-text {
+    flex: 1;
+    padding-top: 4px;
+  }
+
+  .stat-inline .stat-text p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 56px 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .divider-icon {
+    color: var(--green);
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    font-weight: 700;
+  }
+
+  /* CHECKLIST */
+  .checklist {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--green);
+    margin: 48px 0;
+    overflow: hidden;
+  }
+
+  .checklist-header {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--card-mid);
+  }
+
+  .checklist-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .checklist-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.015em;
+  }
+
+  .checklist-body {
+    padding: 8px 0;
+  }
+
+  .check-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 1.5;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--green-border);
+    background: var(--green-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .check-icon::before {
+    content: '?';
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--green);
+    padding: 52px 40px;
+    margin: 64px 0 0;
+    text-align: center;
+  }
+
+  .cta-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    font-weight: 700;
+    display: inline-block;
+    background: var(--green-dim);
+    padding: 4px 12px;
+  }
+
+  .cta-title {
+    font-size: clamp(20px, 3vw, 30px);
+    color: var(--white);
+    margin: 16px 0;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
+
+  .cta-subtitle {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: var(--green);
+    color: var(--brand-dark);
+    padding: 16px 40px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .cta-button:hover {
+    background: #4eff8a;
+    transform: translateY(-1px);
+  }
+
+  .cta-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 16px;
+  }
+
+  .footnote {
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    margin-top: 48px;
+    line-height: 1.8;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .versus { grid-template-columns: 1fr; }
+    .versus-header.agency { display: none; }
+    .versus-cell.agency { border-right: none; border-left: 3px solid var(--red-border); }
+    .versus-cell.system { border-left: 3px solid var(--green-border); }
+    .pillar-grid { grid-template-columns: 1fr; }
+    .stat-inline { flex-direction: column; gap: 10px; }
+    .cta-section { padding: 36px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Estrategia Comercial</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Posicionamiento</div>
+    <h1>La diferencia entre una agencia de marketing y un <em>sistema de demanda predecible</em></h1>
+    <p class="hero-subtitle">Si probaste marketing digital y no funcionó, es muy probable que el problema no haya sido el presupuesto ni el canal. Fue el modelo. Y entender esa diferencia cambia completamente cómo evaluás la próxima inversión.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>10 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Estrategia y Posicionamiento</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>La mayoría de los dueños de empresas de construcción y home improvement con trayectoria probaron marketing digital en algún momento. Algunos probaron varias veces. Y en la mayoría de los casos, la conclusión fue la misma: "Invertimos plata, no vimos resultados claros, y dejamos de hacerlo."</p>
+
+    <p>Esa experiencia es real y válida. Pero tiene una explicación que rara vez se discute con honestidad: <strong>lo que contrataron no era lo que necesitaban.</strong></p>
+
+    <p>Contrataron una agencia. Lo que necesitaban era un sistema.</p>
+
+    <div class="pull-quote reveal">
+      <p>No fallaste vos. Falló el modelo. Y la diferencia entre los dos no es de precio ni de ejecución: es estructural.</p>
+    </div>
+
+    <h2>Qué vende realmente una agencia de marketing</h2>
+
+    <p>Una agencia de marketing vende tiempo y producción. Sus entregables son concretos y visibles: posts publicados, campañas activas, informes enviados, creatividades producidas. Eso es lo que factura y lo que podés medir al final del mes.</p>
+
+    <p>El problema no es que ese trabajo sea malo. El problema es que ese trabajo, por sí solo, no genera ventas predecibles en un negocio de alto ticket.</p>
+
+    <p>Publicar tres reels por semana no le dice a tu vendedor a quién llamar hoy. Tener una campaña activa en Meta no garantiza que el lead que llegó a las 21hs va a recibir respuesta antes de que hable con tu competidor. Un informe mensual de métricas de Instagram no te dice cuántas ventas generó el canal ni cuánto te costó cada una.</p>
+
+    <p>Esos son los tres problemas que destruyen la inversión en marketing en negocios de alto ticket. Y los tres existen porque la agencia opera en un silo: hace su parte, entrega sus entregables, y lo que pasa después de que el lead entra no es su responsabilidad.</p>
+
+    <div class="stat-inline reveal">
+      <div class="stat-num">68%</div>
+      <div class="stat-text"><p>De las empresas no ha intentado medir su embudo de ventas de manera completa. Invierten en captación sin saber qué pasa con los leads después de que entran. <span class="source-tag">HubSpot 2024</span></p></div>
+    </div>
+
+    <p>El resultado de ese silo es predecible: la agencia reporta métricas de alcance, impresiones y clics. El dueño de la empresa mira la facturación y no ve la conexión. Eventualmente, la relación se corta con la sensación de que "el marketing digital no funciona para este rubro".</p>
+
+    <p>No es que no funcione. Es que nunca estuvo conectado al proceso de ventas.</p>
+
+    <h2>Los síntomas que reconocés</h2>
+
+    <p>Antes de describir qué es un sistema, vale la pena nombrar los síntomas de operar sin uno. Son específicos y reconocibles.</p>
+
+    <ul class="symptom-list reveal">
+      <li>Invertís en marketing pero no podés decir con precisión cuántas ventas generó ese canal este mes.</li>
+      <li>Los leads llegan, pero no todos reciben respuesta rápida porque no hay un proceso definido para procesarlos.</li>
+      <li>Mandás presupuestos y después depende de cada vendedor si hace seguimiento o no.</li>
+      <li>Cambiás de agencia cada 6 a 12 meses porque "los resultados no se ven", pero el problema se repite con la siguiente.</li>
+      <li>Tenés métricas de redes sociales pero no tenés métricas de ventas por canal.</li>
+      <li>No sabés exactamente cuánto te cuesta conseguir un cliente nuevo sumando todos los costos reales.</li>
+    </ul>
+
+    <p>Si reconocés tres o más de estos síntomas, el problema no fue la agencia que elegiste. Fue que el modelo de agencia, por diseño, no resuelve estos problemas. Son problemas de sistema, no de ejecución táctica.</p>
+
+    <h2>Qué es un sistema de demanda predecible</h2>
+
+    <p>Un sistema de demanda predecible no reemplaza a la agencia: integra lo que la agencia hace con lo que pasa después. Conecta tres componentes que en el modelo de agencia tradicional funcionan por separado o directamente no existen.</p>
+
+    <div class="pillar-grid reveal">
+      <div class="pillar-card">
+        <div class="pillar-number">Componente 01</div>
+        <div class="pillar-title">Captación con costo medible</div>
+        <div class="pillar-body">Campañas de Meta Ads y contenido orgánico diseñados para generar consultas calificadas a un CPL (costo por lead) conocido y predecible. No alcance. No impresiones. Consultas reales de personas en zona, con presupuesto, y con intención de compra.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-number">Componente 02</div>
+        <div class="pillar-title">Seguimiento con proceso definido</div>
+        <div class="pillar-body">Pipeline de CRM con etapas claras, automatización del primer contacto, y secuencia de seguimiento post-presupuesto. El vendedor no tiene que recordar a quién llamar hoy: el sistema se lo dice. El lead nunca se pierde por olvido o falta de tiempo.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-number">Componente 03</div>
+        <div class="pillar-title">Visibilidad del embudo completo</div>
+        <div class="pillar-body">Dashboard en tiempo real que cruza datos de Meta Ads con datos del CRM: consultas generadas, presupuestos enviados, ventas cerradas, CPL real, tasa de cierre y ROI. El dueño ve el embudo completo, no métricas de redes desconectadas de la facturación.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-number">Componente 04</div>
+        <div class="pillar-title">Acompañamiento estratégico mensual</div>
+        <div class="pillar-body">Revisión mensual con el dueño donde se leen los datos, se identifica dónde se pierden oportunidades, y se define qué cambia el mes siguiente. No un informe de métricas: una decisión de negocio basada en datos reales del período anterior.</div>
+      </div>
+    </div>
+
+    <p>La diferencia no está en la calidad del contenido ni en el presupuesto de ads. Está en que los cuatro componentes funcionan como un sistema integrado: cada uno alimenta al siguiente, y el resultado final es medible en ventas, no en métricas de plataforma.</p>
+
+    <div class="stat-inline reveal">
+      <div class="stat-num">29%</div>
+      <div class="stat-text"><p>Las empresas que gestionan activamente su pipeline de ventas crecen un 28% más rápido que las que no lo hacen. La diferencia entre tener datos y tomar decisiones basadas en ellos es exactamente eso: casi 30 puntos de crecimiento. <span class="source-tag">HubSpot 2024</span></p></div>
+    </div>
+
+    <h2>La comparación que importa</h2>
+
+    <p>Las diferencias entre los dos modelos no son sutiles. Son estructurales y tienen impacto directo en el resultado.</p>
+
+    <div class="versus reveal">
+      <div class="versus-header agency">Agencia tradicional</div>
+      <div class="versus-header system">Sistema de demanda predecible</div>
+
+      <div class="versus-cell agency">Entrega tareas: posts, campañas, informes.</div>
+      <div class="versus-cell system">Entrega <strong>resultados:</strong> consultas calificadas, presupuestos, ventas.</div>
+
+      <div class="versus-cell agency">Opera en silo: marketing separado de ventas.</div>
+      <div class="versus-cell system">Integra captación, seguimiento y cierre en <strong>un solo embudo.</strong></div>
+
+      <div class="versus-cell agency">Mide alcance, clics e impresiones.</div>
+      <div class="versus-cell system">Mide <strong>CPL, tasa de cierre y ROI</strong> sobre ventas reales.</div>
+
+      <div class="versus-cell agency">El seguimiento de leads depende del equipo del cliente.</div>
+      <div class="versus-cell system"><strong>El seguimiento está automatizado</strong> y documentado en el CRM.</div>
+
+      <div class="versus-cell agency">Reporta métricas de plataforma una vez por mes.</div>
+      <div class="versus-cell system"><strong>Dashboard en tiempo real</strong> cruzando ads con ventas del CRM.</div>
+
+      <div class="versus-cell agency">Se evalúa por "¿cómo se ve el perfil?"</div>
+      <div class="versus-cell system">Se evalúa por <strong>"¿cuántas ventas generó este mes?"</strong></div>
+
+      <div class="versus-cell agency">Cambia de estrategia sin datos que justifiquen el cambio.</div>
+      <div class="versus-cell system">Optimiza <strong>basado en datos reales</strong> del período anterior.</div>
+
+      <div class="versus-cell agency">Si los resultados no aparecen, se justifica con "el mercado" o "el algoritmo".</div>
+      <div class="versus-cell system">Si los resultados no aparecen, <strong>hay un diagnóstico claro</strong> de en qué etapa se pierde.</div>
+    </div>
+
+    <h2>Por qué el modelo de agencia no es culpable: es el diseño</h2>
+
+    <p>Vale aclarar algo importante: las agencias no son malas ni están engañando a nadie. Están entregando exactamente lo que prometieron. El problema es que lo que prometieron, por diseño, no incluye lo que más importa.</p>
+
+    <p>Una agencia tiene incentivos para producir contenido visible, mantener campañas activas, y reportar métricas de plataforma. Eso es lo que factura y lo que puede controlar. La tasa de cierre del equipo de ventas del cliente, el tiempo de respuesta a los leads, o la calidad del seguimiento post-presupuesto no son variables que la agencia pueda controlar, por lo que no se incluyen en la promesa.</p>
+
+    <p>El resultado es una brecha estructural: la agencia hace bien su trabajo, y el dueño de la empresa no ve ventas. Ambos tienen razón. El problema es el modelo, no las personas.</p>
+
+    <div class="stat-inline reveal">
+      <div class="stat-num">10%</div>
+      <div class="stat-text"><p>Las empresas que implementan automatización para gestionar leads ven un incremento de más del 10% en ingresos dentro de los primeros seis a nueve meses. Eso no viene de crear más contenido: viene de procesar mejor los leads que ya entran. <span class="source-tag">HubSpot 2024</span></p></div>
+    </div>
+
+    <h2>Las preguntas que un sistema puede responder y una agencia no</h2>
+
+    <p>La forma más concreta de entender la diferencia es ver qué preguntas puede responder cada modelo. Estas son las que importan al dueño de una empresa de alto ticket.</p>
+
+    <div class="checklist reveal">
+      <div class="checklist-header">
+        <div class="checklist-label">Test de claridad comercial</div>
+        <div class="checklist-title">¿Podés responder estas preguntas hoy con precisión?</div>
+      </div>
+      <div class="checklist-body">
+        <div class="check-item">
+          <div class="check-icon"></div>
+          ¿Cuántas consultas nuevas entraron esta semana y de qué canal vino cada una?
+        </div>
+        <div class="check-item">
+          <div class="check-icon"></div>
+          ¿Cuántos presupuestos están abiertos ahora mismo sin respuesta del cliente?
+        </div>
+        <div class="check-item">
+          <div class="check-icon"></div>
+          ¿Cuánto te costó cada consulta generada por Meta Ads este mes?
+        </div>
+        <div class="check-item">
+          <div class="check-icon"></div>
+          ¿Qué vendedor tiene la tasa de cierre más alta y por qué?
+        </div>
+        <div class="check-item">
+          <div class="check-icon"></div>
+          ¿En qué etapa del embudo se pierden más oportunidades, y cuánto vale eso por mes?
+        </div>
+        <div class="check-item">
+          <div class="check-icon"></div>
+          Si mañana duplicás el presupuesto de ads, ¿tu equipo puede procesar el doble de consultas?
+        </div>
+        <div class="check-item">
+          <div class="check-icon"></div>
+          ¿Cuántas ventas generó el canal digital en los últimos 30 días, en pesos?
+        </div>
+      </div>
+    </div>
+
+    <p>Si tu agencia actual puede responder todas estas preguntas con datos en tiempo real, tenés un sistema. Si no puede, tenés un proveedor de tareas.</p>
+
+    <p>Ninguna de estas preguntas requiere tecnología compleja ni presupuestos enormes. Requieren que el proceso de captación y el proceso de ventas estén conectados, midiendo las mismas variables, con responsabilidades claras en cada etapa.</p>
+
+    <h2>Por qué esto importa especialmente en alto ticket</h2>
+
+    <p>En negocios con ticket de $500K a $20M por proyecto, cada lead tiene un valor potencial que justifica un nivel de atención completamente distinto al de un negocio de consumo masivo.</p>
+
+    <p>En ese contexto, perder un lead por demora en la respuesta, por falta de seguimiento post-presupuesto, o por no tener visibilidad de que existe no es un problema de marketing: es un problema de sistema con consecuencias medibles en la facturación del mes.</p>
+
+    <div class="pull-quote reveal">
+      <p>En alto ticket, no necesitás más volumen. Necesitás procesar mejor el volumen que ya tenés. Un sistema que convierte el 40% de los presupuestos en lugar del 25% vale más que duplicar el presupuesto de ads.</p>
+    </div>
+
+    <p>Esa diferencia, del 25% al 40% de tasa de cierre sobre presupuestados, en un negocio que manda 45 presupuestos por mes a un ticket de $3M, representa $20.25M de facturación adicional mensual. Sin un lead más. Sin un peso más en publicidad.</p>
+
+    <p>Eso es lo que separa un sistema de una agencia. Y es exactamente por eso que la pregunta correcta no es "¿qué agencia contrato?" sino "¿tengo un sistema que conecta captación con ventas?"</p>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <div class="cta-section reveal">
+      <div class="cta-eyebrow">Diagnóstico sin costo</div>
+      <div class="cta-title">¿Tenés una agencia o un sistema?</div>
+      <p class="cta-subtitle">En 20 minutos revisamos tu embudo actual, identificamos qué está conectado y qué no, y calculamos cuánto vale la brecha en tu facturación. Sin propuesta de venta.</p>
+      <a href="#" class="cta-button">Quiero saberlo</a>
+      <p class="cta-note">Sin propuesta de venta · Sin compromiso · 20 minutos</p>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Datos citados: HubSpot State of Sales Report 2024, HubSpot Pipeline Management Research 2024, HubSpot Marketing Automation Study 2024, Salesforce State of Sales Report Edicion 6. Los calculos de impacto en facturación presentados son ilustrativos y se basan en promedios del segmento B2C de alto ticket en construccion y home improvement. Los resultados individuales varian segun rubro, zona, ticket promedio, y capacidad operativa del equipo comercial.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

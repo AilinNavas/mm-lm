@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Las métricas que separan un sistema optimizado de uno promedio · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-dark: #010707;
+    --card-dark: #09140E;
+    --card-mid: #192520;
+    --green: #27DE6B;
+    --white: #FFFFFF;
+    --text-body: rgba(255,255,255,0.72);
+    --text-muted: rgba(255,255,255,0.38);
+    --border: rgba(255,255,255,0.08);
+    --green-dim: rgba(39,222,107,0.08);
+    --green-border: rgba(39,222,107,0.25);
+    --red: rgba(255,100,100,0.85);
+    --red-dim: rgba(255,80,80,0.07);
+    --red-border: rgba(255,80,80,0.18);
+    --yellow: #F5C842;
+    --yellow-dim: rgba(245,200,66,0.07);
+    --yellow-border: rgba(245,200,66,0.22);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+
+  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+
+  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
+  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
+  .logo span { color: var(--green); }
+  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+
+  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
+  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
+  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
+  h1 em { font-style: normal; color: var(--green); }
+  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
+  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+
+  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
+  .content p { margin-bottom: 24px; }
+  .content p strong { color: var(--white); font-weight: 600; }
+  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+
+  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
+  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+
+  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+
+  /* METRIC CARDS */
+  .metric-card { background: var(--card-dark); border: 1px solid var(--border); margin: 32px 0; overflow: hidden; }
+  .metric-header { display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid var(--border); }
+  .metric-num { background: var(--card-mid); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 16px; border-right: 1px solid var(--border); }
+  .metric-num-val { font-size: 42px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.04em; }
+  .metric-num-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; text-align: center; }
+  .metric-title-block { padding: 20px 24px; }
+  .metric-name { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); margin-bottom: 6px; }
+  .metric-title { font-size: 18px; font-weight: 700; color: var(--white); line-height: 1.2; letter-spacing: -0.01em; }
+  .metric-formula { font-size: 12px; color: var(--text-muted); margin-top: 6px; font-style: italic; }
+  .metric-body { padding: 20px 24px; }
+  .metric-desc { font-size: 15px; color: var(--text-body); line-height: 1.7; margin-bottom: 16px; }
+  .metric-desc strong { color: var(--white); font-weight: 600; }
+
+  /* BENCHMARK BANDS */
+  .benchmark { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 16px; }
+  .band { padding: 12px 14px; text-align: center; }
+  .band.low { background: var(--red-dim); }
+  .band.mid { background: var(--yellow-dim); }
+  .band.high { background: var(--green-dim); }
+  .band-label { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 4px; }
+  .band.low .band-label { color: var(--red); }
+  .band.mid .band-label { color: var(--yellow); }
+  .band.high .band-label { color: var(--green); }
+  .band-range { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 4px; }
+  .band-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+  .metric-signal { font-size: 13px; color: var(--text-muted); border-left: 2px solid var(--green-border); padding-left: 12px; margin-top: 14px; line-height: 1.65; }
+  .metric-signal strong { color: var(--text-body); }
+
+  /* VELOCITY BOX */
+  .velocity-box { background: var(--card-dark); border: 1px solid var(--border); border-top: 3px solid var(--green); padding: 28px; margin: 48px 0; }
+  .velocity-formula { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 24px 0; }
+  .vf-item { background: var(--card-mid); border: 1px solid var(--border); padding: 12px 16px; text-align: center; min-width: 100px; }
+  .vf-item-num { font-size: 22px; font-weight: 900; color: var(--green); letter-spacing: -0.02em; }
+  .vf-item-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
+  .vf-op { font-size: 20px; color: var(--text-muted); font-weight: 300; }
+  .vf-result { background: var(--green); padding: 12px 16px; text-align: center; min-width: 120px; }
+  .vf-result-num { font-size: 22px; font-weight: 900; color: var(--brand-dark); letter-spacing: -0.02em; }
+  .vf-result-label { font-size: 10px; color: rgba(1,7,7,0.6); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
+
+  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .warning strong { color: var(--red); font-weight: 600; }
+
+  .insight { background: var(--green-dim); border: 1px solid var(--green-border); border-left: 3px solid var(--green); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
+  .insight strong { color: var(--green); font-weight: 600; }
+
+  /* LEAD MAGNET */
+  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
+  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
+  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
+  .lm-body { padding: 28px; }
+  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+
+  .preview-items { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .preview-item { background: var(--card-dark); padding: 14px 20px; display: flex; gap: 12px; font-size: 14px; color: var(--text-body); line-height: 1.55; }
+  .preview-item::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  .lm-gate { position: relative; border-top: 1px solid var(--border); }
+  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.45; max-height: 160px; overflow: hidden; }
+  .lm-gate-overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: var(--card-dark); border-top: 1px solid var(--green-border); }
+  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
+  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
+  .gate-instruction { font-size: 13px; color: var(--text-body); margin-bottom: 14px; line-height: 1.6; background: var(--card-mid); border: 1px solid var(--green-border); padding: 10px 14px; }
+  .gate-instruction strong { color: var(--green); font-weight: 700; }
+  .gate-kw { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--green); color: var(--brand-dark); padding: 14px 28px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; margin-bottom: 10px; transition: background 0.2s, transform 0.2s; cursor: pointer; }
+  .gate-kw:hover { background: #4eff8a; transform: translateY(-2px); }
+  .gate-kw-arrow { font-size: 16px; }
+  .gate-note { font-size: 11px; color: var(--text-muted); }
+
+  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+
+  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .hero, .content { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; }
+    .metric-header { grid-template-columns: 90px 1fr; }
+    .metric-num-val { font-size: 32px; }
+    .benchmark { grid-template-columns: 1fr; }
+    .velocity-formula { gap: 6px; }
+    .lm-body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-tag">Métricas del Sistema</div>
+</header>
+
+<article>
+  <div class="hero">
+    <div class="article-category">Diagnóstico D — Optimización</div>
+    <h1>Las métricas que separan un sistema <em>optimizado</em> de uno promedio</h1>
+    <p class="hero-subtitle">Tener buenos números no es suficiente si no sabés qué tan buenos son. Este artículo define los benchmarks reales para las 4 métricas clave del embudo y muestra qué palanca mover según dónde está el gap.</p>
+    <div class="article-meta">
+      <span>Mucho Marketing</span>
+      <span class="meta-dot"></span>
+      <span>11 min de lectura</span>
+      <span class="meta-dot"></span>
+      <span>Fuentes: HubSpot · Gong · Sales Velocity Framework</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <p>Hay dos tipos de dueños de empresas de construcción y home improvement. Los que saben que cierran "más o menos bien" y los que saben exactamente cuántos presupuestos enviaron el mes pasado, qué porcentaje se convirtió en obra, cuánto tardó en promedio cada cierre, y qué valor promedio tuvo cada proyecto.</p>
+
+    <p>La diferencia entre los dos no es talento ni calidad de trabajo. Es visibilidad. Y sin visibilidad, no hay forma de saber qué está funcionando, qué está fallando, y qué hay que cambiar primero.</p>
+
+    <p>Este artículo define las 4 métricas que importan, los benchmarks reales contra los cuales compararse, y la palanca concreta que mueve cada una cuando está por debajo del nivel óptimo.</p>
+
+    <div class="pull-quote reveal">
+      <p>El close rate promedio en 2024 fue del 29%. El win rate promedio fue del 21%. La mayoría de los negocios no sabe en cuál de los dos está, ni entiende la diferencia entre los dos conceptos. Esa confusión tiene un costo directo en facturación. <span class="source-tag">HubSpot 2024</span></p>
+    </div>
+
+    <h2>Por qué estas 4 métricas y no otras</h2>
+
+    <p>Hay decenas de métricas que se pueden rastrear en un proceso de ventas. La mayoría son ruido. Las 4 que siguen son señal, porque cada una corresponde a un momento específico del embudo y diagnostica un problema diferente.</p>
+
+    <p>Si el problema está en la entrada del embudo, ninguna mejora en el cierre va a resolverlo. Si el problema está en el cierre, mejorar la captación solo genera más presupuestos que tampoco cierran. Leer las 4 métricas juntas es lo que permite identificar dónde está el cuello de botella real.</p>
+
+    <h2>Las 4 métricas</h2>
+
+    <!-- METRIC 1: CPL -->
+    <div class="metric-card reveal">
+      <div class="metric-header">
+        <div class="metric-num">
+          <div class="metric-num-val">01</div>
+          <div class="metric-num-label">Entrada</div>
+        </div>
+        <div class="metric-title-block">
+          <div class="metric-name">Costo por Lead Calificado</div>
+          <div class="metric-title">Cuánto cuesta traer una consulta que vale la pena atender</div>
+          <div class="metric-formula">CPL = Inversión total en captación / Cantidad de leads calificados recibidos</div>
+        </div>
+      </div>
+      <div class="metric-body">
+        <p class="metric-desc">El CPL mide el costo de adquisición de un lead que cumple los criterios de calificación del negocio. No cualquier consulta, sino aquellas que tienen el perfil, el proyecto, y la zona correcta. <strong>Un CPL bajo con leads no calificados es peor que un CPL alto con leads que sí compran.</strong> Por eso la métrica siempre tiene que ir acompañada del criterio de calificación que se aplicó.</p>
+        <div class="benchmark">
+          <div class="band low">
+            <div class="band-label">Problema</div>
+            <div class="band-range">> USD 8</div>
+            <div class="band-desc">El canal o el targeting están fallando. Revisar segmentación antes de escalar.</div>
+          </div>
+          <div class="band mid">
+            <div class="band-label">Promedio</div>
+            <div class="band-range">USD 4–8</div>
+            <div class="band-desc">Funciona pero tiene margen de mejora en copy, audiencia, o landing.</div>
+          </div>
+          <div class="band high">
+            <div class="band-label">Óptimo</div>
+            <div class="band-range">USD 2–4</div>
+            <div class="band-desc">Sistema bien calibrado. El foco pasa a volumen y calidad de leads.</div>
+          </div>
+        </div>
+        <div class="metric-signal"><strong>Señal de problema:</strong> el CPL está en rango óptimo pero el equipo de ventas dice que los leads son malos. Eso significa que los criterios de calificación del anuncio y los del equipo de ventas no están alineados.</div>
+      </div>
+    </div>
+
+    <!-- METRIC 2: TASA DE CALIFICACION -->
+    <div class="metric-card reveal">
+      <div class="metric-header">
+        <div class="metric-num">
+          <div class="metric-num-val">02</div>
+          <div class="metric-num-label">Filtro</div>
+        </div>
+        <div class="metric-title-block">
+          <div class="metric-name">Tasa de Calificación</div>
+          <div class="metric-title">Qué porcentaje de las consultas recibidas llega a presupuesto</div>
+          <div class="metric-formula">Tasa calificación = Presupuestos enviados / Leads recibidos × 100</div>
+        </div>
+      </div>
+      <div class="metric-body">
+        <p class="metric-desc">Esta métrica mide la eficiencia del proceso de calificación. Si llegan 100 consultas y se envían 80 presupuestos, hay un problema: se está presupuestando sin calificar. Si se envían 10, puede haber un problema de criterios demasiado restrictivos o de demoras en el primer contacto. <strong>El rango saludable para alto ticket con buena segmentación de ads es 25-40%.</strong></p>
+        <div class="benchmark">
+          <div class="band low">
+            <div class="band-label">Problema</div>
+            <div class="band-range">> 50%</div>
+            <div class="band-desc">Se presupuesta sin calificar. El equipo gasta tiempo en proyectos que no van a cerrar.</div>
+          </div>
+          <div class="band mid">
+            <div class="band-label">Promedio</div>
+            <div class="band-range">40–50%</div>
+            <div class="band-desc">Calificación parcial. Hay leads borderline que entran al pipeline sin criterio claro.</div>
+          </div>
+          <div class="band high">
+            <div class="band-label">Óptimo</div>
+            <div class="band-range">25–40%</div>
+            <div class="band-desc">Calificación real. Solo entra al pipeline quien tiene chances reales de cerrar.</div>
+          </div>
+        </div>
+        <div class="metric-signal"><strong>Señal de problema:</strong> la tasa de calificación baja después de implementar ads. Eso indica que el tráfico de ads tiene una calidad de intención diferente al tráfico orgánico anterior, y el proceso de calificación no se actualizó para filtrarlo.</div>
+      </div>
+    </div>
+
+    <!-- METRIC 3: CLOSE RATE -->
+    <div class="metric-card reveal">
+      <div class="metric-header">
+        <div class="metric-num">
+          <div class="metric-num-val">29%</div>
+          <div class="metric-num-label">Benchmark</div>
+        </div>
+        <div class="metric-title-block">
+          <div class="metric-name">Close Rate</div>
+          <div class="metric-title">Qué porcentaje de los presupuestos enviados se convierte en obra</div>
+          <div class="metric-formula">Close rate = Proyectos cerrados / Presupuestos enviados × 100</div>
+        </div>
+      </div>
+      <div class="metric-body">
+        <p class="metric-desc">El close rate es la métrica más directa del proceso de ventas. Mide qué pasa con los presupuestos después de que salen. <strong>El promedio global en 2024 fue del 29% según HubSpot.</strong> Para negocios de alto ticket con proceso consultivo activo, el rango óptimo es 35-50%. Debajo del 25% hay un problema de proceso, no de mercado.</p>
+        <div class="benchmark">
+          <div class="band low">
+            <div class="band-label">Problema</div>
+            <div class="band-range">< 20%</div>
+            <div class="band-desc">Falla en el proceso post-presupuesto. Revisar seguimiento y manejo de objeciones.</div>
+          </div>
+          <div class="band mid">
+            <div class="band-label">Promedio</div>
+            <div class="band-range">20–34%</div>
+            <div class="band-desc">En línea con el mercado. Hay margen de mejora con sistema de seguimiento activo.</div>
+          </div>
+          <div class="band high">
+            <div class="band-label">Óptimo</div>
+            <div class="band-range">35–50%</div>
+            <div class="band-desc">Sistema consultivo funcionando. El proceso de venta está diferenciando del resto.</div>
+          </div>
+        </div>
+        <div class="metric-signal"><strong>Señal de problema:</strong> el close rate cayó después de escalar el volumen de leads. Eso indica que el equipo de ventas no tiene capacidad para hacer seguimiento activo con más presupuestos en simultáneo. El cuello de botella no es el mercado, es el proceso.</div>
+      </div>
+    </div>
+
+    <!-- METRIC 4: CICLO DE VENTA -->
+    <div class="metric-card reveal">
+      <div class="metric-header">
+        <div class="metric-num">
+          <div class="metric-num-val">04</div>
+          <div class="metric-num-label">Velocidad</div>
+        </div>
+        <div class="metric-title-block">
+          <div class="metric-name">Ciclo de Venta Promedio</div>
+          <div class="metric-title">Cuántos días pasan entre el primer contacto y el cierre</div>
+          <div class="metric-formula">Ciclo = Días desde primer contacto hasta firma / Total de proyectos cerrados</div>
+        </div>
+      </div>
+      <div class="metric-body">
+        <p class="metric-desc">El ciclo de venta mide la velocidad del proceso completo. En proyectos de alto ticket en construcción y home improvement, un ciclo de 7 a 21 días es saludable. <strong>Un ciclo más largo no siempre es un problema: proyectos de mayor envergadura naturalmente toman más tiempo.</strong> El problema aparece cuando el ciclo se extiende sin que avance el proceso. Ese es tiempo muerto, no tiempo de decisión.</p>
+        <div class="benchmark">
+          <div class="band low">
+            <div class="band-label">Problema</div>
+            <div class="band-range">> 30 días</div>
+            <div class="band-desc">Hay leads estancados en el pipeline. Revisar criterios de archivo y frecuencia de seguimiento.</div>
+          </div>
+          <div class="band mid">
+            <div class="band-label">Promedio</div>
+            <div class="band-range">15–30 días</div>
+            <div class="band-desc">Ciclo razonable. Se puede acortar con mejor definición de próximos pasos en cada contacto.</div>
+          </div>
+          <div class="band high">
+            <div class="band-label">Óptimo</div>
+            <div class="band-range">7–15 días</div>
+            <div class="band-desc">Proceso activo y bien estructurado. El cliente tiene claridad sobre los próximos pasos en cada etapa.</div>
+          </div>
+        </div>
+        <div class="metric-signal"><strong>Señal de problema:</strong> el ciclo promedio es de 25 días pero algunos proyectos tardan 60. Eso indica que hay leads que nadie está archivando correctamente. Están inflando el promedio y distorsionando la foto real del pipeline.</div>
+      </div>
+    </div>
+
+    <h2>La métrica que integra las cuatro: Sales Velocity</h2>
+
+    <p>Las 4 métricas anteriores describen partes del sistema. La Sales Velocity las integra en un solo número que responde la pregunta más importante: ¿cuánta facturación genera este sistema por día?</p>
+
+    <div class="velocity-box reveal">
+      <p style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--green);margin-bottom:8px;">Sales Velocity — Fórmula</p>
+      <p style="font-size:15px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">Cuánta facturación genera el pipeline por día hábil. El número que resume la salud real del sistema.</p>
+      <div class="velocity-formula">
+        <div class="vf-item">
+          <div class="vf-item-num">N</div>
+          <div class="vf-item-label">Oportunidades</div>
+        </div>
+        <div class="vf-op">×</div>
+        <div class="vf-item">
+          <div class="vf-item-num">$V</div>
+          <div class="vf-item-label">Valor promedio</div>
+        </div>
+        <div class="vf-op">×</div>
+        <div class="vf-item">
+          <div class="vf-item-num">W%</div>
+          <div class="vf-item-label">Win rate</div>
+        </div>
+        <div class="vf-op">÷</div>
+        <div class="vf-item">
+          <div class="vf-item-num">L</div>
+          <div class="vf-item-label">Días del ciclo</div>
+        </div>
+        <div class="vf-op">=</div>
+        <div class="vf-result">
+          <div class="vf-result-num">$/día</div>
+          <div class="vf-result-label">Sales Velocity</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted);line-height:1.65;margin-top:4px;">Ejemplo: 20 oportunidades × $3.000.000 valor promedio × 35% win rate ÷ 18 días de ciclo = <strong style="color:var(--green)">$1.166.667 por día</strong> de facturación proyectada.</p>
+    </div>
+
+    <p>La Sales Velocity es útil porque muestra exactamente cuál de las 4 variables tiene el mayor impacto marginal. Aumentar el número de oportunidades en un 20% tiene el mismo efecto que mejorar el win rate en un 20% o reducir el ciclo en un 20%. Pero en la práctica, no todas las variables son igual de fáciles de mover.</p>
+
+    <p><strong>En negocios de construcción de alto ticket, la palanca con mayor retorno suele ser el win rate.</strong> Pasar de 25% a 35% de cierre con el mismo volumen de leads equivale a ganar un 40% más de facturación sin invertir un peso adicional en captación.</p>
+
+    <div class="insight reveal">
+      <strong>La lectura que más sorprende a los dueños:</strong> muchas veces el problema no está donde se asume. Un negocio con CPL bajo, buena calificación, y buen close rate puede tener un ciclo de venta tan largo que su Sales Velocity es menor que la de un competidor con peores métricas individuales pero con un proceso más veloz. El número que importa es el producto de las cuatro.
+    </div>
+
+    <h2>Cómo leer las métricas juntas</h2>
+
+    <p>Cada combinación de métricas diagnostica un problema diferente. Los tres patrones más frecuentes en negocios de construcción y home improvement que escalan:</p>
+
+    <p><strong>CPL bajo + tasa de calificación alta + close rate bajo.</strong> El sistema trae consultas baratas pero sin calificar bien. El equipo de ventas gasta tiempo con proyectos que no cierran. La palanca es mejorar el proceso de calificación, no bajar más el CPL ni mejorar el seguimiento.</p>
+
+    <p><strong>CPL en rango + tasa de calificación correcta + close rate bajo.</strong> El problema está en el proceso post-presupuesto. Los leads son buenos pero el seguimiento falla. La palanca es el sistema de seguimiento de 5 contactos y el manejo activo de objeciones.</p>
+
+    <p><strong>Todo en rango + ciclo de venta largo.</strong> El sistema funciona pero hay leads estancados que nadie está archivando. El pipeline parece lleno pero la facturación real es menor que la proyectada. La palanca es el criterio de archivo y el protocolo de reactivación.</p>
+
+    <div class="divider reveal">
+      <span class="divider-icon">◆ ◆ ◆</span>
+    </div>
+
+    <!-- LEAD MAGNET -->
+    <div class="lm-teaser reveal">
+      <div class="lm-header">
+        <div class="lm-eyebrow">Tablero incluido</div>
+        <div class="lm-title">El tablero de diagnóstico de las 4 métricas: completá tus números y recibí el análisis de en qué percentil estás</div>
+      </div>
+      <div class="lm-body">
+        <p class="lm-intro">Este tablero incluye la plantilla para calcular tus 4 métricas, los benchmarks por tipo de proyecto y ticket promedio, el cálculo de tu Sales Velocity actual, y el análisis de qué palanca mover primero según dónde está tu gap más grande.</p>
+
+        <div class="preview-items">
+          <div class="preview-item">Plantilla de cálculo de CPL: cómo separar leads totales de leads calificados para que el número sea útil</div>
+          <div class="preview-item">Tasa de calificación: cómo calcularla por canal y por mes para detectar tendencias</div>
+        </div>
+
+        <div class="lm-gate">
+          <div class="lm-gate-blur">
+            <div class="preview-items">
+              <div class="preview-item">Close rate por tipo de proyecto: benchmarks para piscinas, cerramientos, reformas, y muebles a medida</div>
+              <div class="preview-item">Ciclo de venta: cómo calcularlo correctamente excluyendo los leads que nadie archivó</div>
+              <div class="preview-item">Calculadora de Sales Velocity: completás tus 4 números y el tablero calcula tu facturación proyectada por día</div>
+              <div class="preview-item">Análisis de palanca: según tus métricas, qué variable tiene el mayor impacto marginal en tu sistema</div>
+            </div>
+          </div>
+          <div class="lm-gate-overlay">
+            <div class="gate-label">Tablero completo disponible por WhatsApp</div>
+            <div class="gate-title">Recibí el tablero con tus 4 métricas y el análisis de palanca</div>
+            <div class="gate-sub">Incluye calculadora de Sales Velocity y benchmarks por tipo de proyecto.</div>
+            <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito. <strong>La respuesta llega automáticamente.</strong></p>
+            <a class="gate-kw" href="https://wa.me/5491155557890?text=METRICAS" target="_blank" rel="noopener">
+              Escribir METRICAS por WhatsApp <span class="gate-kw-arrow">→</span>
+            </a>
+            <p class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footnote reveal">
+      <p>Fuentes citadas: HubSpot State of Sales 2024 — close rate promedio 29%, win rate promedio 21%, deal size mediano USD 4.000. HubSpot Sales Statistics 2025 — métricas de performance y benchmarks de pipeline. HubSpot Sales Velocity Framework — fórmula de velocidad de ventas: oportunidades × valor × win rate / ciclo. Gong Research 2025 — deals de alto valor requieren múltiples contactos y stakeholders. Los benchmarks de CPL y tasa de calificación corresponden a segmentos de alto ticket B2C en mercados latinoamericanos, estimados en base a datos de campañas de Meta Ads para el sector de construcción y home improvement.</p>
+    </div>
+
+  </div>
+</article>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    document.getElementById('progress-bar').style.width =
+      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

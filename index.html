@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico de Embudo · Mucho Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand-dark: #010707;
+  --card-dark: #09140E;
+  --card-mid: #192520;
+  --green: #27DE6B;
+  --white: #FFFFFF;
+  --body: rgba(255,255,255,0.70);
+  --muted: rgba(255,255,255,0.35);
+  --border: rgba(255,255,255,0.07);
+  --green-dim: rgba(39,222,107,0.07);
+  --green-border: rgba(39,222,107,0.22);
+  --red: #FF5A5A;
+  --red-dim: rgba(255,90,90,0.07);
+  --red-border: rgba(255,90,90,0.2);
+  --yellow: #F5C842;
+  --yellow-dim: rgba(245,200,66,0.07);
+  --yellow-border: rgba(245,200,66,0.2);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--brand-dark);
+  color: var(--body);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* NOISE TEXTURE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* HEADER */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(1,7,7,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.logo span { color: var(--green); }
+
+.header-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  padding: 4px 10px;
+}
+
+/* PROGRESS BAR */
+.progress-track {
+  position: fixed;
+  top: 57px; left: 0; right: 0;
+  height: 2px;
+  background: var(--border);
+  z-index: 99;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--green);
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+/* MAIN WRAPPER */
+main {
+  position: relative;
+  z-index: 1;
+  padding-top: 80px;
+}
+
+/* SCREEN SYSTEM */
+.screen {
+  display: none;
+  min-height: calc(100vh - 80px);
+  padding: 60px 20px 80px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  animation: screenIn 0.5s ease forwards;
+}
+
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* INTRO SCREEN */
+.intro-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.intro-eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--green);
+}
+
+.intro-h1 {
+  font-size: clamp(30px, 5vw, 50px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+
+.intro-h1 em {
+  font-style: normal;
+  color: var(--green);
+}
+
+.intro-sub {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 40px;
+  border-left: 3px solid var(--green);
+  padding-left: 18px;
+}
+
+.trust-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.trust-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--green);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.intro-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--green);
+  color: var(--brand-dark);
+  padding: 18px 36px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.intro-cta:hover {
+  background: #4eff8a;
+  transform: translateY(-1px);
+}
+
+.intro-cta-arrow {
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.intro-cta:hover .intro-cta-arrow {
+  transform: translateX(4px);
+}
+
+.intro-note {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* QUESTION SCREENS */
+.q-step {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.q-title {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 10px;
+}
+
+.q-sub {
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 36px;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* OPTIONS */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  background: var(--card-dark);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.option::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: var(--green);
+  transition: width 0.18s ease;
+}
+
+.option:hover {
+  border-color: var(--green-border);
+  background: var(--card-mid);
+}
+
+.option:hover::before { width: 3px; }
+
+.option.selected {
+  border-color: var(--green-border);
+  background: var(--green-dim);
+}
+
+.option.selected::before { width: 3px; }
+
+.option-letter {
+  width: 28px;
+  height: 28px;
+  background: var(--card-mid);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: all 0.18s;
+  z-index: 1;
+}
+
+.option.selected .option-letter {
+  background: var(--green);
+  color: var(--brand-dark);
+  border-color: var(--green);
+}
+
+.option-text {
+  flex: 1;
+  z-index: 1;
+}
+
+.option-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.option-desc {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+/* NUMBER INPUT */
+.number-input-wrap {
+  margin-bottom: 36px;
+}
+
+.number-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--card-dark);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.number-input-row:focus-within {
+  border-color: var(--green-border);
+}
+
+.number-input-prefix {
+  padding: 0 16px;
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--card-mid);
+  height: 54px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.number-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  padding: 14px 18px;
+  letter-spacing: -0.02em;
+}
+
+.number-input::placeholder {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.number-input-suffix {
+  padding: 0 16px;
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--card-mid);
+  height: 54px;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.input-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* NAV BUTTONS */
+.nav-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.btn-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--green);
+  color: var(--brand-dark);
+  padding: 16px 32px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-next:hover:not(:disabled) {
+  background: #4eff8a;
+  transform: translateY(-1px);
+}
+
+.btn-next:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-back {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 16px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-back:hover {
+  border-color: var(--green-border);
+  color: var(--white);
+}
+
+/* CALCULATING SCREEN */
+.calculating-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.calc-spinner {
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--border);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.calc-label {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.calc-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.calc-line {
+  height: 2px;
+  background: var(--card-mid);
+  position: relative;
+  overflow: hidden;
+}
+
+.calc-line::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  animation: scan 1.2s ease infinite;
+}
+
+.calc-line:nth-child(2)::after { animation-delay: 0.15s; }
+.calc-line:nth-child(3)::after { animation-delay: 0.3s; }
+
+@keyframes scan {
+  to { left: 100%; }
+}
+
+/* RESULTS SCREEN */
+.results-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.results-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+
+.results-title {
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+}
+
+.results-sub {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 300;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* SCORECARD */
+.scorecard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+
+.score-item {
+  background: var(--card-dark);
+  padding: 22px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.score-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.score-item.green::before { background: var(--green); }
+.score-item.yellow::before { background: var(--yellow); }
+.score-item.red::before { background: var(--red); }
+
+.score-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.score-value {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.score-item.green .score-value { color: var(--green); }
+.score-item.yellow .score-value { color: var(--yellow); }
+.score-item.red .score-value { color: var(--red); }
+
+.score-benchmark {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.score-status {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+}
+
+.score-item.green .score-status {
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+}
+
+.score-item.yellow .score-status {
+  color: var(--yellow);
+  background: var(--yellow-dim);
+  border: 1px solid var(--yellow-border);
+}
+
+.score-item.red .score-status {
+  color: var(--red);
+  background: var(--red-dim);
+  border: 1px solid var(--red-border);
+}
+
+/* DIAGNOSIS BOX */
+.diagnosis-box {
+  background: var(--card-dark);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--green);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.diagnosis-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  padding: 3px 9px;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+.diagnosis-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.diagnosis-body {
+  font-size: 15px;
+  color: var(--body);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.diagnosis-body strong {
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* IMPACT BLOCK */
+.impact-block {
+  background: var(--card-mid);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  padding: 20px 24px;
+  margin-top: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.impact-num {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--green);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.impact-text {
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.6;
+}
+
+.impact-text strong { color: var(--white); font-weight: 600; }
+
+/* UNLOCK SECTION */
+.unlock-section {
+  background: var(--card-dark);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--green);
+  padding: 32px 28px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.unlock-face {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.unlock-face.hidden {
+  display: none;
+}
+
+.unlock-form-face {
+  display: none;
+  animation: stepIn 0.35s ease forwards;
+}
+
+.unlock-form-face.visible {
+  display: block;
+}
+
+.btn-ver-plan {
+  width: 100%;
+  background: var(--green);
+  color: var(--brand-dark);
+  border: none;
+  padding: 18px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-ver-plan:hover {
+  background: #4eff8a;
+  transform: translateY(-1px);
+}
+
+.btn-ver-plan-arrow {
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.btn-ver-plan:hover .btn-ver-plan-arrow {
+  transform: translateX(4px);
+}
+
+.unlock-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+
+.unlock-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.unlock-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.unlock-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.unlock-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.5;
+}
+
+.unlock-item::before {
+  content: '→';
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* FORM */
+/* STEP FORM */
+.step-form { width: 100%; }
+
+.step-indicator {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.step-dot {
+  width: 18px;
+  height: 2px;
+  background: var(--border);
+  transition: background 0.3s;
+}
+
+.step-dot.active { background: var(--green); }
+.step-dot.done { background: rgba(39,222,107,0.4); }
+
+.step-panel {
+  display: none;
+  animation: stepIn 0.35s ease forwards;
+}
+
+.step-panel.active { display: block; }
+
+@keyframes stepIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.step-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.step-input-wrap {
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  background: var(--brand-dark);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  padding: 16px 48px 16px 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus { border-color: var(--green-border); }
+.form-input::placeholder { color: var(--muted); }
+.form-input.valid { border-color: var(--green-border); }
+
+.input-valid-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  background: var(--green);
+  color: var(--brand-dark);
+  font-size: 12px;
+  font-weight: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.input-valid-icon.visible { display: flex; }
+
+.step-microcopy {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.btn-step-next {
+  width: 100%;
+  background: var(--green);
+  color: var(--brand-dark);
+  border: none;
+  padding: 17px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.btn-step-next.ready {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.btn-step-next.ready:hover {
+  background: #4eff8a;
+  transform: translateY(-1px);
+}
+
+/* WA STEP */
+.wa-step-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.wa-step-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.wa-step-sub strong { color: var(--body); font-weight: 500; }
+
+.btn-wa-primary {
+  width: 100%;
+  background: var(--green);
+  color: var(--brand-dark);
+  border: none;
+  padding: 18px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-wa-primary:hover {
+  background: #4eff8a;
+  transform: translateY(-1px);
+}
+
+.btn-wa-secondary {
+  width: 100%;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-wa-secondary:hover {
+  border-color: var(--green-border);
+  color: var(--white);
+}
+
+.wa-phone-wrap {
+  display: none;
+  margin-bottom: 10px;
+  animation: stepIn 0.3s ease forwards;
+}
+
+.wa-phone-wrap.visible { display: block; }
+
+.form-privacy {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* THANK YOU SCREEN */
+.ty-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.ty-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.ty-title {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.ty-title em {
+  font-style: normal;
+  color: var(--green);
+}
+
+.ty-body {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 440px;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+.ty-next {
+  background: var(--card-dark);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--green);
+  padding: 24px;
+  max-width: 440px;
+  width: 100%;
+  text-align: left;
+}
+
+.ty-next-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 10px;
+}
+
+.ty-next-text {
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 580px) {
+  header { padding: 16px 20px; }
+  .screen { padding: 40px 16px 60px; }
+  .scorecard { grid-template-columns: 1fr; }
+  .impact-block { flex-direction: column; gap: 8px; }
+  .unlock-section { padding: 24px 18px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="header-badge">Diagnóstico Gratuito</div>
+</header>
+
+<div class="progress-track">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<main>
+
+  <!-- SCREEN 0: INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-eyebrow">Cerramientos · Construcción · Arquitectura · Piletas · Muebles a medida</div>
+    <h1 class="intro-h1">¿Cuánto te cuesta<br><em>no saber</em> tus números?</h1>
+    <p class="intro-sub">Respondé 5 preguntas sobre tu negocio. En menos de 3 minutos recibís un diagnóstico preciso de dónde se pierden tus oportunidades y cuánto vale eso por mes.</p>
+    <div class="trust-row">
+      <div class="trust-item"><div class="trust-dot"></div>Sin propuesta de venta</div>
+      <div class="trust-item"><div class="trust-dot"></div>3 minutos</div>
+      <div class="trust-item"><div class="trust-dot"></div>Diagnóstico personalizado</div>
+    </div>
+    <button class="intro-cta" onclick="goTo('screen-q1')">
+      Empezar el diagnóstico
+      <span class="intro-cta-arrow">→</span>
+    </button>
+    <p class="intro-note">Calculadora simple. No recolectamos ningún dato en este paso.</p>
+  </div>
+
+  <!-- SCREEN Q1: Consultas -->
+  <div class="screen" id="screen-q1">
+    <div class="q-step">Pregunta 1 de 5</div>
+    <h2 class="q-title">¿Cuántas consultas nuevas recibís por mes?</h2>
+    <p class="q-sub">Sumá todos los canales: WhatsApp, Instagram, llamadas, formularios web, referidos que contactan por primera vez.</p>
+    <div class="number-input-wrap">
+      <div class="number-input-row">
+        <div class="number-input-prefix">Consultas / mes</div>
+        <input class="number-input" type="number" id="q1-val" placeholder="ej: 80" min="1" max="2000" oninput="validateQ1()">
+      </div>
+      <p class="input-hint">Si no lo sabés con exactitud, usá un estimativo conservador.</p>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo('screen-intro')">← Volver</button>
+      <button class="btn-next" id="btn-q1" disabled onclick="goTo('screen-q2')">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN Q2: Fuente -->
+  <div class="screen" id="screen-q2">
+    <div class="q-step">Pregunta 2 de 5</div>
+    <h2 class="q-title">¿De dónde viene la mayoría de tus clientes hoy?</h2>
+    <p class="q-sub">Elegí la opción que mejor describe tu situación actual.</p>
+    <div class="options" id="q2-options">
+      <div class="option" data-val="referidos-alto" onclick="selectOption('q2', this)">
+        <div class="option-letter">A</div>
+        <div class="option-text">
+          <span class="option-label">Principalmente referidos (70%+)</span>
+          <span class="option-desc">La mayoría viene porque alguien me recomendó</span>
+        </div>
+      </div>
+      <div class="option" data-val="referidos-medio" onclick="selectOption('q2', this)">
+        <div class="option-letter">B</div>
+        <div class="option-text">
+          <span class="option-label">Mix de referidos y digital (50/50)</span>
+          <span class="option-desc">Tengo algo de digital pero el grueso sigue siendo referidos</span>
+        </div>
+      </div>
+      <div class="option" data-val="digital-ads" onclick="selectOption('q2', this)">
+        <div class="option-letter">C</div>
+        <div class="option-text">
+          <span class="option-label">Principalmente digital (Google, Meta)</span>
+          <span class="option-desc">Invierto en publicidad y de ahí viene la mayoría</span>
+        </div>
+      </div>
+      <div class="option" data-val="no-se" onclick="selectOption('q2', this)">
+        <div class="option-letter">D</div>
+        <div class="option-text">
+          <span class="option-label">No lo sé con precisión</span>
+          <span class="option-desc">No tengo visibilidad clara de dónde vienen</span>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo('screen-q1')">← Volver</button>
+      <button class="btn-next" id="btn-q2" disabled onclick="goTo('screen-q3')">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN Q3: Presupuestos -->
+  <div class="screen" id="screen-q3">
+    <div class="q-step">Pregunta 3 de 5</div>
+    <h2 class="q-title">¿A cuántos les mandás un presupuesto formal?</h2>
+    <p class="q-sub">De todas las consultas que recibís, ¿cuántas terminan en una propuesta concreta de tu parte?</p>
+    <div class="number-input-wrap">
+      <div class="number-input-row">
+        <div class="number-input-prefix">Presupuestos / mes</div>
+        <input class="number-input" type="number" id="q3-val" placeholder="ej: 40" min="1" max="2000" oninput="validateQ3()">
+      </div>
+      <p class="input-hint">Tiene que ser menor o igual a tu número de consultas.</p>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo('screen-q2')">← Volver</button>
+      <button class="btn-next" id="btn-q3" disabled onclick="goTo('screen-q4')">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN Q4: Cierres -->
+  <div class="screen" id="screen-q4">
+    <div class="q-step">Pregunta 4 de 5</div>
+    <h2 class="q-title">¿Cuántos proyectos cerrás por mes?</h2>
+    <p class="q-sub">Proyectos firmados y con señal o contrato adelantado en los últimos 30 días.</p>
+    <div class="number-input-wrap">
+      <div class="number-input-row">
+        <div class="number-input-prefix">Proyectos cerrados / mes</div>
+        <input class="number-input" type="number" id="q4-val" placeholder="ej: 12" min="0" max="500" oninput="validateQ4()">
+      </div>
+      <p class="input-hint">Tiene que ser menor o igual a tus presupuestos enviados.</p>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo('screen-q3')">← Volver</button>
+      <button class="btn-next" id="btn-q4" disabled onclick="goTo('screen-q5')">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN Q5: Ticket -->
+  <div class="screen" id="screen-q5">
+    <div class="q-step">Pregunta 5 de 5</div>
+    <h2 class="q-title">¿Cuál es el ticket promedio de un proyecto?</h2>
+    <p class="q-sub">El valor promedio de un proyecto cerrado, en pesos argentinos.</p>
+    <div class="number-input-wrap">
+      <div class="number-input-row">
+        <div class="number-input-prefix">ARS $</div>
+        <input class="number-input" type="number" id="q5-val" placeholder="ej: 3000000" min="100000" oninput="validateQ5()">
+        <div class="number-input-suffix">por proyecto</div>
+      </div>
+      <p class="input-hint">Si tenés distintos tipos de proyectos, usá el promedio.</p>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo('screen-q4')">← Volver</button>
+      <button class="btn-next" id="btn-q5" disabled onclick="calculate()">Ver mi diagnóstico →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN CALCULATING -->
+  <div class="screen" id="screen-calculating">
+    <div class="calculating-wrap">
+      <div class="calc-spinner"></div>
+      <div class="calc-label">Analizando tu embudo</div>
+      <div class="calc-lines">
+        <div class="calc-line"></div>
+        <div class="calc-line"></div>
+        <div class="calc-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="results-header">
+      <div class="results-eyebrow">Tu diagnóstico</div>
+      <h2 class="results-title" id="results-title">Diagnóstico de tu embudo</h2>
+      <p class="results-sub" id="results-sub">Basado en los números que ingresaste.</p>
+    </div>
+
+    <!-- SCORECARD -->
+    <div class="scorecard" id="scorecard"></div>
+
+    <!-- DIAGNOSIS -->
+    <div class="diagnosis-box" id="diagnosis-box"></div>
+
+    <!-- UNLOCK -->
+    <div class="unlock-section">
+
+      <!-- FACE 1: PREVIEW -->
+      <div class="unlock-face" id="unlock-face">
+        <div class="unlock-eyebrow">Plan de acción personalizado</div>
+        <div class="unlock-title">Recibí el plan completo para resolver esto</div>
+        <div class="unlock-sub">Según tu diagnóstico, armamos una guía específica con los pasos exactos para resolver el cuello de botella identificado. Sin generalidades.</div>
+        <div class="unlock-items" id="unlock-items"></div>
+        <button class="btn-ver-plan" onclick="revealForm()">
+          Ver el plan completo
+          <span class="btn-ver-plan-arrow">→</span>
+        </button>
+      </div>
+
+      <!-- FACE 2: FORM -->
+      <div class="unlock-form-face" id="unlock-form-face">
+      <!-- STEP FORM -->
+      <div class="step-form">
+
+        <!-- STEP INDICATOR -->
+        <div class="step-indicator">
+          <span id="sf-label">Paso 1 de 3</span>
+          <div class="step-dots">
+            <div class="step-dot active" id="sd-1"></div>
+            <div class="step-dot" id="sd-2"></div>
+            <div class="step-dot" id="sd-3"></div>
+          </div>
+        </div>
+
+        <!-- STEP 1: EMAIL -->
+        <div class="step-panel active" id="sp-1">
+          <label class="step-label">Tu email</label>
+          <div class="step-input-wrap">
+            <input class="form-input" type="email" id="f-email" placeholder="nombre@empresa.com" oninput="validateEmail()" onkeydown="if(event.key==='Enter') stepNext(2)">
+            <div class="input-valid-icon" id="email-check">✓</div>
+          </div>
+          <p class="step-microcopy">Solo el plan de acción para tu diagnóstico. Sin spam.</p>
+          <button class="btn-step-next" id="btn-s1" onclick="stepNext(2)">Continuar →</button>
+        </div>
+
+        <!-- STEP 2: NOMBRE -->
+        <div class="step-panel" id="sp-2">
+          <label class="step-label">Tu nombre</label>
+          <div class="step-input-wrap">
+            <input class="form-input" type="text" id="f-name" placeholder="Nombre" oninput="validateName()" onkeydown="if(event.key==='Enter') stepNext(3)">
+            <div class="input-valid-icon" id="name-check">✓</div>
+          </div>
+          <p class="step-microcopy">Para personalizar el contenido que te enviamos.</p>
+          <button class="btn-step-next" id="btn-s2" onclick="stepNext(3)">Continuar →</button>
+        </div>
+
+        <!-- STEP 3: WHATSAPP -->
+        <div class="step-panel" id="sp-3">
+          <div class="wa-step-title">Último paso: ingresá tu WhatsApp</div>
+          <div class="wa-step-sub">Te enviamos contenido educativo de alto valor para resolver tu caso específico. <strong>Podés parar en cualquier momento escribiendo "No quiero info".</strong></div>
+
+          <a class="btn-wa-primary" id="btn-wa-link" href="#" target="_blank" rel="noopener" style="margin-top:10px;text-decoration:none" onclick="submitForm(true)">
+            <span>Recibir por WhatsApp →</span>
+          </a>
+          <p class="form-privacy">Tu información es confidencial. No compartimos tus datos con terceros.</p>
+        </div>
+
+      </div>
+      </div><!-- /unlock-form-face -->
+  </div><!-- /unlock-section -->
+
+  <!-- SCREEN THANK YOU -->
+  <div class="screen" id="screen-ty">
+    <div class="ty-wrap">
+      <div class="ty-icon">✓</div>
+      <h2 class="ty-title">Listo, <em id="ty-name">Roberto</em>.</h2>
+      <p class="ty-body" id="ty-body">Te enviamos el plan de acción a tu email. Revisá también la carpeta de spam si no lo encontrás en los próximos minutos.</p>
+      <div class="ty-next">
+        <div class="ty-next-label">Mientras tanto</div>
+        <div class="ty-next-text" id="ty-next-text">Podés empezar por el artículo más relevante para tu diagnóstico. Lo encontrás en el link que te enviamos.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// STATE
+const state = {
+  consultas: 0,
+  fuente: '',
+  presupuestos: 0,
+  cierres: 0,
+  ticket: 0,
+  wantsWA: false,
+  diagnosis: null
+};
+
+const STEPS = ['intro', 'q1', 'q2', 'q3', 'q4', 'q5', 'calculating', 'results', 'ty'];
+
+function updateProgress(screenId) {
+  const map = { 'screen-intro': 0, 'screen-q1': 20, 'screen-q2': 40, 'screen-q3': 55, 'screen-q4': 70, 'screen-q5': 85, 'screen-calculating': 95, 'screen-results': 100, 'screen-ty': 100 };
+  document.getElementById('progressFill').style.width = (map[screenId] || 0) + '%';
+}
+
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(id);
+  target.classList.add('active');
+  updateProgress(id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// VALIDATIONS
+function validateQ1() {
+  const v = parseInt(document.getElementById('q1-val').value);
+  state.consultas = v || 0;
+  document.getElementById('btn-q1').disabled = !(v > 0);
+}
+
+function validateQ3() {
+  const v = parseInt(document.getElementById('q3-val').value);
+  state.presupuestos = v || 0;
+  document.getElementById('btn-q3').disabled = !(v > 0 && v <= state.consultas);
+}
+
+function validateQ4() {
+  const v = parseInt(document.getElementById('q4-val').value);
+  state.cierres = v || 0;
+  document.getElementById('btn-q4').disabled = !(v >= 0 && v <= state.presupuestos);
+}
+
+function validateQ5() {
+  const v = parseInt(document.getElementById('q5-val').value);
+  state.ticket = v || 0;
+  document.getElementById('btn-q5').disabled = !(v >= 100000);
+}
+
+function selectOption(q, el) {
+  document.querySelectorAll(`#${q}-options .option`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  state.fuente = el.dataset.val;
+  document.getElementById(`btn-${q}`).disabled = false;
+}
+
+const WA_NUMBER = '5491155557890'; // Reemplazar con número real
+
+const WA_KEYWORDS = {
+  captacion:    'CAPTACION',
+  calificacion: 'CALIFICACION',
+  seguimiento:  'SEGUIMIENTO',
+  optimizacion: 'OPTIMIZACION',
+  escala:       'ESCALA'
+};
+
+function buildWALink(diagnosis) {
+  const keyword = WA_KEYWORDS[diagnosis] || 'DIAGNOSTICO';
+  const msg = encodeURIComponent(keyword);
+  return `https://wa.me/${WA_NUMBER}?text=${msg}`;
+}
+
+function revealForm() {
+  document.getElementById('unlock-face').classList.add('hidden');
+  document.getElementById('unlock-form-face').classList.add('visible');
+  setTimeout(() => {
+    document.getElementById('f-email').focus();
+  }, 350);
+}
+
+function stepNext(step) {
+  // hide all panels
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('sp-' + step).classList.add('active');
+
+  // update dots
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('sd-' + i);
+    dot.classList.remove('active', 'done');
+    if (i < step) dot.classList.add('done');
+    if (i === step) dot.classList.add('active');
+  }
+
+  document.getElementById('sf-label').textContent = 'Paso ' + step + ' de 3';
+
+  // autofocus
+  setTimeout(() => {
+    const inp = document.querySelector('#sp-' + step + ' .form-input');
+    if (inp) inp.focus();
+  }, 350);
+}
+
+function validateEmail() {
+  const v = document.getElementById('f-email').value.trim();
+  const valid = v.includes('@') && v.includes('.');
+  const btn = document.getElementById('btn-s1');
+  const icon = document.getElementById('email-check');
+  document.getElementById('f-email').classList.toggle('valid', valid);
+  icon.classList.toggle('visible', valid);
+  btn.classList.toggle('ready', valid);
+}
+
+function validateName() {
+  const v = document.getElementById('f-name').value.trim();
+  const valid = v.length >= 2;
+  const btn = document.getElementById('btn-s2');
+  const icon = document.getElementById('name-check');
+  document.getElementById('f-name').classList.toggle('valid', valid);
+  icon.classList.toggle('visible', valid);
+  btn.classList.toggle('ready', valid);
+}
+
+function validatePhone() {
+  const v = document.getElementById('f-phone').value.trim();
+  const valid = v.length >= 8;
+  const icon = document.getElementById('phone-check');
+  document.getElementById('f-phone').classList.toggle('valid', valid);
+  icon.classList.toggle('visible', valid);
+}
+
+function showPhone() {
+  document.getElementById('wa-buttons').style.display = 'none';
+  document.getElementById('wa-phone-wrap').classList.add('visible');
+  setTimeout(() => {
+    document.getElementById('f-phone').focus();
+  }, 100);
+}
+
+function submitForm(withWA) {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  state.wantsWA = withWA;
+
+  // Set WA link with correct keyword for diagnosis
+  const waLink = document.getElementById('btn-wa-link');
+  if (waLink) waLink.href = buildWALink(state.diagnosis);
+
+  document.getElementById('ty-name').textContent = name.split(' ')[0] || 'Ahí';
+
+  const diagLabels = {
+    captacion:    'Empezá por el artículo "Por qué el 70% de las empresas dependen de referidos". Es el que más directamente aplica a tu caso.',
+    calificacion: 'Te mandamos la guía de calificación junto con el artículo sobre los 4 números clave de tu embudo.',
+    seguimiento:  'El artículo sobre acompañamiento y seguimiento es el punto de partida. Ya está en tu email.',
+    optimizacion: 'Te enviamos el análisis completo con los pasos de optimización para tu etapa específica.',
+    escala:       'Te mandamos la guía de escala junto con el artículo sobre sistemas de demanda predecible.'
+  };
+
+  document.getElementById('ty-body').textContent = 'Te enviamos el plan de acción a ' + email + '. Revisá también la carpeta de spam si no lo encontrás en los próximos minutos.';
+  document.getElementById('ty-next-text').textContent = diagLabels[state.diagnosis] || 'El contenido ya está en camino.';
+
+  goTo('screen-ty');
+}
+function calculate() {
+  goTo('screen-calculating');
+
+  setTimeout(() => {
+    const c = state.consultas;
+    const p = state.presupuestos;
+    const cl = state.cierres;
+    const t = state.ticket;
+    const f = state.fuente;
+
+    // RATES
+    const presRate = p / c;
+    const closeRate = p > 0 ? cl / p : 0;
+    const overallConv = cl / c;
+
+    // BENCHMARKS
+    // Presupuestación: <35% malo, 35-65% ok, >65% bueno
+    const presColor = presRate < 0.35 ? 'red' : presRate < 0.65 ? 'yellow' : 'green';
+    const presStatus = presRate < 0.35 ? 'Bajo' : presRate < 0.65 ? 'Mejorable' : 'Óptimo';
+
+    // Cierre: <25% malo, 25-40% ok, >40% bueno
+    const closeColor = closeRate < 0.25 ? 'red' : closeRate < 0.40 ? 'yellow' : 'green';
+    const closeStatus = closeRate < 0.25 ? 'Bajo' : closeRate < 0.40 ? 'Mejorable' : 'Óptimo';
+
+    // Fuente: referidos alto = rojo, medio = amarillo, digital = verde, no-se = rojo
+    const fuenteColor = f === 'digital-ads' ? 'green' : f === 'referidos-medio' ? 'yellow' : 'red';
+    const fuenteStatus = f === 'digital-ads' ? 'Diversificado' : f === 'referidos-medio' ? 'Parcial' : 'Riesgo';
+    const fuenteVal = f === 'digital-ads' ? 'Digital activo' : f === 'referidos-medio' ? 'Mix 50/50' : f === 'no-se' ? 'Sin visibilidad' : 'Referidos 70%+';
+
+    // Volumen: <40 malo, 40-100 ok, >100 bueno
+    const volColor = c < 40 ? 'red' : c < 100 ? 'yellow' : 'green';
+    const volStatus = c < 40 ? 'Bajo' : c < 100 ? 'Moderado' : 'Alto';
+
+    // OPPORTUNITY COST (what's being lost)
+    // Potential: if they had 45% close rate on current presupuestos
+    const potentialCierres = Math.round(p * 0.45);
+    const cierresGap = Math.max(0, potentialCierres - cl);
+    const opportunityLost = cierresGap * t;
+
+    // DOMINANT PROBLEM (for diagnosis)
+    let diagnosis;
+    if (c < 40 || f === 'referidos-alto' || f === 'no-se') {
+      diagnosis = 'captacion';
+    } else if (presRate < 0.35) {
+      diagnosis = 'calificacion';
+    } else if (closeRate < 0.30) {
+      diagnosis = 'seguimiento';
+    } else if (closeRate < 0.42) {
+      diagnosis = 'optimizacion';
+    } else {
+      diagnosis = 'escala';
+    }
+
+    state.diagnosis = diagnosis;
+
+    // Pre-build WA link with correct keyword
+    setTimeout(() => {
+      const waLink = document.getElementById('btn-wa-link');
+      if (waLink) waLink.href = buildWALink(diagnosis);
+    }, 100);
+
+    // RENDER SCORECARD
+    const scorecard = document.getElementById('scorecard');
+    scorecard.innerHTML = `
+      <div class="score-item ${volColor}">
+        <div class="score-status">${volStatus}</div>
+        <div class="score-label">Consultas / mes</div>
+        <div class="score-value">${c}</div>
+        <div class="score-benchmark">Benchmark: 60–120 sin publicidad pagada</div>
+      </div>
+      <div class="score-item ${fuenteColor}">
+        <div class="score-status">${fuenteStatus}</div>
+        <div class="score-label">Fuente principal</div>
+        <div class="score-value" style="font-size:20px;padding-top:8px">${fuenteVal}</div>
+        <div class="score-benchmark">Objetivo: max 40% referidos</div>
+      </div>
+      <div class="score-item ${presColor}">
+        <div class="score-status">${presStatus}</div>
+        <div class="score-label">Tasa de presupuestación</div>
+        <div class="score-value">${Math.round(presRate * 100)}%</div>
+        <div class="score-benchmark">Benchmark: 45–65%</div>
+      </div>
+      <div class="score-item ${closeColor}">
+        <div class="score-status">${closeStatus}</div>
+        <div class="score-label">Tasa de cierre</div>
+        <div class="score-value">${Math.round(closeRate * 100)}%</div>
+        <div class="score-benchmark">Benchmark: 35–50% con sistema</div>
+      </div>
+    `;
+
+    // RENDER DIAGNOSIS
+    const diagnosisData = {
+      captacion: {
+        tag: 'Diagnóstico A — Captación',
+        title: 'Tu cuello de botella está en la entrada del embudo',
+        body: `Recibís <strong>${c} consultas por mes</strong> y la mayoría viene de referidos. Eso funciona bien hasta que deja de funcionar: el canal de referidos no se puede planificar, no se puede optimizar, y no avisa cuando se enfría.<br><br>Con este volumen de entrada y tu tasa de cierre actual, el crecimiento depende de variables externas que no controlás. Un mes sin recomendaciones activas se siente directamente en la facturación, sin palancas claras para revertirlo rápido.<br><br>La solución no empieza por mejorar el seguimiento ni el proceso de ventas. Empieza por construir un canal de captación que genere demanda de forma predecible, independientemente de lo que pase con tu red.`,
+        impactNum: formatPesos(Math.round(100 * closeRate * t)),
+        impactText: `Facturación adicional mensual posible con <strong>100 consultas calificadas adicionales</strong> a tu tasa de cierre actual del ${Math.round(closeRate*100)}%.`,
+        unlockItems: [
+          'Por qué el 70% de las empresas de construcción dependen de referidos (y qué hace diferente el 30% que no)',
+          'Cómo estructurar un sistema de captación que no dependa de tu red',
+          'El presupuesto mínimo para empezar a generar consultas predecibles en tu rubro'
+        ]
+      },
+      calificacion: {
+        tag: 'Diagnóstico B — Calificación',
+        title: 'Tu embudo pierde eficiencia en la calificación',
+        body: `Recibís <strong>${c} consultas</strong> pero solo presupuestás el <strong>${Math.round(presRate*100)}%</strong>. Eso significa que de cada 100 personas que contactan tu empresa, solo ${Math.round(presRate*100)} llegan a recibir una propuesta formal.<br><br>Esto puede significar dos cosas distintas: o estás atrayendo a muchas personas que no son tu cliente ideal, o tu equipo está descartando consultas válidas antes de calificarlas correctamente.<br><br>En ambos casos, el resultado es el mismo: tiempo del equipo mal invertido y oportunidades perdidas antes de que el proceso de venta siquiera empiece.`,
+        impactNum: formatPesos(Math.max(0, Math.round((c * 0.60 - p) * closeRate * t))),
+        impactText: `Presupuestando el 60% de tus <strong>${c} consultas</strong> generarías ${Math.max(0,Math.round(c*0.60-p))} presupuestos adicionales. A tu tasa de cierre actual, eso son <strong>${Math.max(0,Math.round((c*0.60-p)*closeRate))} ventas extra por mes</strong>.`,
+        unlockItems: [
+          'Cómo definir y comunicar tu cliente ideal para atraer las consultas correctas',
+          'Script de calificación inicial: las 3 preguntas que separan un lead real de uno que no va a cerrar',
+          'Cómo filtrar sin friccionar: calificar sin perder a los buenos'
+        ]
+      },
+      seguimiento: {
+        tag: 'Diagnóstico C — Seguimiento',
+        title: 'Tu oportunidad más grande está en el seguimiento post-presupuesto',
+        body: `Presupuestás <strong>${p} proyectos</strong> por mes pero cerrás <strong>${cl}</strong>. Tu tasa de cierre es del <strong>${Math.round(closeRate*100)}%</strong>, cuando el benchmark para empresas con sistema activo de seguimiento es del 40–50%.<br><br>Llevando tu tasa al 45% sobre los <strong>${p} presupuestos actuales</strong>, el potencial es de <strong>${Math.round(p*0.45)} cierres por mes</strong>. Hoy cerrás ${cl}, lo que deja <strong>${cierresGap} proyectos por mes</strong> que entraron al embudo, recibieron una propuesta, y salieron sin convertirse. Cada uno representa ${formatPesos(t)} que no se cobró.<br><br>La causa más frecuente no es el precio ni la competencia. Es que el 44% de los vendedores abandona después del primer intento de contacto, cuando el 80% de las ventas requiere cinco o más seguimientos.`,
+        impactNum: formatPesos(cierresGap * t),
+        impactText: `Facturación mensual que estás dejando ir en proyectos que ya recibieron presupuesto y no cerraron. <strong>${cierresGap} proyectos × ${formatPesos(t)}</strong>.`,
+        unlockItems: [
+          'El sistema de seguimiento post-presupuesto: cuándo, cómo y qué decir en cada contacto',
+          'Cómo automatizar el nurturing sin perder el trato personal que requiere el alto ticket',
+          'Los 4 números que todo dueño debería saber para detectar dónde se pierde el dinero'
+        ]
+      },
+      optimizacion: {
+        tag: 'Diagnóstico D — Optimización',
+        title: 'Tenés una base sólida. El crecimiento viene de afinar el sistema',
+        body: `Tu embudo funciona razonablemente bien: <strong>${c} consultas</strong>, <strong>${Math.round(presRate*100)}%</strong> de presupuestación, <strong>${Math.round(closeRate*100)}%</strong> de cierre. Estás por encima del promedio del sector en varias dimensiones.<br><br>Pero "por encima del promedio" no es el objetivo. El benchmark de empresas con sistema optimizado es 40–50% de tasa de cierre. Subir tu tasa del ${Math.round(closeRate*100)}% al 45% en ${p} presupuestos mensuales representa un impacto directo y medible.<br><br>En esta etapa, la mejora no viene de cambios grandes. Viene de afinar la calificación de entrada, optimizar el seguimiento, y construir visibilidad de datos para tomar mejores decisiones.`,
+        impactNum: formatPesos(Math.round((p * 0.45 - cl) * t)),
+        impactText: `Facturación adicional mensual posible si alcanzás el <strong>45% de tasa de cierre</strong> sobre tus presupuestos actuales.`,
+        unlockItems: [
+          'De proveedor a partner estratégico: cómo posicionarte para justificar el ticket premium',
+          'Las métricas que separan un sistema optimizado de uno promedio',
+          'Cómo construir visibilidad total del embudo sin implementar tecnología compleja'
+        ]
+      },
+      escala: {
+        tag: 'Diagnóstico E — Escala',
+        title: 'Tu sistema funciona. La pregunta es cuánto más rápido podés crecer',
+        body: `Tus números están en rango óptimo: <strong>${c} consultas/mes</strong>, <strong>${Math.round(presRate*100)}%</strong> de presupuestación y <strong>${Math.round(closeRate*100)}%</strong> de cierre. Eso es una tasa de conversión global del <strong>${Math.round(overallConv*100)}%</strong>, claramente por encima del promedio del sector.<br><br>El cuello de botella ya no está en el proceso de ventas. Está en el volumen de entrada. Con tu sistema actual, cada consulta adicional que entra tiene alta probabilidad de convertirse en un proyecto cerrado.<br><br>La pregunta no es cómo mejorar lo que ya funciona. Es cuánto más rápido podés crecer ampliando el canal de captación con el mismo nivel de eficiencia operativa.`,
+        impactNum: formatPesos(Math.round(c * 0.5 * overallConv * t)),
+        impactText: `Facturación adicional mensual posible con <strong>50% más de consultas</strong> a tu tasa de conversión actual.`,
+        unlockItems: [
+          'Cómo escalar la captación sin perder la calidad del proceso de ventas',
+          'La diferencia entre una agencia de marketing y un sistema de demanda predecible',
+          'Cuándo y cómo invertir más en ads sin destruir el CPL actual'
+        ]
+      }
+    };
+
+    const d = diagnosisData[diagnosis];
+
+    document.getElementById('results-title').textContent = d.title;
+    document.getElementById('results-sub').textContent = 'Basado en tu embudo: ' + c + ' consultas → ' + p + ' presupuestos → ' + cl + ' cierres · Ticket: ' + formatPesos(t);
+
+    document.getElementById('diagnosis-box').innerHTML = `
+      <div class="diagnosis-tag">${d.tag}</div>
+      <div class="diagnosis-title">${d.title}</div>
+      <div class="diagnosis-body">${d.body}</div>
+      <div class="impact-block">
+        <div class="impact-num">${d.impactNum}</div>
+        <div class="impact-text"><p>${d.impactText}</p></div>
+      </div>
+    `;
+
+    const unlockItems = document.getElementById('unlock-items');
+    unlockItems.innerHTML = d.unlockItems.map(item => `<div class="unlock-item">${item}</div>`).join('');
+
+    goTo('screen-results');
+  }, 2400);
+}
+
+function formatPesos(n) {
+  if (!n || n < 0) return '$0';
+  if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace('.0','') + 'M';
+  if (n >= 1000) return '$' + Math.round(n/1000) + 'K';
+  return '$' + n;
+}
+
+</script>
+
+</body>
+</html>
