@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico del Embudo — Mucho Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #010707;
+  --card:      #09140E;
+  --mid:       #192520;
+  --green:     #27DE6B;
+  --g12:       rgba(39,222,107,0.12);
+  --g06:       rgba(39,222,107,0.06);
+  --g03:       rgba(39,222,107,0.03);
+  --white:     #FFFFFF;
+  --w70:       rgba(255,255,255,0.70);
+  --w50:       rgba(255,255,255,0.50);
+  --w30:       rgba(255,255,255,0.30);
+  --w10:       rgba(255,255,255,0.08);
+  --border:    rgba(39,222,107,0.18);
+  --bdim:      rgba(255,255,255,0.07);
+  --amber:     #F5A623;
+  --amber12:   rgba(245,166,35,0.12);
+  --red:       #FF5050;
+  --red12:     rgba(255,80,80,0.12);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(39,222,107,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39,222,107,0.012) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none; z-index: 0;
+}
+
+.orb {
+  position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+  background: radial-gradient(circle, rgba(39,222,107,0.06) 0%, transparent 65%);
+}
+.orb1 { width: 700px; height: 700px; top: -250px; right: -200px; }
+.orb2 { width: 500px; height: 500px; bottom: -200px; left: -150px; background: radial-gradient(circle, rgba(39,222,107,0.035) 0%, transparent 65%); }
+
+/* ── SHELL ── */
+.shell {
+  position: relative; z-index: 1;
+  max-width: 780px; margin: 0 auto;
+  padding: 0 28px 80px;
+}
+
+/* ── NAV ── */
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--bdim);
+  margin-bottom: 52px;
+}
+
+.logo { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.logo em { font-style: normal; color: var(--green); }
+
+.nav-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); background: var(--g12); border: 1px solid var(--border);
+  padding: 5px 12px; border-radius: 2px;
+}
+
+/* ── HERO ── */
+.hero { margin-bottom: 48px; animation: fadeUp .65s ease both; }
+
+.eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.ey-line { width: 28px; height: 2px; background: var(--green); }
+.ey-text { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
+
+.hero h1 {
+  font-size: clamp(32px, 5.5vw, 50px); font-weight: 900;
+  line-height: 1.06; letter-spacing: -0.03em;
+  margin-bottom: 14px;
+}
+.hero h1 em { font-style: normal; color: var(--green); }
+
+.hero-sub { font-size: 15px; color: var(--w50); max-width: 520px; line-height: 1.65; margin-bottom: 22px; }
+
+.badge-strip {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--g06); border: 1px solid var(--border);
+  border-radius: 2px; padding: 5px 12px;
+  font-size: 11px; font-weight: 500; color: var(--green);
+}
+.badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+
+/* ── INPUTS CARD ── */
+.inputs-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  animation: fadeUp .65s .12s ease both;
+  position: relative;
+}
+.inputs-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: .6;
+}
+
+.card-header {
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--bdim);
+  display: flex; align-items: center; gap: 14px;
+}
+.card-header-icon {
+  width: 36px; height: 36px; border-radius: 2px;
+  background: var(--g12); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.card-header-icon svg { width: 18px; height: 18px; }
+.card-header-title { font-size: 14px; font-weight: 700; color: var(--white); letter-spacing: -.01em; }
+.card-header-sub { font-size: 12px; color: var(--w30); margin-top: 2px; }
+
+/* ── FUNNEL VISUAL ── */
+.funnel-section {
+  padding: 28px 28px 8px;
+}
+
+.funnel-stages {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr 40px 1fr;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 28px;
+}
+
+.stage-block {
+  background: var(--mid);
+  border: 1px solid var(--bdim);
+  border-radius: 2px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: border-color .3s ease;
+  position: relative;
+}
+.stage-block.active-stage { border-color: var(--green); }
+
+.stage-num {
+  font-size: 28px; font-weight: 900; line-height: 1;
+  color: var(--white); letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+  transition: color .3s ease;
+}
+.stage-num.highlight { color: var(--green); }
+
+.stage-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--w30); margin-top: 5px;
+}
+
+.stage-pct {
+  font-size: 11px; font-weight: 700; color: var(--w50);
+  margin-top: 4px; font-variant-numeric: tabular-nums;
+}
+
+.funnel-arrow {
+  display: flex; align-items: center; justify-content: center;
+}
+.funnel-arrow svg { opacity: .3; }
+
+/* ── NUMBER INPUTS ── */
+.inputs-row {
+  padding: 0 28px 28px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.num-group {}
+
+.num-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--w30);
+  margin-bottom: 8px; display: block;
+}
+
+.num-input-wrap { position: relative; }
+
+.num-input {
+  width: 100%; background: var(--bg);
+  border: 1px solid var(--bdim); border-radius: 2px;
+  padding: 12px 14px;
+  font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 800;
+  color: var(--white); outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  -moz-appearance: textfield;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
+.num-input::-webkit-inner-spin-button,
+.num-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.num-input:focus {
+  border-color: var(--border);
+  box-shadow: 0 0 0 1px rgba(39,222,107,.12);
+}
+.num-input.error { border-color: rgba(255,80,80,.5); }
+
+.num-hint { font-size: 10px; color: var(--w30); margin-top: 5px; }
+
+.ticket-prefix {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 16px; font-weight: 700; color: var(--w30);
+  pointer-events: none;
+}
+.has-prefix .num-input { padding-left: 32px; }
+
+/* ── RESULT SECTION ── */
+.result-wrapper {
+  animation: fadeUp .65s .24s ease both;
+}
+
+/* State: empty */
+.result-empty {
+  background: var(--card); border: 1px dashed var(--bdim);
+  border-radius: 3px; padding: 36px 28px;
+  text-align: center;
+}
+.result-empty-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--g06); border: 1px solid var(--bdim);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.result-empty-title { font-size: 14px; font-weight: 600; color: var(--w30); margin-bottom: 6px; }
+.result-empty-sub { font-size: 12px; color: var(--w30); opacity: .6; }
+
+/* State: result */
+.result-card {
+  display: none;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 3px; overflow: hidden;
+  position: relative;
+}
+.result-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: .7;
+}
+.result-card.visible { display: block; animation: fadeUp .45s ease both; }
+
+/* ── LEAK INDICATOR ── */
+.leak-header {
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--bdim);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
+  flex-wrap: wrap;
+}
+
+.leak-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); background: var(--g12); border: 1px solid var(--border);
+  padding: 4px 10px; border-radius: 2px; margin-bottom: 10px;
+  display: inline-block;
+}
+
+.leak-title {
+  font-size: clamp(18px, 3vw, 24px); font-weight: 900;
+  letter-spacing: -.025em; line-height: 1.15;
+  color: var(--white); margin-bottom: 6px;
+}
+.leak-title em { font-style: normal; color: var(--green); }
+
+.leak-desc { font-size: 13px; color: var(--w50); line-height: 1.55; max-width: 400px; }
+
+.impact-box {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 2px; padding: 16px 20px;
+  text-align: right; flex-shrink: 0;
+}
+.impact-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--w30); margin-bottom: 4px; }
+.impact-num { font-size: 32px; font-weight: 900; color: var(--green); letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+.impact-period { font-size: 11px; color: var(--w30); margin-top: 3px; }
+
+/* ── BREAKDOWN METRICS ── */
+.metrics-grid {
+  padding: 20px 28px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  border-bottom: 1px solid var(--bdim);
+}
+
+.metric-block {
+  background: var(--bg); border: 1px solid var(--bdim);
+  border-radius: 2px; padding: 12px 14px;
+}
+.metric-val {
+  font-size: 22px; font-weight: 900; color: var(--white);
+  letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums;
+}
+.metric-val.green { color: var(--green); }
+.metric-val.amber { color: var(--amber); }
+.metric-val.red   { color: var(--red); }
+.metric-label { font-size: 10px; color: var(--w30); letter-spacing: .04em; margin-top: 4px; text-transform: uppercase; }
+
+/* ── STAGES BREAKDOWN ── */
+.stages-detail {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--bdim);
+}
+
+.stages-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--w30); margin-bottom: 14px;
+}
+
+.stage-rows { display: flex; flex-direction: column; gap: 8px; }
+
+.stage-row {
+  display: grid; grid-template-columns: 160px 1fr 80px 80px;
+  align-items: center; gap: 12px;
+  background: var(--bg); border: 1px solid var(--bdim);
+  border-radius: 2px; padding: 11px 14px;
+  transition: border-color .2s;
+}
+.stage-row.critical { border-color: rgba(255,80,80,.35); background: var(--red12); }
+.stage-row.warning  { border-color: rgba(245,166,35,.25); }
+.stage-row.ok       { border-color: rgba(39,222,107,.2); }
+
+.stage-row-name { font-size: 12px; font-weight: 600; color: var(--white); }
+.stage-row-name .stage-critical-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  background: var(--red12); color: var(--red); border: 1px solid rgba(255,80,80,.2);
+  padding: 2px 7px; border-radius: 2px; margin-left: 8px; vertical-align: middle;
+}
+.stage-row-name .stage-warning-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  background: var(--amber12); color: var(--amber); border: 1px solid rgba(245,166,35,.2);
+  padding: 2px 7px; border-radius: 2px; margin-left: 8px; vertical-align: middle;
+}
+
+.stage-bar-wrap { position: relative; }
+.stage-bar-track { height: 4px; background: var(--w10); border-radius: 0; overflow: hidden; }
+.stage-bar-fill { height: 100%; border-radius: 0; transition: width 1s cubic-bezier(.4,0,.2,1) .3s; }
+.stage-bar-fill.ok     { background: var(--green); box-shadow: 0 0 6px rgba(39,222,107,.5); }
+.stage-bar-fill.warn   { background: var(--amber); }
+.stage-bar-fill.crit   { background: var(--red); }
+.stage-bar-bench {
+  position: absolute; top: -4px; height: 12px; width: 1px;
+  background: var(--w30);
+}
+.stage-bar-bench-label {
+  position: absolute; top: -18px; font-size: 9px; color: var(--w30);
+  transform: translateX(-50%); white-space: nowrap;
+}
+
+.stage-row-rate { font-size: 14px; font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+.stage-row-rate.ok   { color: var(--green); }
+.stage-row-rate.warn { color: var(--amber); }
+.stage-row-rate.crit { color: var(--red); }
+
+.stage-row-bench { font-size: 11px; color: var(--w30); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ── WHAT WOULD HAPPEN ── */
+.whatif-section {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--bdim);
+  position: relative;
+}
+.whatif-section::before {
+  content: ''; position: absolute; left: 28px; top: 20px; bottom: 20px;
+  width: 3px; background: var(--green); border-radius: 0;
+}
+.whatif-inner { padding-left: 20px; }
+.whatif-label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; opacity: .8; }
+.whatif-title { font-size: 16px; font-weight: 800; letter-spacing: -.02em; color: var(--white); margin-bottom: 6px; }
+.whatif-desc { font-size: 13px; color: var(--w50); line-height: 1.6; }
+
+.whatif-nums {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-top: 16px;
+}
+.wn-block {
+  background: var(--bg); border: 1px solid var(--bdim); border-radius: 2px; padding: 12px 14px;
+}
+.wn-val { font-size: 20px; font-weight: 900; color: var(--green); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.wn-label { font-size: 10px; color: var(--w30); margin-top: 3px; text-transform: uppercase; letter-spacing: .04em; }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  padding: 24px 28px;
+}
+
+.cta-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--w30); text-align: center; margin-bottom: 12px;
+}
+
+.wa-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; background: var(--green); color: var(--bg);
+  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .02em;
+  padding: 17px 28px; border: none; border-radius: 2px; cursor: pointer;
+  text-decoration: none; transition: all .2s ease; margin-bottom: 12px;
+  position: relative; overflow: hidden;
+}
+.wa-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,.15);
+  transform: translateX(-100%); transition: transform .3s ease;
+}
+.wa-btn:hover::before { transform: translateX(0); }
+.wa-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(39,222,107,.32); }
+.wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+.divider-or { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.div-l { flex: 1; height: 1px; background: var(--bdim); }
+.div-t { font-size: 11px; color: var(--w30); letter-spacing: .06em; }
+
+.email-row { display: flex; gap: 8px; }
+.email-inp {
+  flex: 1; background: var(--bg); border: 1px solid var(--bdim); border-radius: 2px;
+  padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--white); outline: none;
+  transition: border-color .2s;
+}
+.email-inp::placeholder { color: var(--w30); }
+.email-inp:focus { border-color: var(--border); box-shadow: 0 0 0 1px rgba(39,222,107,.1); }
+.email-btn {
+  background: var(--mid); border: 1px solid var(--border); border-radius: 2px;
+  padding: 12px 16px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--green); cursor: pointer; white-space: nowrap; transition: all .18s;
+}
+.email-btn:hover { background: var(--g12); }
+
+.privacy-note { text-align: center; font-size: 11px; color: var(--w30); margin-top: 10px; }
+.privacy-note em { font-style: normal; color: var(--green); opacity: .6; }
+
+/* ── TESTIMONIAL ── */
+.testimonial {
+  background: var(--mid); border: 1px solid var(--bdim); border-radius: 3px;
+  padding: 22px 26px; margin-top: 24px;
+  animation: fadeUp .65s .36s ease both;
+  position: relative; overflow: hidden;
+}
+.testimonial::before {
+  content: '"'; position: absolute; top: -8px; right: 20px;
+  font-size: 100px; font-weight: 900; color: var(--green); opacity: .05; line-height: 1;
+}
+.testimonial-text { font-size: 14px; color: var(--w50); line-height: 1.7; margin-bottom: 14px; }
+.testimonial-text strong { color: var(--white); font-weight: 600; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.author-av {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--g12); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--green); flex-shrink: 0;
+}
+.author-name { font-size: 13px; font-weight: 600; color: var(--white); }
+.author-role { font-size: 11px; color: var(--w30); }
+
+/* ── FOOTER ── */
+.page-footer {
+  border-top: 1px solid var(--bdim); padding-top: 28px; margin-top: 52px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+}
+.ft-logo { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--w30); }
+.ft-logo em { font-style: normal; color: var(--green); opacity: .5; }
+.ft-note { font-size: 11px; color: var(--w30); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.count-anim { animation: countUp .25s ease both; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 620px) {
+  .shell { padding: 0 16px 60px; }
+  nav { margin-bottom: 36px; }
+  .card-header { padding: 18px 18px 14px; }
+  .funnel-section { padding: 18px 18px 6px; }
+  .funnel-stages { grid-template-columns: 1fr 28px 1fr 28px 1fr; gap: 0; }
+  .stage-num { font-size: 20px; }
+  .inputs-row { padding: 0 18px 20px; grid-template-columns: 1fr; gap: 12px; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); padding: 16px 18px; }
+  .stages-detail { padding: 16px 18px; }
+  .stage-row { grid-template-columns: 1fr 80px; }
+  .stage-bar-wrap { display: none; }
+  .stage-row-bench { display: none; }
+  .leak-header { padding: 18px 18px 16px; }
+  .impact-box { width: 100%; text-align: left; }
+  .impact-num { font-size: 26px; }
+  .whatif-section { padding: 16px 18px; }
+  .whatif-nums { grid-template-columns: 1fr 1fr; }
+  .cta-section { padding: 18px 18px; }
+  .email-row { flex-direction: column; }
+  .page-footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="shell">
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">MUCHO <em>MARKETING</em></div>
+    <div class="nav-tag">DIAGNÓSTICO GRATUITO</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">
+      <div class="ey-line"></div>
+      <div class="ey-text">Herramienta de diagnóstico</div>
+    </div>
+    <h1>Mapeá el embudo real<br>de tu empresa.<br>Descubrí dónde <em>perdés más.</em></h1>
+    <p class="hero-sub">Ingresás los 3 números de tu empresa. La herramienta identifica en qué etapa perdés más proyectos y cuánto vale resolver ese punto — en dólares por año.</p>
+    <div class="badge-strip">
+      <div class="badge-dot"></div>
+      <span>61 diagnósticos completados esta semana</span>
+    </div>
+  </section>
+
+  <!-- INPUTS CARD -->
+  <div class="inputs-card">
+
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#27DE6B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="card-header-title">Los 3 números de tu embudo</div>
+        <div class="card-header-sub">Promedio mensual — calculamos el diagnóstico en tiempo real</div>
+      </div>
+    </div>
+
+    <!-- FUNNEL VISUAL -->
+    <div class="funnel-section">
+      <div class="funnel-stages">
+
+        <div class="stage-block" id="sb-consultas">
+          <div class="stage-num highlight" id="sv-consultas">—</div>
+          <div class="stage-label">Consultas</div>
+          <div class="stage-pct" id="sp-consultas">&nbsp;</div>
+        </div>
+
+        <div class="funnel-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+
+        <div class="stage-block" id="sb-presupuestos">
+          <div class="stage-num" id="sv-presupuestos">—</div>
+          <div class="stage-label">Presupuestos</div>
+          <div class="stage-pct" id="sp-presupuestos">&nbsp;</div>
+        </div>
+
+        <div class="funnel-arrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+
+        <div class="stage-block" id="sb-cierres">
+          <div class="stage-num" id="sv-cierres">—</div>
+          <div class="stage-label">Cierres</div>
+          <div class="stage-pct" id="sp-cierres">&nbsp;</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- NUMBER INPUTS -->
+    <div class="inputs-row">
+
+      <div class="num-group">
+        <label class="num-label" for="inp-consultas">Consultas / mes</label>
+        <div class="num-input-wrap">
+          <input type="number" id="inp-consultas" class="num-input" placeholder="80" min="1" max="9999" inputmode="numeric">
+        </div>
+        <div class="num-hint">Todas las que llegan — WhatsApp, IG, referidos</div>
+      </div>
+
+      <div class="num-group">
+        <label class="num-label" for="inp-presupuestos">Presupuestos / mes</label>
+        <div class="num-input-wrap">
+          <input type="number" id="inp-presupuestos" class="num-input" placeholder="40" min="1" max="9999" inputmode="numeric">
+        </div>
+        <div class="num-hint">Los que llegaron a recibir cotización</div>
+      </div>
+
+      <div class="num-group">
+        <label class="num-label" for="inp-ticket">Ticket promedio (USD)</label>
+        <div class="num-input-wrap has-prefix">
+          <span class="ticket-prefix">$</span>
+          <input type="number" id="inp-ticket" class="num-input" placeholder="5000" min="1" max="999999" inputmode="numeric">
+        </div>
+        <div class="num-hint">Valor promedio de un proyecto cerrado</div>
+      </div>
+
+    </div>
+
+    <!-- CIERRES (hidden row, inline below presupuestos on mobile) -->
+    <div style="padding: 0 28px 24px; display:none" id="cierres-row-extra"></div>
+
+    <!-- Add cierres below on small -->
+    <div style="padding: 0 28px 6px;">
+      <div class="num-group" style="max-width:220px; margin-bottom:8px;">
+        <label class="num-label" for="inp-cierres">Proyectos cerrados / mes</label>
+        <div class="num-input-wrap">
+          <input type="number" id="inp-cierres" class="num-input" placeholder="12" min="0" max="9999" inputmode="numeric">
+        </div>
+        <div class="num-hint">Los que terminaron en venta real</div>
+      </div>
+    </div>
+
+    <div style="padding: 0 28px 24px;">
+      <button onclick="calcular()" style="
+        background: var(--green); color: var(--bg);
+        font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .02em;
+        padding: 14px 28px; border: none; border-radius: 2px; cursor: pointer;
+        display: flex; align-items: center; gap: 8px;
+        transition: all .2s; position: relative; overflow: hidden;
+      " id="calc-btn">
+        Ver mi diagnóstico
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- RESULT WRAPPER -->
+  <div class="result-wrapper">
+
+    <!-- Empty state -->
+    <div class="result-empty" id="result-empty">
+      <div class="result-empty-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+      <div class="result-empty-title">El diagnóstico aparece acá</div>
+      <div class="result-empty-sub">Completá los 4 números arriba para ver el análisis de tu embudo</div>
+    </div>
+
+    <!-- Result card -->
+    <div class="result-card" id="result-card">
+
+      <!-- Leak header -->
+      <div class="leak-header">
+        <div>
+          <div class="leak-badge" id="r-badge">DIAGNÓSTICO DEL EMBUDO</div>
+          <div class="leak-title" id="r-title">Tu mayor punto de fuga:<br><em>Seguimiento post-cotización</em></div>
+          <div class="leak-desc" id="r-desc">El problema no está en la captación. Tus leads llegan. El problema es lo que pasa después del presupuesto.</div>
+        </div>
+        <div class="impact-box">
+          <div class="impact-label">Recuperable por año</div>
+          <div class="impact-num" id="r-anual">USD 0</div>
+          <div class="impact-period">si llegás al benchmark del sector</div>
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-block">
+          <div class="metric-val green" id="m-consultas">0</div>
+          <div class="metric-label">Consultas / mes</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-val" id="m-pres-rate">0%</div>
+          <div class="metric-label">Consultas → presupuesto</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-val" id="m-cierre-rate">0%</div>
+          <div class="metric-label">Presupuesto → cierre</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-val" id="m-perdidos">0</div>
+          <div class="metric-label">Proyectos perdidos / mes</div>
+        </div>
+      </div>
+
+      <!-- Stage breakdown -->
+      <div class="stages-detail">
+        <div class="stages-label">ANÁLISIS POR ETAPA VS BENCHMARK DEL SECTOR</div>
+        <div class="stage-rows" id="stage-rows"></div>
+      </div>
+
+      <!-- What if -->
+      <div class="whatif-section">
+        <div class="whatif-inner">
+          <div class="whatif-label">Si llegás al benchmark del sector</div>
+          <div class="whatif-title" id="wf-title">Cerrando el <span id="wf-gap">0</span> puntos de brecha en tu etapa crítica...</div>
+          <div class="whatif-desc" id="wf-desc">Con el benchmark del sector en seguimiento post-cotización, tu empresa puede cerrar proyectos adicionales sin cambiar la captación.</div>
+          <div class="whatif-nums">
+            <div class="wn-block">
+              <div class="wn-val green" id="wn-extra">+0</div>
+              <div class="wn-label">Proyectos / mes adicionales</div>
+            </div>
+            <div class="wn-block">
+              <div class="wn-val green" id="wn-mensual">USD 0</div>
+              <div class="wn-label">Impacto mensual</div>
+            </div>
+            <div class="wn-block">
+              <div class="wn-val green" id="wn-anual">USD 0</div>
+              <div class="wn-label">Impacto anual</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-section">
+        <div class="cta-label" id="cta-label">Quiero entender cómo resolver este punto de fuga</div>
+
+        <a class="wa-btn" id="wa-btn" href="#" target="_blank" rel="noopener">
+          <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Quiero resolver este punto de fuga en mi empresa
+        </a>
+
+        <div class="divider-or">
+          <div class="div-l"></div>
+          <span class="div-t">o recibí el diagnóstico por email</span>
+          <div class="div-l"></div>
+        </div>
+
+        <div class="email-row">
+          <input type="email" class="email-inp" id="email-inp" placeholder="tu@empresa.com">
+          <button class="email-btn" onclick="sendEmail()">Enviame el análisis →</button>
+        </div>
+        <p class="privacy-note"><em>🔒</em> Sin spam. Sin seguimiento no solicitado.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TESTIMONIAL -->
+  <div class="testimonial">
+    <p class="testimonial-text">
+      "Cuando mapié el embudo me di cuenta que no era un problema de captación — tenía leads. Era el seguimiento después de enviar el presupuesto. <strong>Estaba perdiendo USD 6.000 por mes en proyectos que ya habían llegado.</strong> Con el sistema de Mucho Marketing, eso cambió en el primer mes."
+    </p>
+    <div class="testimonial-author">
+      <div class="author-av">CR</div>
+      <div>
+        <div class="author-name">Claudio R.</div>
+        <div class="author-role">Empresa de proyectos premium · Rosario · USD 8K ticket promedio</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="ft-logo">MUCHO <em>MARKETING</em></div>
+    <div class="ft-note">mucho-marketing.com · 2025</div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// BENCHMARKS (sector de proyectos premium)
+// ══════════════════════════════════════════════════════════
+const BENCH = {
+  consultaAPres:  0.65,   // 65% de consultas llegan a presupuesto (benchmark)
+  presACierre:    0.40,   // 40% de presupuestos cierran (benchmark)
+};
+
+// Stage config
+const STAGES_CFG = [
+  {
+    id: 'stage-presup',
+    name: 'Consulta → Presupuesto',
+    benchPct: BENCH.consultaAPres,
+    benchLabel: 'Benchmark: 65%',
+    benchPos: 65,
+    getRate: (c,p,ci) => c > 0 ? p/c : 0,
+    critThreshold: 0.40,
+    warnThreshold: 0.55,
+    perdidaFn: (c,p,ci,t) => {
+      const actual = c > 0 ? p/c : 0;
+      const bench  = BENCH.consultaAPres;
+      if (actual >= bench) return 0;
+      const extraPres   = (bench - actual) * c;
+      const extraCierres = extraPres * (ci > 0 && p > 0 ? ci/p : BENCH.presACierre);
+      return extraCierres * t;
+    }
+  },
+  {
+    id: 'stage-cierre',
+    name: 'Presupuesto → Cierre',
+    benchPct: BENCH.presACierre,
+    benchLabel: 'Benchmark: 40%',
+    benchPos: 40,
+    getRate: (c,p,ci) => p > 0 ? ci/p : 0,
+    critThreshold: 0.20,
+    warnThreshold: 0.30,
+    perdidaFn: (c,p,ci,t) => {
+      const actual = p > 0 ? ci/p : 0;
+      const bench  = BENCH.presACierre;
+      if (actual >= bench) return 0;
+      const extraCierres = (bench - actual) * p;
+      return extraCierres * t;
+    }
+  }
+];
+
+// ══════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════
+function fmtUSD(n) {
+  if (n >= 1000000) return 'USD ' + (n/1000000).toFixed(1).replace('.0','') + 'M';
+  if (n >= 1000)    return 'USD ' + Math.round(n/1000) + 'K';
+  return 'USD ' + Math.round(n).toLocaleString('en-US');
+}
+function fmtPct(r) { return Math.round(r * 100) + '%'; }
+function fmtN(n)   { return Math.round(n).toLocaleString('es-AR'); }
+
+function getVal(id) {
+  const v = parseFloat(document.getElementById(id).value);
+  return isNaN(v) ? null : v;
+}
+
+function stageClass(rate, crit, warn) {
+  if (rate <= crit) return 'crit';
+  if (rate <= warn) return 'warn';
+  return 'ok';
+}
+
+// Animate number counter
+function animNum(el, target, fmt, duration) {
+  const start = performance.now();
+  const step = now => {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = t < .5 ? 2*t*t : -1+(4-2*t)*t;
+    el.textContent = fmt(ease * target);
+    if (t < 1) requestAnimationFrame(step);
+    else el.textContent = fmt(target);
+  };
+  requestAnimationFrame(step);
+}
+
+// ══════════════════════════════════════════════════════════
+// LIVE FUNNEL UPDATE (as user types)
+// ══════════════════════════════════════════════════════════
+function updateFunnelVisual() {
+  const c  = getVal('inp-consultas');
+  const p  = getVal('inp-presupuestos');
+  const ci = getVal('inp-cierres');
+
+  // Consultas
+  if (c !== null) {
+    document.getElementById('sv-consultas').textContent = fmtN(c);
+    document.getElementById('sp-consultas').innerHTML = '&nbsp;';
+  } else {
+    document.getElementById('sv-consultas').textContent = '—';
+  }
+
+  // Presupuestos
+  if (p !== null) {
+    document.getElementById('sv-presupuestos').textContent = fmtN(p);
+    if (c !== null && c > 0) {
+      const r = p/c;
+      document.getElementById('sp-presupuestos').textContent = fmtPct(r);
+    }
+  } else {
+    document.getElementById('sv-presupuestos').textContent = '—';
+    document.getElementById('sp-presupuestos').innerHTML = '&nbsp;';
+  }
+
+  // Cierres
+  if (ci !== null) {
+    document.getElementById('sv-cierres').textContent = fmtN(ci);
+    if (p !== null && p > 0) {
+      const r = ci/p;
+      document.getElementById('sp-cierres').textContent = fmtPct(r);
+    }
+  } else {
+    document.getElementById('sv-cierres').textContent = '—';
+    document.getElementById('sp-cierres').innerHTML = '&nbsp;';
+  }
+}
+
+['inp-consultas','inp-presupuestos','inp-cierres','inp-ticket'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateFunnelVisual);
+});
+
+// ══════════════════════════════════════════════════════════
+// CALCULATE
+// ══════════════════════════════════════════════════════════
+function calcular() {
+  const c  = getVal('inp-consultas');
+  const p  = getVal('inp-presupuestos');
+  const ci = getVal('inp-cierres');
+  const t  = getVal('inp-ticket');
+
+  // Validation
+  let hasError = false;
+  [['inp-consultas', c], ['inp-presupuestos', p], ['inp-cierres', ci], ['inp-ticket', t]].forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (val === null || val <= 0) {
+      el.classList.add('error');
+      hasError = true;
+      setTimeout(() => el.classList.remove('error'), 1800);
+    }
+  });
+  if (hasError) return;
+
+  // Extra validation
+  if (p > c) {
+    alert('Los presupuestos no pueden ser más que las consultas.');
+    return;
+  }
+  if (ci > p) {
+    alert('Los cierres no pueden ser más que los presupuestos.');
+    return;
+  }
+
+  // ── Rates ──
+  const rateCP = c > 0 ? p/c : 0;   // consulta → presupuesto
+  const ratePC = p > 0 ? ci/p : 0;  // presupuesto → cierre
+
+  // ── Find critical stage ──
+  const perdidaCP = STAGES_CFG[0].perdidaFn(c,p,ci,t);
+  const perdidaPC = STAGES_CFG[1].perdidaFn(c,p,ci,t);
+  const criticalIdx = perdidaPC >= perdidaCP ? 1 : 0; // typically post-cotización
+
+  const criticalStage = STAGES_CFG[criticalIdx];
+  const criticalPerdida = Math.max(perdidaCP, perdidaPC);
+
+  // ── What-if ──
+  const critRate   = criticalIdx === 0 ? rateCP : ratePC;
+  const benchRate  = criticalStage.benchPct;
+  const gap        = Math.max(0, benchRate - critRate);
+
+  let extraCierres, impactMes, impactAnual;
+  if (criticalIdx === 0) {
+    const extraPres = gap * c;
+    extraCierres    = extraPres * (ratePC > 0 ? ratePC : BENCH.presACierre);
+  } else {
+    extraCierres = gap * p;
+  }
+  impactMes   = extraCierres * t;
+  impactAnual = impactMes * 12;
+
+  const perdidos = Math.round(p - ci);
+
+  // ── Render ──
+  showResult({
+    c, p, ci, t,
+    rateCP, ratePC,
+    criticalIdx,
+    criticalStage,
+    criticalPerdida,
+    gap,
+    extraCierres,
+    impactMes,
+    impactAnual,
+    perdidos,
+    perdidaCP,
+    perdidaPC,
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// RENDER RESULT
+// ══════════════════════════════════════════════════════════
+function showResult(d) {
+  document.getElementById('result-empty').style.display = 'none';
+  const card = document.getElementById('result-card');
+  card.classList.add('visible');
+
+  // ── Title & desc ──
+  const stageNames = ['captación inicial', 'seguimiento post-cotización'];
+  const stageName  = stageNames[d.criticalIdx];
+
+  if (d.gap <= 0.02) {
+    document.getElementById('r-title').innerHTML = 'Tu embudo está <em>por encima</em> del benchmark sectorial';
+    document.getElementById('r-desc').textContent = 'Tus tasas de conversión superan el promedio del sector. El foco ahora es escalar el volumen de captación con el mismo sistema.';
+    document.getElementById('r-badge').textContent = 'EMBUDO OPTIMIZADO';
+  } else {
+    document.getElementById('r-title').innerHTML = `Tu mayor punto de fuga:<br><em>${stageNames[d.criticalIdx].charAt(0).toUpperCase() + stageNames[d.criticalIdx].slice(1)}</em>`;
+    document.getElementById('r-desc').textContent = d.criticalIdx === 1
+      ? 'Los leads llegan y te solicitan presupuesto. El problema está en lo que pasa después de enviar la cotización — el seguimiento.'
+      : 'Hay consultas que llegan pero no avanzan a presupuesto. El problema está en la calificación y la velocidad de respuesta inicial.';
+  }
+
+  // ── Impact ──
+  const anualTarget = Math.round(d.impactAnual);
+  animNum(document.getElementById('r-anual'), anualTarget, n => fmtUSD(n), 900);
+
+  // ── Metrics ──
+  document.getElementById('m-consultas').textContent = fmtN(d.c);
+
+  const presRateEl = document.getElementById('m-pres-rate');
+  presRateEl.textContent = fmtPct(d.rateCP);
+  presRateEl.className = 'metric-val ' + (d.rateCP >= BENCH.consultaAPres ? 'green' : d.rateCP >= 0.50 ? 'amber' : 'red');
+
+  const cierreRateEl = document.getElementById('m-cierre-rate');
+  cierreRateEl.textContent = fmtPct(d.ratePC);
+  cierreRateEl.className = 'metric-val ' + (d.ratePC >= BENCH.presACierre ? 'green' : d.ratePC >= 0.28 ? 'amber' : 'red');
+
+  const perdEl = document.getElementById('m-perdidos');
+  perdEl.textContent = fmtN(d.perdidos);
+  perdEl.className = 'metric-val ' + (d.perdidos === 0 ? 'green' : d.perdidos <= 5 ? 'amber' : 'red');
+
+  // ── Stage rows ──
+  const rowsEl = document.getElementById('stage-rows');
+  rowsEl.innerHTML = '';
+
+  const stagesData = [
+    {
+      name: 'Consulta → Presupuesto',
+      rate: d.rateCP,
+      bench: BENCH.consultaAPres,
+      benchLabel: '65%',
+      benchPos: 65,
+      perdida: d.perdidaCP,
+      isCritical: d.criticalIdx === 0 && d.gap > 0.02,
+    },
+    {
+      name: 'Presupuesto → Cierre',
+      rate: d.ratePC,
+      bench: BENCH.presACierre,
+      benchLabel: '40%',
+      benchPos: 40,
+      perdida: d.perdidaPC,
+      isCritical: d.criticalIdx === 1 && d.gap > 0.02,
+    }
+  ];
+
+  stagesData.forEach(st => {
+    const cls  = st.isCritical ? 'critical' : st.rate >= st.bench ? 'ok' : 'warning';
+    const barCls = st.isCritical ? 'crit' : st.rate >= st.bench ? 'ok' : 'warn';
+    const rateCls = st.isCritical ? 'crit' : st.rate >= st.bench ? 'ok' : 'warn';
+    const pct = Math.min(Math.round(st.rate * 100), 100);
+
+    const row = document.createElement('div');
+    row.className = 'stage-row ' + cls;
+    row.innerHTML = `
+      <span class="stage-row-name">
+        ${st.name}
+        ${st.isCritical ? '<span class="stage-critical-tag">FUGA CRÍTICA</span>' : (cls === 'warning' ? '<span class="stage-warning-tag">MEJORABLE</span>' : '')}
+      </span>
+      <div class="stage-bar-wrap">
+        <div class="stage-bar-track">
+          <div class="stage-bar-fill ${barCls}" style="width:0%" data-target="${pct}%"></div>
+        </div>
+        <div class="stage-bar-bench" style="left:${st.benchPos}%">
+          <span class="stage-bar-bench-label">${st.benchLabel}</span>
+        </div>
+      </div>
+      <span class="stage-row-rate ${rateCls}">${fmtPct(st.rate)}</span>
+      <span class="stage-row-bench">Bench: ${st.benchLabel}</span>`;
+    rowsEl.appendChild(row);
+  });
+
+  // Animate bars
+  setTimeout(() => {
+    rowsEl.querySelectorAll('.stage-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.target;
+    });
+  }, 200);
+
+  // ── What-if ──
+  const gapPts = Math.round(d.gap * 100);
+  document.getElementById('wf-gap').textContent = gapPts + ' puntos porcentuales de';
+  document.getElementById('wf-title').innerHTML = `Si cerrás los <span id="wf-gap">${gapPts} pts</span> de brecha en ${stageName}...`;
+  document.getElementById('wf-desc').textContent = d.criticalIdx === 1
+    ? `Con el sistema de seguimiento correcto, podés pasar de ${fmtPct(d.ratePC)} a ${fmtPct(BENCH.presACierre)} de cierre sobre tus presupuestos actuales — sin generar más consultas.`
+    : `Con el sistema de calificación y respuesta correcta, podés pasar de ${fmtPct(d.rateCP)} a ${fmtPct(BENCH.consultaAPres)} de las consultas llegando a presupuesto.`;
+
+  document.getElementById('wn-extra').textContent  = '+' + Math.ceil(d.extraCierres).toFixed(1).replace('.0','');
+  document.getElementById('wn-mensual').textContent = fmtUSD(d.impactMes);
+  document.getElementById('wn-anual').textContent   = fmtUSD(d.impactAnual);
+
+  // ── WA link ──
+  buildWALink(d);
+
+  // Scroll
+  setTimeout(() => {
+    document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+}
+
+// ══════════════════════════════════════════════════════════
+// WHATSAPP
+// ══════════════════════════════════════════════════════════
+function buildWALink(d) {
+  const stageName = d.criticalIdx === 1 ? 'el seguimiento post-cotización' : 'la conversión de consulta a presupuesto';
+  const msg = encodeURIComponent(
+    `Hola, hice el diagnóstico del embudo de Mucho Marketing. ` +
+    `Mi embudo: ${Math.round(d.c)} consultas/mes → ${Math.round(d.p)} presupuestos → ${Math.round(d.ci)} cierres. ` +
+    `Ticket promedio: ${fmtUSD(d.t)}. ` +
+    `El diagnóstico dice que mi mayor punto de fuga es ${stageName} ` +
+    `(${fmtPct(d.criticalIdx === 1 ? d.ratePC : d.rateCP)} vs benchmark ${d.criticalIdx === 1 ? '40%' : '65%'}). ` +
+    `El impacto anual recuperable es ${fmtUSD(d.impactAnual)}. ` +
+    `¿Cómo lo resolverían para mi empresa?`
+  );
+  document.getElementById('wa-btn').href = `https://wa.me/5491100000000?text=${msg}`;
+}
+
+// ══════════════════════════════════════════════════════════
+// EMAIL
+// ══════════════════════════════════════════════════════════
+function sendEmail() {
+  const inp = document.getElementById('email-inp');
+  if (!inp.value.trim() || !inp.value.includes('@')) {
+    inp.style.borderColor = 'rgba(255,80,80,.5)';
+    inp.focus();
+    setTimeout(() => inp.style.borderColor = '', 1500);
+    return;
+  }
+  const btn = inp.nextElementSibling;
+  btn.textContent = 'Enviado ✓';
+  btn.style.color = '#27DE6B';
+  btn.disabled = true;
+}
+</script>
+</body>
+</html>

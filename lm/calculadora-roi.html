@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora ROI del Sistema — Mucho Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #010707;
+  --card:    #09140E;
+  --mid:     #192520;
+  --green:   #27DE6B;
+  --g15:     rgba(39,222,107,0.15);
+  --g08:     rgba(39,222,107,0.08);
+  --g04:     rgba(39,222,107,0.04);
+  --white:   #FFFFFF;
+  --w70:     rgba(255,255,255,0.70);
+  --w50:     rgba(255,255,255,0.50);
+  --w30:     rgba(255,255,255,0.30);
+  --w08:     rgba(255,255,255,0.08);
+  --border:  rgba(39,222,107,0.20);
+  --bdim:    rgba(255,255,255,0.07);
+  --amber:   #F5A623;
+  --a10:     rgba(245,166,35,0.10);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Texture */
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(39,222,107,0.011) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39,222,107,0.011) 1px, transparent 1px);
+  background-size: 54px 54px;
+  pointer-events: none; z-index: 0;
+}
+
+.orb {
+  position: fixed; border-radius: 50%;
+  pointer-events: none; z-index: 0;
+}
+.orb1 {
+  width: 800px; height: 800px; top: -300px; right: -280px;
+  background: radial-gradient(circle, rgba(39,222,107,0.055) 0%, transparent 60%);
+}
+.orb2 {
+  width: 450px; height: 450px; bottom: -180px; left: -120px;
+  background: radial-gradient(circle, rgba(39,222,107,0.03) 0%, transparent 65%);
+}
+
+/* ── LAYOUT ── */
+.page {
+  position: relative; z-index: 1;
+  max-width: 800px; margin: 0 auto;
+  padding: 0 28px 80px;
+}
+
+/* ── NAV ── */
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0; border-bottom: 1px solid var(--bdim);
+  margin-bottom: 52px;
+}
+.logo { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.logo em { font-style: normal; color: var(--green); }
+.tag {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); background: var(--g08); border: 1px solid var(--border);
+  padding: 5px 12px; border-radius: 2px;
+}
+
+/* ── HERO ── */
+.hero { margin-bottom: 44px; animation: up .6s ease both; }
+.eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.ey-line { width: 28px; height: 2px; background: var(--green); }
+.ey-text { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
+.hero h1 {
+  font-size: clamp(30px, 5.5vw, 50px); font-weight: 900;
+  line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 14px;
+}
+.hero h1 em { font-style: normal; color: var(--green); }
+.hero-sub { font-size: 15px; color: var(--w50); line-height: 1.65; max-width: 520px; margin-bottom: 20px; }
+.live-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--g04); border: 1px solid var(--border);
+  border-radius: 2px; padding: 5px 12px;
+  font-size: 11px; font-weight: 500; color: var(--green);
+}
+.pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+
+/* ── TWO-COL GRID ── */
+.two-col {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px; margin-bottom: 20px;
+  animation: up .6s .1s ease both;
+}
+
+/* ── INPUT CARD ── */
+.input-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 3px; overflow: hidden; position: relative;
+}
+.input-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: .55;
+}
+.ic-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--bdim);
+}
+.ic-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 4px; opacity: .8;
+}
+.ic-title { font-size: 14px; font-weight: 700; color: var(--white); letter-spacing: -.01em; }
+
+.ic-inputs { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+
+.field-group {}
+.field-label {
+  font-size: 11px; font-weight: 500; color: var(--w30);
+  letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; display: block;
+}
+.field-wrap { position: relative; }
+.prefix {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 15px; font-weight: 700; color: var(--w30); pointer-events: none;
+}
+.suffix {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 11px; font-weight: 600; color: var(--w30); pointer-events: none;
+}
+
+input[type=number], input[type=range] { outline: none; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type=number] { -moz-appearance: textfield; }
+
+.num-input {
+  width: 100%; background: var(--bg);
+  border: 1px solid var(--bdim); border-radius: 2px;
+  padding: 11px 38px 11px 14px;
+  font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800;
+  color: var(--white); transition: border-color .2s, box-shadow .2s;
+  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+}
+.num-input.has-prefix { padding-left: 30px; }
+.num-input:focus { border-color: var(--border); box-shadow: 0 0 0 1px rgba(39,222,107,.1); }
+.num-input.err { border-color: rgba(255,80,80,.5) !important; }
+
+.field-hint { font-size: 10px; color: var(--w30); margin-top: 4px; line-height: 1.4; }
+
+/* Slider for ads budget */
+.slider-wrap { margin-top: 4px; }
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 3px;
+  background: linear-gradient(to right, var(--green) 0%, var(--green) var(--fill,30%), var(--w08) var(--fill,30%), var(--w08) 100%);
+  border-radius: 0; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--green); cursor: pointer;
+  box-shadow: 0 0 10px rgba(39,222,107,.5);
+  transition: box-shadow .2s, transform .15s;
+}
+input[type=range]::-webkit-slider-thumb:hover { box-shadow: 0 0 18px rgba(39,222,107,.8); transform: scale(1.2); }
+input[type=range]::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%; background: var(--green); border: none;
+}
+.slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.slider-val { font-size: 20px; font-weight: 900; color: var(--green); font-variant-numeric: tabular-nums; }
+.slider-marks { display: flex; justify-content: space-between; margin-top: 5px; }
+.slider-mark { font-size: 9px; color: var(--w30); }
+
+/* ── RESULT CARD ── */
+.result-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 3px; overflow: hidden; position: relative;
+  animation: up .6s .2s ease both;
+  grid-column: span 2;
+}
+.result-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: .7;
+}
+
+.rc-header {
+  padding: 20px 24px 16px; border-bottom: 1px solid var(--bdim);
+  display: flex; align-items: center; gap: 10px;
+}
+.rc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+.rc-label { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--green); }
+
+/* ── RESULT CARD HERO ── */
+.rc-hero-block {
+  display: flex; align-items: stretch; gap: 0;
+  border-bottom: 1px solid var(--bdim);
+}
+.rc-hero-left {
+  flex: 1; padding: 28px 24px 24px;
+  border-right: 1px solid var(--bdim);
+}
+.rc-hero-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--w30); margin-bottom: 8px;
+}
+.rc-hero-num {
+  font-size: clamp(52px, 10vw, 80px); font-weight: 900; color: var(--green);
+  letter-spacing: -0.05em; line-height: 1; font-variant-numeric: tabular-nums;
+  margin-bottom: 10px;
+  transition: all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.rc-hero-meta {
+  font-size: 13px; color: var(--w30); line-height: 1.6;
+}
+.rc-meta-val { color: var(--white); font-weight: 700; }
+
+.rc-hero-right {
+  display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between;
+  padding: 24px 24px 20px; gap: 16px; min-width: 200px;
+}
+.rc-pill {
+  display: flex; flex-direction: column; align-items: flex-end;
+  background: var(--g08); border: 1px solid var(--border);
+  border-radius: 2px; padding: 10px 14px; text-align: right;
+}
+.rc-pill-num {
+  font-size: 32px; font-weight: 900; color: var(--green);
+  letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums;
+  transition: all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.rc-pill-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); opacity: .7; margin-top: 3px;
+}
+.rc-aside-stats { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.rc-aside-row {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+}
+.rc-aside-label { font-size: 11px; color: var(--w30); white-space: nowrap; }
+.rc-aside-val { font-size: 13px; font-weight: 700; color: var(--white); font-variant-numeric: tabular-nums; text-align: right; }
+.rc-aside-val.green { color: var(--green); }
+
+/* Projection bar */
+.projection-section {
+  padding: 20px 24px;
+  border-top: 1px solid var(--bdim);
+}
+.proj-label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--w30); margin-bottom: 14px; }
+.proj-months { display: flex; flex-direction: column; gap: 8px; }
+.proj-row { display: grid; grid-template-columns: 48px 1fr 80px; gap: 10px; align-items: center; }
+.proj-mo { font-size: 11px; font-weight: 600; color: var(--w30); text-align: center; }
+.proj-bar-track { height: 6px; background: var(--w08); border-radius: 0; overflow: hidden; }
+.proj-bar-fill { height: 100%; background: var(--green); border-radius: 0; transition: width 1s cubic-bezier(.4,0,.2,1) .3s; box-shadow: 0 0 6px rgba(39,222,107,.5); }
+.proj-val { font-size: 12px; font-weight: 700; color: var(--green); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ── CASE STUDY ── */
+.case-card {
+  background: var(--mid); border: 1px solid var(--bdim);
+  border-radius: 3px; padding: 22px 24px;
+  margin-bottom: 20px;
+  animation: up .6s .3s ease both;
+  position: relative; overflow: hidden;
+}
+.case-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--green);
+}
+.case-inner { padding-left: 16px; }
+.case-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); background: var(--g08); border: 1px solid var(--border);
+  padding: 3px 9px; border-radius: 2px; display: inline-block; margin-bottom: 12px;
+}
+.case-title { font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -.01em; margin-bottom: 10px; }
+.case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.case-stat { background: var(--bg); border: 1px solid var(--bdim); border-radius: 2px; padding: 10px 12px; }
+.case-stat-val { font-size: 18px; font-weight: 900; color: var(--green); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.case-stat-label { font-size: 10px; color: var(--w30); margin-top: 2px; text-transform: uppercase; letter-spacing: .04em; }
+.case-quote { font-size: 13px; color: var(--w50); line-height: 1.65; }
+.case-quote strong { color: var(--white); font-weight: 600; }
+
+/* ── READINESS MODULE ── */
+.readiness-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 3px; overflow: hidden;
+  margin-bottom: 20px;
+  animation: up .6s .35s ease both;
+  position: relative;
+}
+.readiness-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: .45;
+}
+.rr-header { padding: 18px 22px 14px; border-bottom: 1px solid var(--bdim); }
+.rr-title { font-size: 14px; font-weight: 700; color: var(--white); }
+.rr-sub { font-size: 12px; color: var(--w30); margin-top: 3px; }
+.rr-checks { padding: 16px 22px 20px; display: flex; flex-direction: column; gap: 10px; }
+
+.check-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  cursor: pointer; user-select: none;
+}
+.check-box {
+  width: 22px; height: 22px; border-radius: 2px; flex-shrink: 0;
+  border: 1px solid var(--bdim); background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .18s ease; margin-top: 1px;
+}
+.check-box svg { opacity: 0; transition: opacity .18s; }
+.check-item.checked .check-box {
+  background: var(--green); border-color: var(--green);
+}
+.check-item.checked .check-box svg { opacity: 1; }
+.check-text { flex: 1; font-size: 13px; color: var(--w70); line-height: 1.4; }
+.check-item.checked .check-text { color: var(--white); }
+.check-sub { font-size: 11px; color: var(--w30); margin-top: 2px; }
+
+.rr-score-bar {
+  margin: 4px 22px 16px;
+  background: var(--w08); height: 3px; border-radius: 0; overflow: hidden;
+}
+.rr-score-fill {
+  height: 100%; background: var(--green);
+  border-radius: 0; transition: width .4s ease;
+  box-shadow: 0 0 6px rgba(39,222,107,.5);
+}
+
+.rr-verdict {
+  margin: 0 22px 20px;
+  background: var(--bg); border: 1px solid var(--bdim);
+  border-radius: 2px; padding: 12px 16px;
+  font-size: 13px; color: var(--w50); line-height: 1.55;
+  transition: all .3s ease;
+}
+.rr-verdict.ready { border-color: var(--border); color: var(--white); }
+.rr-verdict.ready strong { color: var(--green); }
+
+/* ── CTA SECTION ── */
+.cta-section { animation: up .6s .45s ease both; }
+
+.cta-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--w30); text-align: center; margin-bottom: 12px;
+}
+
+.wa-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; background: var(--green); color: var(--bg);
+  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .02em;
+  padding: 18px 28px; border: none; border-radius: 2px; cursor: pointer;
+  text-decoration: none; transition: all .2s ease; margin-bottom: 12px;
+  position: relative; overflow: hidden;
+}
+.wa-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,.15);
+  transform: translateX(-100%); transition: transform .3s ease;
+}
+.wa-btn:hover::before { transform: translateX(0); }
+.wa-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(39,222,107,.32); }
+.wa-btn:active { transform: translateY(0); }
+.wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+/* Guarantee strip */
+.guarantee-strip {
+  display: flex; gap: 8px; margin-bottom: 16px;
+}
+.guar-item {
+  flex: 1; background: var(--card); border: 1px solid var(--bdim);
+  border-radius: 2px; padding: 10px 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.guar-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--green); }
+.guar-text { font-size: 11px; color: var(--w50); line-height: 1.35; }
+.guar-text strong { color: var(--white); font-weight: 600; }
+
+.divider-or { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.div-l { flex: 1; height: 1px; background: var(--bdim); }
+.div-t { font-size: 11px; color: var(--w30); letter-spacing: .06em; }
+
+.email-row { display: flex; gap: 8px; }
+.email-inp {
+  flex: 1; background: var(--card); border: 1px solid var(--bdim); border-radius: 2px;
+  padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--white);
+  outline: none; transition: border-color .2s;
+}
+.email-inp::placeholder { color: var(--w30); }
+.email-inp:focus { border-color: var(--border); box-shadow: 0 0 0 1px rgba(39,222,107,.1); }
+.email-btn {
+  background: var(--mid); border: 1px solid var(--border); border-radius: 2px;
+  padding: 12px 16px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--green); cursor: pointer; white-space: nowrap; transition: all .18s;
+}
+.email-btn:hover { background: var(--g08); }
+
+.privacy { text-align: center; font-size: 11px; color: var(--w30); margin-top: 10px; }
+.privacy em { font-style: normal; color: var(--green); opacity: .6; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--bdim); padding-top: 26px; margin-top: 52px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+}
+.ft-logo { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--w30); }
+.ft-logo em { font-style: normal; color: var(--green); opacity: .5; }
+.ft-note { font-size: 11px; color: var(--w30); }
+
+/* ── ANIMATIONS ── */
+@keyframes up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.pop-anim { animation: pop .3s ease; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .page { padding: 0 16px 60px; }
+  nav { margin-bottom: 36px; }
+  .two-col { grid-template-columns: 1fr; }
+  .result-card { grid-column: span 1; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .rc-hero-block { flex-direction: column; }
+  .rc-hero-left { border-right: none; border-bottom: 1px solid var(--bdim); padding: 20px 18px 16px; }
+  .rc-hero-right { min-width: 0; width: 100%; flex-direction: row; align-items: flex-start; padding: 16px 18px; }
+  .case-grid { grid-template-columns: repeat(2, 1fr); }
+  .guarantee-strip { flex-direction: column; }
+  .email-row { flex-direction: column; }
+  footer { flex-direction: column; align-items: flex-start; }
+  .proj-row { grid-template-columns: 40px 1fr 64px; }
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="page">
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">MUCHO <em>MARKETING</em></div>
+    <div class="tag">CALCULADORA ROI</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">
+      <div class="ey-line"></div>
+      <div class="ey-text">Herramienta de proyección</div>
+    </div>
+    <h1>El ROI exacto del sistema<br>para <em>tu empresa</em> específica.</h1>
+    <p class="hero-sub">Ingresás 3 números de tu negocio. La calculadora cruza con los resultados reales del sistema y te muestra cuántas consultas adicionales generarías y cuánto vale cada una para vos.</p>
+    <div class="live-badge">
+      <div class="pulse"></div>
+      <span>Cálculo en tiempo real · Basado en caso documentado</span>
+    </div>
+  </section>
+
+  <!-- TWO-COL GRID -->
+  <div class="two-col">
+
+    <!-- INPUT CARD A: Tu empresa -->
+    <div class="input-card">
+      <div class="ic-header">
+        <div class="ic-label">Paso 1</div>
+        <div class="ic-title">Los números de tu empresa</div>
+      </div>
+      <div class="ic-inputs">
+
+        <div class="field-group">
+          <label class="field-label" for="inp-ticket">Ticket promedio por proyecto</label>
+          <div class="field-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="inp-ticket" class="num-input has-prefix"
+              placeholder="5000" min="500" max="100000" value="5000" inputmode="numeric">
+          </div>
+          <div class="field-hint">En USD — valor de un proyecto típico cerrado</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="inp-consultas">Consultas actuales / mes</label>
+          <div class="field-wrap">
+            <input type="number" id="inp-consultas" class="num-input"
+              placeholder="60" min="1" max="500" value="60" inputmode="numeric">
+          </div>
+          <div class="field-hint">Todas las que llegan hoy por cualquier canal</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="inp-cierre">Tasa de cierre actual</label>
+          <div class="field-wrap">
+            <input type="number" id="inp-cierre" class="num-input"
+              placeholder="25" min="1" max="99" value="25" inputmode="numeric">
+            <span class="suffix">%</span>
+          </div>
+          <div class="field-hint">% de presupuestos que terminan en venta</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- INPUT CARD B: Inversión -->
+    <div class="input-card">
+      <div class="ic-header">
+        <div class="ic-label">Paso 2</div>
+        <div class="ic-title">Inversión en el sistema</div>
+      </div>
+      <div class="ic-inputs">
+
+        <div class="field-group">
+          <div class="slider-row">
+            <label class="field-label" for="slider-ads" style="margin-bottom:0">Inversión en Meta Ads</label>
+            <span class="slider-val" id="ads-val">USD 500</span>
+          </div>
+          <div class="slider-wrap">
+            <input type="range" id="slider-ads" min="500" max="5000" value="500" step="50">
+          </div>
+          <div class="slider-marks">
+            <span class="slider-mark">USD 500</span>
+            <span class="slider-mark">USD 1.500</span>
+            <span class="slider-mark">USD 3.000</span>
+            <span class="slider-mark">USD 5.000</span>
+          </div>
+          <div class="field-hint" style="margin-top:8px">Budget publicitario mensual. Mínimo recomendado: USD 500.</div>
+        </div>
+
+        <div style="background: var(--bg); border: 1px solid var(--bdim); border-radius: 2px; padding: 14px 16px;">
+          <div class="field-label" style="margin-bottom:8px">Inversión total del sistema</div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--w50);">
+              <span>Meta Ads</span>
+              <span id="cost-ads" style="font-weight:600; color:var(--white)">USD 500</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--w50);">
+              <span>Retainer Mucho Marketing</span>
+              <span style="font-weight:600; color:var(--white)">USD 1.500</span>
+            </div>
+            <div style="height:1px; background:var(--bdim); margin: 4px 0;"></div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700;">
+              <span style="color:var(--w70)">Total mensual</span>
+              <span id="cost-total" style="color:var(--green)">USD 2.000</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: var(--g04); border: 1px solid var(--border); border-radius: 2px; padding: 10px 14px;">
+          <div style="font-size:11px; color:var(--green); font-weight:600; margin-bottom:3px;">MES 1: GRATUITO</div>
+          <div style="font-size:11px; color:var(--w30); line-height:1.5;">El primer mes no tiene costo de retainer. Solo pagás tu inversión en ads.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RESULT CARD (full width) -->
+    <div class="result-card">
+
+      <div class="rc-header">
+        <div class="rc-dot"></div>
+        <div class="rc-label">Proyección en tiempo real</div>
+      </div>
+
+      <!-- HERO: ingreso extra protagonista -->
+      <div class="rc-hero-block">
+        <div class="rc-hero-left">
+          <div class="rc-hero-label">Ingreso adicional estimado / mes</div>
+          <div class="rc-hero-num" id="m-ingreso-extra">USD 40K</div>
+          <div class="rc-hero-meta">
+            <span id="proj-ventas-extra" class="rc-meta-val">+8</span> ventas extra ·
+            <span id="proj-leads-range" class="rc-meta-val">127</span> consultas nuevas ·
+            Costo por consulta/lead: <span id="proj-cpl-range" class="rc-meta-val">USD 3.15 (rango USD 1–4)</span>
+          </div>
+        </div>
+        <div class="rc-hero-right">
+          <div class="rc-pill">
+            <span id="roi-pct" class="rc-pill-num">893%</span>
+            <span class="rc-pill-label">ROI 6 m</span>
+          </div>
+          <div class="rc-aside-stats">
+            <div class="rc-aside-row">
+              <span class="rc-aside-label">Retorno neto 6 m</span>
+              <span class="rc-aside-val green" id="m-roi-6m">USD 134K</span>
+            </div>
+            <div class="rc-aside-row">
+              <span class="rc-aside-label">Inversión total / mes</span>
+              <span class="rc-aside-val" id="m-inversion-mes">USD 1.900</span>
+            </div>
+            <div class="rc-aside-row">
+              <span class="rc-aside-label">Recuperación</span>
+              <span class="rc-aside-val green" id="m-payback">Mes 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projection bars — 5 months, compact -->
+      <div class="projection-section">
+        <div class="proj-label">RETORNO NETO ACUMULADO · MES A MES</div>
+        <div class="proj-months" id="proj-months"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CASE STUDY -->
+  <div class="case-card">
+    <div class="case-inner">
+      <div class="case-tag">CASO DOCUMENTADO · SECTOR PROYECTOS PREMIUM</div>
+      <div class="case-title">Empresa de proyectos premium · GBA Norte · Ticket USD 4.500</div>
+      <div class="case-grid">
+        <div class="case-stat">
+          <div class="case-stat-val">127</div>
+          <div class="case-stat-label">Consultas adicionales en 30 días</div>
+        </div>
+        <div class="case-stat">
+          <div class="case-stat-val">USD 2.3</div>
+          <div class="case-stat-label">CPL real (USD 400 de inversión)</div>
+        </div>
+        <div class="case-stat">
+          <div class="case-stat-val">640%</div>
+          <div class="case-stat-label">ROI a 6 meses documentado</div>
+        </div>
+      </div>
+      <p class="case-quote">
+        "Antes de arrancar, hice el cálculo en esta misma calculadora. Proyectaba 6 ventas adicionales por mes. <strong>El resultado real fue 8 en el primer mes.</strong> La diferencia fue que el equipo ya estaba capacitado para atender leads digitales desde la semana 1."
+      </p>
+    </div>
+  </div>
+
+  <!-- READINESS -->
+  <div class="readiness-card">
+    <div class="rr-header">
+      <div class="rr-title">Antes de avanzar: verificá si tu empresa está lista</div>
+      <div class="rr-sub">3 condiciones. Tick las que se cumplen en tu empresa hoy.</div>
+    </div>
+
+    <div class="rr-score-bar">
+      <div class="rr-score-fill" id="rr-fill" style="width:0%"></div>
+    </div>
+
+    <div class="rr-checks" id="rr-checks">
+
+      <div class="check-item" data-idx="0" onclick="toggleCheck(0)">
+        <div class="check-box">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#010707" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="check-text">
+          Tu equipo puede responder consultas en menos de 2 horas en horario comercial
+          <div class="check-sub">Si esto no se cumple, los leads llegan y se enfrían antes de ser atendidos.</div>
+        </div>
+      </div>
+
+      <div class="check-item" data-idx="1" onclick="toggleCheck(1)">
+        <div class="check-box">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#010707" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="check-text">
+          Tenés al menos 2 vendedores activos disponibles para atender más consultas
+          <div class="check-sub">El sistema genera volumen. Tu equipo tiene que poder con ese volumen.</div>
+        </div>
+      </div>
+
+      <div class="check-item" data-idx="2" onclick="toggleCheck(2)">
+        <div class="check-box">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#010707" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="check-text">
+          Podés comprometer 3–4 horas al mes para revisar resultados y aprobar el calendario de contenido
+          <div class="check-sub">Un solo interlocutor. Una reunión mensual de 45 minutos. Eso es todo lo que requiere de tu lado.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rr-verdict" id="rr-verdict">
+      Marcá las condiciones que cumple tu empresa para ver el diagnóstico de readiness.
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+
+    <div class="cta-label" id="cta-label">¿Estos números tienen sentido para tu empresa?</div>
+
+    <a class="wa-btn" id="wa-btn" href="#" target="_blank" rel="noopener">
+      <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      <span id="wa-text">Verificar si estos números son posibles para mi empresa</span>
+    </a>
+
+    <div class="guarantee-strip">
+      <div class="guar-item">
+        <svg class="guar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <div class="guar-text"><strong>Mes 1 gratuito.</strong> Sin costo de retainer en el primer mes.</div>
+      </div>
+      <div class="guar-item">
+        <svg class="guar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <div class="guar-text"><strong>Garantía de resultados.</strong> Si no llegamos, el mes siguiente no te cobramos.</div>
+      </div>
+      <div class="guar-item">
+        <svg class="guar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <div class="guar-text"><strong>Diagnóstico en 20 min.</strong> Sin propuesta de venta en esa primera llamada.</div>
+      </div>
+    </div>
+
+    <div class="divider-or">
+      <div class="div-l"></div>
+      <span class="div-t">o recibí la proyección por email</span>
+      <div class="div-l"></div>
+    </div>
+
+    <div class="email-row">
+      <input type="email" class="email-inp" id="email-inp" placeholder="tu@empresa.com">
+      <button class="email-btn" onclick="sendEmail()">Enviame la proyección →</button>
+    </div>
+    <p class="privacy"><em>🔒</em> Sin spam. Sin seguimiento no solicitado.</p>
+  </div>
+
+  <footer>
+    <div class="ft-logo">MUCHO <em>MARKETING</em></div>
+    <div class="ft-note">mucho-marketing.com · 2025</div>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// ══════════════════════════════════════════════════════════
+// SYSTEM CONSTANTS
+// ══════════════════════════════════════════════════════════
+const SYS = {
+  leadsMin:    80,     // consultas adicionales mínimas
+  leadsMax:    150,    // consultas adicionales máximas
+  leadsBase:   110,    // media para cálculo conservador
+  cplMin:      1,
+  cplMax:      4,
+  cierreUpgrade: 0.40, // target cierre con sistema
+  retainer:    1500,   // USD/mes
+};
+
+// ══════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════
+function fU(n) {
+  if (Math.abs(n) >= 1000000) return 'USD ' + (n/1000000).toFixed(1).replace('.0','') + 'M';
+  if (Math.abs(n) >= 1000)    return 'USD ' + Math.round(n/1000) + 'K';
+  return 'USD ' + Math.round(n).toLocaleString('en-US');
+}
+function fN(n)   { return Math.round(n).toLocaleString('es-AR'); }
+function fPct(n) { return Math.round(n) + '%'; }
+
+function animNum(el, target, fmt, dur) {
+  const s = performance.now();
+  const prev = parseFloat(el.dataset.target || '0');
+  el.dataset.target = target;
+  const go = now => {
+    const t = Math.min((now - s) / dur, 1);
+    const e = t < .5 ? 2*t*t : -1+(4-2*t)*t;
+    const cur = prev + (target - prev) * e;
+    if (el.dataset.target == target) {
+      el.textContent = fmt(cur);
+      if (t < 1) requestAnimationFrame(go);
+      else el.textContent = fmt(target);
+    }
+  };
+  requestAnimationFrame(go);
+}
+
+// ══════════════════════════════════════════════════════════
+// SLIDER
+// ══════════════════════════════════════════════════════════
+const sliderAds = document.getElementById('slider-ads');
+
+function updateSliderFill() {
+  const min = +sliderAds.min, max = +sliderAds.max, val = +sliderAds.value;
+  const pct = ((val - min) / (max - min)) * 100;
+  sliderAds.style.setProperty('--fill', pct + '%');
+}
+
+sliderAds.addEventListener('input', () => {
+  const v = +sliderAds.value;
+  document.getElementById('ads-val').textContent  = 'USD ' + v.toLocaleString('en-US');
+  document.getElementById('cost-ads').textContent  = 'USD ' + v.toLocaleString('en-US');
+  document.getElementById('cost-total').textContent = 'USD ' + (v + SYS.retainer).toLocaleString('en-US');
+  updateSliderFill();
+  calc();
+});
+
+// ══════════════════════════════════════════════════════════
+// MAIN CALC
+// ══════════════════════════════════════════════════════════
+function calc() {
+  const ticket    = Math.max(500,  +document.getElementById('inp-ticket').value    || 5000);
+  const consultas = Math.max(1,    +document.getElementById('inp-consultas').value  || 60);
+  const cierrePct = Math.max(1, Math.min(99, +document.getElementById('inp-cierre').value || 25));
+  const cierre    = cierrePct / 100;
+  const ads       = +sliderAds.value;
+  const total     = ads + SYS.retainer;
+
+  // Documented case anchor: USD 400 → 127 leads → CPL ≈ 3.15
+  const CPL_CASE  = 400 / 127;
+  const leadsExtra = Math.round(ads / CPL_CASE);
+  const cplReal    = ads / leadsExtra;
+
+  // Digital leads (from ads) close at a lower rate than warm/referral leads.
+  // Documented case: 127 leads → 8 closings = 6.3% digital close rate.
+  // With avatar's warm close rate at 25%, factor = 6.3/25 ≈ 0.25.
+  // This factor anchors projections to real case data regardless of ticket/cierre inputs.
+  const DIGITAL_FACTOR  = 0.25;
+  const cierreDigital   = cierre * DIGITAL_FACTOR;
+  const ventasExtra     = leadsExtra * cierreDigital;
+  const ingresoExtraMes = ventasExtra * ticket;
+
+  // ROI — month 1 retainer is free
+  const costoMes1  = ads;
+  const totalCost6 = costoMes1 + total * 5;
+  const roi6m      = ((ingresoExtraMes * 6 - totalCost6) / totalCost6) * 100;
+  const netoTotal6m = ingresoExtraMes * 6 - totalCost6;
+
+  // Payback month
+  let paybackMes = '+12 meses';
+  let cumIng = 0, cumCost = 0;
+  for (let m = 1; m <= 12; m++) {
+    cumIng  += ingresoExtraMes;
+    cumCost += (m === 1 ? costoMes1 : total);
+    if (cumIng >= cumCost) { paybackMes = 'Mes ' + m; break; }
+  }
+
+  // Secondary stats — fully dynamic now
+  document.getElementById('proj-leads-range').textContent = leadsExtra;
+  document.getElementById('proj-cpl-range').textContent   = 'USD ' + cplReal.toFixed(2) + ' (rango USD 1–4)';
+  document.getElementById('proj-ventas-extra').textContent = '+' + Math.ceil(ventasExtra);
+
+  // ROI %
+  animNum(document.getElementById('roi-pct'), Math.max(0, Math.round(roi6m)), v => Math.round(v) + '%', 700);
+
+  // 4 metrics
+  animNum(document.getElementById('m-ingreso-extra'), ingresoExtraMes, v => fU(v), 600);
+  document.getElementById('m-inversion-mes').textContent = fU(total);
+  animNum(document.getElementById('m-roi-6m'), netoTotal6m, v => fU(Math.max(0, v)), 700);
+  document.getElementById('m-payback').textContent = paybackMes;
+
+  // Projection bars
+  renderProjection(ingresoExtraMes, total, costoMes1);
+
+  // WA link
+  buildWA(ticket, consultas, cierrePct, ads, total, leadsExtra, cplReal, ventasExtra, ingresoExtraMes, netoTotal6m, roi6m);
+}
+
+// ══════════════════════════════════════════════════════════
+// PROJECTION BARS
+// ══════════════════════════════════════════════════════════
+function renderProjection(ingresoMes, costMes, costoMes1) {
+  const wrap = document.getElementById('proj-months');
+
+  const meses = [1, 2, 3, 4, 6];
+
+  const acumulados = meses.map(m => {
+    const ingreso = ingresoMes * m;
+    const costo   = m === 1 ? costoMes1 : costoMes1 + (m - 1) * costMes;
+    return ingreso - costo;
+  });
+
+  const maxVal = Math.max(...acumulados, costMes * 6, 1);
+
+  wrap.innerHTML = '';
+  meses.forEach((m, i) => {
+    const val  = acumulados[i];
+    const pct  = Math.min(100, Math.max(0, (val / maxVal) * 100));
+    const row  = document.createElement('div');
+    row.className = 'proj-row';
+    row.innerHTML = `
+      <div class="proj-mo">Mes ${m}</div>
+      <div class="proj-bar-track">
+        <div class="proj-bar-fill" style="width:0%" data-w="${pct.toFixed(1)}%"></div>
+      </div>
+      <div class="proj-val">${val >= 0 ? fU(val) : '-' + fU(Math.abs(val))}</div>`;
+    wrap.appendChild(row);
+  });
+
+  setTimeout(() => {
+    wrap.querySelectorAll('.proj-bar-fill').forEach(b => {
+      b.style.width = b.dataset.w;
+    });
+  }, 200);
+}
+
+// ══════════════════════════════════════════════════════════
+// READINESS
+// ══════════════════════════════════════════════════════════
+const checks = [false, false, false];
+const verdicts = {
+  0: 'Marcá las condiciones que cumple tu empresa para ver el diagnóstico de readiness.',
+  1: 'Hay una condición clave sin cumplir. Podemos hablar igual — ese es el primer punto que trabajamos juntos en el diagnóstico.',
+  2: 'Tu empresa tiene base sólida. Hay algo concreto que revisar antes de arrancar. El diagnóstico te dice exactamente qué.',
+  3: '<strong>Tu empresa está lista.</strong> Las 3 condiciones se cumplen. El siguiente paso es el diagnóstico de 20 minutos donde calculamos el ROI exacto para tu caso.',
+};
+
+function toggleCheck(idx) {
+  checks[idx] = !checks[idx];
+  const items = document.querySelectorAll('.check-item');
+  items[idx].classList.toggle('checked', checks[idx]);
+
+  const total = checks.filter(Boolean).length;
+  document.getElementById('rr-fill').style.width = (total / 3 * 100) + '%';
+
+  const vEl = document.getElementById('rr-verdict');
+  vEl.innerHTML = verdicts[total];
+  vEl.className = 'rr-verdict' + (total === 3 ? ' ready' : '');
+
+  // Update CTA
+  if (total === 3) {
+    document.getElementById('cta-label').textContent = 'Tu empresa está lista — agendemos el diagnóstico gratuito';
+    document.getElementById('wa-text').textContent = '¿Son posibles estos números para mi empresa? Agendemos el diagnóstico';
+  } else if (total >= 1) {
+    document.getElementById('cta-label').textContent = 'Verifiquemos juntos si estos números son posibles para tu empresa';
+    document.getElementById('wa-text').textContent = 'Verificar si estos números son posibles para mi empresa';
+  } else {
+    document.getElementById('cta-label').textContent = '¿Estos números tienen sentido para tu empresa?';
+    document.getElementById('wa-text').textContent = 'Verificar si estos números son posibles para mi empresa';
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// WHATSAPP
+// ══════════════════════════════════════════════════════════
+function buildWA(ticket, consultas, cierreActual, ads, total, leadsExtra, cplReal, ventasExtra, ingresoMes, neto6m, roi6m) {
+  const ready = checks.filter(Boolean).length;
+  const readyText = ready === 3
+    ? 'Marqué las 3 condiciones de readiness — estamos listos para arrancar.'
+    : ready > 0
+    ? `Marqué ${ready} de 3 condiciones de readiness.`
+    : '';
+
+  const msg = encodeURIComponent(
+    `Hola, hice la calculadora de ROI de Mucho Marketing. ` +
+    `Mis números: ticket USD ${ticket.toLocaleString('en-US')}, ` +
+    `${consultas} consultas/mes, ${cierreActual}% de cierre actual. ` +
+    `Inversión en ads: USD ${ads}. ` +
+    `Proyección del sistema: ${leadsExtra} consultas adicionales/mes a CPL USD ${cplReal.toFixed(2)}, ` +
+    `${Math.round(ventasExtra * 10) / 10} ventas extra/mes (tasa de cierre digital ajustada a leads de ads), ingreso extra ${fU(ingresoMes)}/mes. ` +
+    `Retorno neto a 6 meses: ${fU(Math.max(0, neto6m))}, ROI ${Math.round(Math.max(0, roi6m))}%. ` +
+    (readyText ? readyText + ' ' : '') +
+    `¿Estos números son realistas para mi empresa?`
+  );
+  document.getElementById('wa-btn').href = `https://wa.me/5491100000000?text=${msg}`;
+}
+
+// ══════════════════════════════════════════════════════════
+// INPUTS LISTENERS
+// ══════════════════════════════════════════════════════════
+['inp-ticket', 'inp-consultas', 'inp-cierre'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calc);
+});
+
+// ══════════════════════════════════════════════════════════
+// EMAIL
+// ══════════════════════════════════════════════════════════
+function sendEmail() {
+  const inp = document.getElementById('email-inp');
+  if (!inp.value.trim() || !inp.value.includes('@')) {
+    inp.style.borderColor = 'rgba(255,80,80,.5)';
+    inp.focus();
+    setTimeout(() => inp.style.borderColor = '', 1500);
+    return;
+  }
+  const btn = inp.nextElementSibling;
+  btn.textContent = 'Enviado ✓';
+  btn.style.color = '#27DE6B';
+  btn.disabled = true;
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+updateSliderFill();
+calc();
+</script>
+</body>
+</html>

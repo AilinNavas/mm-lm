@@ -1,0 +1,209 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .lm-root { background: #010707 !important; color: #ffffff !important; font-family: 'Inter', sans-serif; min-height: 100vh; padding: 0 0 2rem; }
+  .lm-header { padding: 2rem 1.5rem 1.5rem; border-bottom: 1px solid #2a3f30; }
+  .lm-tag { display: inline-block; background: #09140E; border: 1px solid #27DE6B; color: #27DE6B !important; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; margin-bottom: 1rem; }
+  .lm-title { font-size: 22px; font-weight: 900; line-height: 1.2; color: #ffffff !important; margin-bottom: 0.5rem; }
+  .lm-title span { color: #27DE6B !important; }
+  .lm-subtitle { font-size: 13px; color: #b0c8b8 !important; line-height: 1.6; }
+
+  .progress-bar-wrap { padding: 1.25rem 1.5rem 0; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #7a9a80 !important; margin-bottom: 6px; }
+  .progress-track { height: 3px; background: #1a3020; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #27DE6B; border-radius: 2px; transition: width 0.4s ease; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .question-wrap { padding: 1.75rem 1.5rem 1rem; }
+  .q-number { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #27DE6B !important; margin-bottom: 0.75rem; }
+  .q-text { font-size: 17px; font-weight: 700; line-height: 1.4; color: #ffffff !important; margin-bottom: 1.5rem; }
+
+  .option-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px;
+    width: 100%;
+    background: #1c3525 !important;
+    border: 1.5px solid #3a5e45 !important;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 14px 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    font-family: 'Inter', sans-serif;
+  }
+  .option-btn:hover { background: #223f2c !important; border-color: #27DE6B !important; }
+  .option-btn.selected { background: #152b1e !important; border-color: #27DE6B !important; }
+
+  .option-letter {
+    min-width: 28px;
+    height: 28px;
+    background: #0a1e10 !important;
+    border: 1.5px solid #27DE6B;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #27DE6B !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.18s, color 0.18s;
+  }
+  .option-btn.selected .option-letter { background: #27DE6B !important; color: #010707 !important; }
+
+  .option-text {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    line-height: 1.5;
+  }
+
+  .nav-wrap { padding: 0.5rem 1.5rem 1rem; }
+  .btn-next { display: block; width: 100%; background: #27DE6B !important; color: #010707 !important; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; padding: 15px; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+  .btn-next:disabled { opacity: 0.2; cursor: not-allowed; }
+  .btn-next:not(:disabled):hover { opacity: 0.85; }
+
+  .result-wrap { padding: 1.75rem 1.5rem; }
+  .result-badge { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1.25rem; }
+  .badge-no { background: #1a0a06; border: 1px solid #6b2a14; color: #f08060 !important; }
+  .badge-si { background: #061a0d; border: 1px solid #1a6b2a; color: #27DE6B !important; }
+  .result-title { font-size: 20px; font-weight: 900; line-height: 1.3; color: #ffffff !important; margin-bottom: 1rem; }
+  .result-title .accent { color: #27DE6B !important; }
+  .result-desc { font-size: 14px; color: #c0d8c8 !important; line-height: 1.7; margin-bottom: 1.5rem; }
+  .divider { height: 1px; background: #1a3020; margin: 1.5rem 0; }
+  .next-steps-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #27DE6B !important; margin-bottom: 1rem; }
+  .step-item { display: flex; gap: 12px; margin-bottom: 1rem; align-items: flex-start; }
+  .step-num { min-width: 24px; height: 24px; background: #09140E; border: 1.5px solid #27DE6B; color: #27DE6B !important; font-size: 12px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-text { font-size: 14px; color: #d0e8d8 !important; line-height: 1.55; }
+  .step-text strong { color: #ffffff !important; }
+  .cta-block { background: #09140E; border: 1px solid #1a3020; border-left: 3px solid #27DE6B; padding: 1.25rem; border-radius: 8px; margin-top: 1.5rem; }
+  .cta-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #27DE6B !important; margin-bottom: 0.5rem; }
+  .cta-text { font-size: 14px; color: #c0d8c8 !important; line-height: 1.6; margin-bottom: 1rem; }
+  .score-row { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+  .score-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-green { background: #27DE6B; }
+  .dot-red { background: #e07050; }
+  .btn-restart { display: inline-block; background: transparent; border: 1.5px solid #3a5e45; color: #90b898 !important; font-family: 'Inter', sans-serif; font-size: 13px; padding: 10px 16px; border-radius: 8px; cursor: pointer; margin-top: 1rem; transition: border-color 0.2s, color 0.2s; }
+  .btn-restart:hover { border-color: #27DE6B; color: #ffffff !important; }
+</style>
+
+<div class="lm-root">
+  <div class="lm-header">
+    <div class="lm-tag">Diagnóstico · Día 17</div>
+    <div class="lm-title">Las <span>3 condiciones</span><br>de escalabilidad</div>
+    <div class="lm-subtitle">Mini-evaluación para saber si tu empresa<br>puede crecer — o solo generar más trabajo.</div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-label">
+      <span id="progressText">Pregunta 1 de 3</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <div id="q1" class="screen active">
+    <div class="question-wrap">
+      <div class="q-number">Condición 1 · Demanda</div>
+      <div class="q-text">Si mañana recibís el doble de consultas, ¿tu sistema comercial podría manejarlo sin que vos tengas que meterte?</div>
+      <button class="option-btn" onclick="selectOption(this,1,'A')"><span class="option-letter">A</span><span class="option-text">Sí, mi equipo y los procesos están listos para eso.</span></button>
+      <button class="option-btn" onclick="selectOption(this,1,'B')"><span class="option-letter">B</span><span class="option-text">Parcialmente — algo funciona, pero necesitaría mi intervención.</span></button>
+      <button class="option-btn" onclick="selectOption(this,1,'C')"><span class="option-letter">C</span><span class="option-text">No. Sin mí, muchos leads se perderían o quedarían sin seguimiento.</span></button>
+    </div>
+    <div class="nav-wrap"><button class="btn-next" id="next1" disabled onclick="goTo('q2',1)">Siguiente →</button></div>
+  </div>
+
+  <div id="q2" class="screen">
+    <div class="question-wrap">
+      <div class="q-number">Condición 2 · Proceso</div>
+      <div class="q-text">¿Sabés exactamente cuántos leads entran por semana, qué canal los trae y en qué etapa se pierden?</div>
+      <button class="option-btn" onclick="selectOption(this,2,'A')"><span class="option-letter">A</span><span class="option-text">Sí, tengo datos claros y los reviso regularmente.</span></button>
+      <button class="option-btn" onclick="selectOption(this,2,'B')"><span class="option-letter">B</span><span class="option-text">Tengo una idea aproximada, pero no datos concretos y medibles.</span></button>
+      <button class="option-btn" onclick="selectOption(this,2,'C')"><span class="option-letter">C</span><span class="option-text">No. Sé que vendo bien, pero no sé qué está pasando en el embudo.</span></button>
+    </div>
+    <div class="nav-wrap"><button class="btn-next" id="next2" disabled onclick="goTo('q3',2)">Siguiente →</button></div>
+  </div>
+
+  <div id="q3" class="screen">
+    <div class="question-wrap">
+      <div class="q-number">Condición 3 · Sistema</div>
+      <div class="q-text">Si vos te tomaras un mes de vacaciones sin mirar el teléfono, ¿tu negocio seguiría captando y cerrando clientes?</div>
+      <button class="option-btn" onclick="selectOption(this,3,'A')"><span class="option-letter">A</span><span class="option-text">Sí, está estructurado para funcionar sin mí.</span></button>
+      <button class="option-btn" onclick="selectOption(this,3,'B')"><span class="option-letter">B</span><span class="option-text">Funcionaría a medias — se mantiene, pero sin crecer.</span></button>
+      <button class="option-btn" onclick="selectOption(this,3,'C')"><span class="option-letter">C</span><span class="option-text">No. El negocio depende demasiado de mi presencia para operar bien.</span></button>
+    </div>
+    <div class="nav-wrap"><button class="btn-next" id="next3" disabled onclick="showResult()">Ver mi resultado →</button></div>
+  </div>
+
+  <div id="result" class="screen">
+    <div class="result-wrap" id="resultContent"></div>
+  </div>
+</div>
+
+<script>
+  var answers = {};
+  function selectOption(btn, q, val) {
+    btn.parentElement.querySelectorAll('.option-btn').forEach(function(b){ b.classList.remove('selected'); });
+    btn.classList.add('selected');
+    answers[q] = val;
+    var nb = document.getElementById('next' + q);
+    if (nb) nb.disabled = false;
+  }
+  function goTo(screenId, fromQ) {
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById(screenId).classList.add('active');
+    var pct = Math.round((fromQ / 3) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = 'Pregunta ' + (fromQ + 1) + ' de 3';
+    document.getElementById('progressPct').textContent = pct + '%';
+  }
+  function showResult() {
+    var aCount = 0;
+    for (var q in answers) { if (answers[q] === 'A') aCount++; }
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressText').textContent = 'Completado';
+    document.getElementById('progressPct').textContent = '100%';
+    var dots = '';
+    for (var i = 1; i <= 3; i++) dots += '<div class="score-dot ' + (answers[i]==='A' ? 'dot-green' : 'dot-red') + '"></div>';
+    var html = aCount >= 2
+      ? '<div class="result-badge badge-si">Tu empresa tiene condiciones para escalar</div>' +
+        '<div class="result-title">Estás más cerca de lo que creés.<br>El sistema <span class="accent">ya tiene base.</span></div>' +
+        '<div class="score-row">' + dots + '</div>' +
+        '<div class="result-desc">Respondiste "sí" en la mayoría de las condiciones. Tu operación tiene la estructura necesaria para crecer. Lo que falta no es el negocio — es conectar bien las piezas y ponerle combustible al sistema que ya funciona.</div>' +
+        '<div class="divider"></div>' +
+        '<div class="next-steps-label">Primer paso recomendado</div>' +
+        '<div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Mapear las fugas exactas del embudo.</strong> Identificá dónde se pierde el 15–20% que podría cerrar y no cierra.</div></div>' +
+        '<div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Escalar la captación con confianza.</strong> Con procesos que funcionan, invertir en Meta Ads tiene sentido. Sin ellos, más volumen = más caos.</div></div>' +
+        '<div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Documentar el sistema para que funcione sin vos.</strong> La escalabilidad real requiere que el proceso sea replicable por tu equipo.</div></div>' +
+        '<div class="cta-block"><div class="cta-label">Siguiente movimiento</div><div class="cta-text">Si querés saber exactamente dónde está la fuga en tu embudo y qué activar primero para escalar, hacemos un diagnóstico gratuito de 30 minutos — sin venta, sin promesas vagas.</div><button class="btn-next" onclick="sendPrompt(\'Quiero hacer el diagnóstico gratuito de 30 minutos para escalar mi empresa\')">Quiero el diagnóstico gratuito ↗</button></div>'
+      : '<div class="result-badge badge-no">Tu empresa es rentable pero no escalable aún</div>' +
+        '<div class="result-title">El negocio va bien,<br>pero el techo está <span class="accent">más cerca de lo que parece.</span></div>' +
+        '<div class="score-row">' + dots + '</div>' +
+        '<div class="result-desc">Tus respuestas muestran que el crecimiento actual depende de tu presencia, no de un sistema. Eso no es un fracaso — es exactamente el punto de inflexión donde las empresas deciden si quieren seguir siendo rentables o empezar a ser escalables.</div>' +
+        '<div class="divider"></div>' +
+        '<div class="next-steps-label">Las 3 condiciones que faltan construir</div>' +
+        '<div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Sistema de captación activa y medible.</strong> Pasar de depender de referidos a un embudo con datos: cuántos leads entran, de dónde y dónde se pierden.</div></div>' +
+        '<div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Proceso comercial estandarizado.</strong> Que tu equipo pueda responder, cotizar y hacer seguimiento con el mismo criterio — sin necesitarte para cada decisión.</div></div>' +
+        '<div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>CRM que te dé visibilidad real.</strong> No para controlar a tu equipo — sino para saber qué está pasando y poder optimizar sin adivinar.</div></div>' +
+        '<div class="cta-block"><div class="cta-label">Siguiente movimiento</div><div class="cta-text">Este es exactamente el perfil con el que trabajamos. Si querés entender qué falta construir primero en tu caso específico, hacemos un diagnóstico gratuito de 30 minutos para mapearlo.</div><button class="btn-next" onclick="sendPrompt(\'Quiero hacer el diagnóstico gratuito de 30 minutos para empezar a escalar mi empresa\')">Quiero el diagnóstico gratuito ↗</button></div>';
+    html += '<button class="btn-restart" onclick="restart()">← Volver a hacer el diagnóstico</button>';
+    document.getElementById('resultContent').innerHTML = html;
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('result').classList.add('active');
+  }
+  function restart() {
+    answers = {};
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.querySelectorAll('.option-btn').forEach(function(b){ b.classList.remove('selected'); });
+    ['next1','next2','next3'].forEach(function(id){ document.getElementById(id).disabled = true; });
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressText').textContent = 'Pregunta 1 de 3';
+    document.getElementById('progressPct').textContent = '0%';
+    document.getElementById('q1').classList.add('active');
+  }
+</script>
