@@ -102,16 +102,18 @@
     .nav-cta:hover {
       opacity: 0.88;
     }
-    .nav-logo {
-  display: flex;
-  align-items: center;
-}
 
-.nav-logo img {
-  height: 60px;   /* tamaño real del logo */
-  width: auto;
-  display: block;
-}
+    .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 60px;
+      /* tamaño real del logo */
+      width: auto;
+      display: block;
+    }
 
     /* ─── HERO ─── */
     .hero {
@@ -827,20 +829,19 @@
       align-items: center;
       justify-content: space-between;
     }
-
     .footer-logo {
-      font-size: 13px;
-      font-weight: 900;
-      font-variation-settings: 'wght' 900;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.3);
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .footer-logo span {
-      color: var(--green);
-      opacity: 0.7;
-    }
+.footer-logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+   
 
     .footer-copy {
       font-size: 12px;
@@ -1473,7 +1474,9 @@
 
   <!-- FOOTER -->
   <footer>
-    <span class="footer-logo">MUCHO <span>MARKETING</span></span>
+    <div class="footer-logo">
+      <img src="images/logo.png" alt="Mucho Marketing Logo">
+    </div>
     <span class="footer-copy">© 2025 Mucho Marketing</span>
   </footer>
 
