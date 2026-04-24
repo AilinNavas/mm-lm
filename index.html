@@ -1,1272 +1,1544 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mucho Marketing</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --brand-dark: #010707;
-    --card-dark: #09140E;
-    --card-mid: #192520;
-    --green: #27DE6B;
-    --white: #FFFFFF;
-    --white-40: rgba(255,255,255,0.4);
-    --white-10: rgba(255,255,255,0.06);
-    --green-10: rgba(39,222,107,0.08);
-    --green-20: rgba(39,222,107,0.15);
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--brand-dark);
-    color: var(--white);
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 0 48px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    background: rgba(1,7,7,0.88);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
-  .nav-logo {
-    font-size: 14px;
-    font-weight: 900;
-    font-variation-settings: 'wght' 900;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-  }
-
-  .nav-logo span { color: var(--green); }
-
-  .nav-links {
-    display: flex;
-    gap: 40px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--white-40);
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--white); }
-
-  .nav-cta {
-    background: var(--green);
-    color: var(--brand-dark) !important;
-    padding: 10px 22px;
-    border-radius: 4px;
-    font-size: 13px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    transition: opacity 0.2s !important;
-  }
-
-  .nav-cta:hover { opacity: 0.88; }
-
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 48px 100px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(39,222,107,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(39,222,107,0.03) 1px, transparent 1px);
-    background-size: 80px 80px;
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0.4) 70%, transparent 100%);
-  }
-
-  .hero-glow {
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    height: 400px;
-    background: radial-gradient(ellipse, rgba(39,222,107,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--green-10);
-    border: 1px solid rgba(39,222,107,0.2);
-    border-radius: 3px;
-    padding: 6px 14px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 40px;
-    width: fit-content;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.2s forwards;
-  }
-
-  .hero-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .hero h1 {
-    font-size: clamp(52px, 7vw, 96px);
-    font-weight: 900;
-    font-variation-settings: 'wght' 900;
-    line-height: 1.0;
-    letter-spacing: -0.03em;
-    max-width: 900px;
-    opacity: 0;
-    animation: fadeUp 0.9s 0.35s forwards;
-  }
-
-  .hero h1 em {
-    font-style: normal;
-    color: var(--green);
-  }
-
-  .hero-sub {
-    margin-top: 32px;
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--white-40);
-    max-width: 480px;
-    line-height: 1.7;
-    opacity: 0;
-    animation: fadeUp 0.9s 0.5s forwards;
-  }
-
-  .hero-actions {
-    margin-top: 48px;
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    opacity: 0;
-    animation: fadeUp 0.9s 0.65s forwards;
-  }
-
-  .btn-primary {
-    background: var(--green);
-    color: var(--brand-dark);
-    padding: 16px 32px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    transition: all 0.2s;
-    display: inline-block;
-  }
-
-  .btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-
-  .btn-ghost {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--white-40);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: color 0.2s;
-  }
-
-  .btn-ghost:hover { color: var(--white); }
-
-  .btn-ghost svg { transition: transform 0.2s; }
-  .btn-ghost:hover svg { transform: translateX(4px); }
-
-  /* ─── STAT BAR ─── */
-  .stat-bar {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    opacity: 0;
-    animation: fadeUp 0.9s 0.85s forwards;
-  }
-
-  .stat-item {
-    padding: 40px 48px;
-    border-right: 1px solid rgba(255,255,255,0.06);
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-
-  .stat-item:last-child { border-right: none; }
-
-  .stat-item:hover {
-    background: var(--green-10);
-    cursor: default;
-  }
-
-  .stat-item::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: var(--green);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .stat-item:hover::before { opacity: 1; }
-
-  .stat-number {
-    font-size: clamp(40px, 5vw, 64px);
-    font-weight: 900;
-    font-variation-settings: 'wght' 900;
-    color: var(--green);
-    letter-spacing: -0.03em;
-    line-height: 1;
-    display: block;
-  }
-
-  .stat-label {
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--white-40);
-    margin-top: 8px;
-    letter-spacing: 0.02em;
-    line-height: 1.5;
-  }
-
-  .stat-source {
-    font-size: 11px;
-    color: rgba(39,222,107,0.5);
-    margin-top: 6px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
-  /* ─── SECTION SHARED ─── */
-  section {
-    padding: 120px 48px;
-  }
-
-  .section-tag {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 24px;
-  }
-
-  .section-title {
-    font-size: clamp(36px, 4vw, 56px);
-    font-weight: 900;
-    font-variation-settings: 'wght' 900;
-    letter-spacing: -0.025em;
-    line-height: 1.1;
-    max-width: 680px;
-  }
-
-  .section-body {
-    font-size: 17px;
-    color: var(--white-40);
-    max-width: 540px;
-    line-height: 1.75;
-    margin-top: 24px;
-  }
-
-  /* ─── PROBLEMA ─── */
-  #problema {
-    background: var(--card-dark);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-
-  .problema-left { position: sticky; top: 120px; }
-
-  .problema-right {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .problema-item {
-    padding: 32px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .problema-item:last-child { border-bottom: none; }
-
-  .problema-item h3 {
-    font-size: 17px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    letter-spacing: -0.01em;
-  }
-
-  .problema-item p {
-    font-size: 15px;
-    color: var(--white-40);
-    line-height: 1.65;
-  }
-
-  /* ─── CASO DE ESTUDIO ─── */
-  #caso {
-    background: var(--brand-dark);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .caso-glow {
-    position: absolute;
-    bottom: -100px;
-    right: -100px;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(ellipse, rgba(39,222,107,0.05) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .caso-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  .caso-card {
-    background: var(--card-dark);
-    border: 1px solid rgba(39,222,107,0.15);
-    border-radius: 8px;
-    padding: 48px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .caso-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--green);
-  }
-
-  .caso-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 40px;
-  }
-
-  .caso-badge {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--green);
-    background: var(--green-10);
-    border: 1px solid rgba(39,222,107,0.2);
-    padding: 5px 12px;
-    border-radius: 3px;
-  }
-
-  .caso-rubro {
-    font-size: 12px;
-    color: var(--white-40);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
-  .caso-metrics {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 32px;
-  }
-
-  .caso-metric {
-    padding: 24px;
-    background: var(--card-mid);
-    border-radius: 6px;
-  }
-
-  .caso-metric-number {
-    font-size: 40px;
-    font-weight: 900;
-    font-variation-settings: 'wght' 900;
-    color: var(--green);
-    letter-spacing: -0.03em;
-    line-height: 1;
-    display: block;
-  }
-
-  .caso-metric-label {
-    font-size: 12px;
-    color: var(--white-40);
-    margin-top: 6px;
-    line-height: 1.4;
-  }
-
-  .caso-divider {
-    height: 1px;
-    background: rgba(255,255,255,0.06);
-    margin: 32px 0;
-  }
-
-  .caso-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-
-  .caso-inv {
-    font-size: 13px;
-    color: var(--white-40);
-    line-height: 1.6;
-  }
-
-  .caso-inv strong {
-    color: var(--white);
-    font-weight: 600;
-  }
-
-  .caso-cpl {
-    text-align: right;
-  }
-
-  .caso-cpl-number {
-    font-size: 28px;
-    font-weight: 900;
-    font-variation-settings: 'wght' 900;
-    color: var(--green);
-    display: block;
-    letter-spacing: -0.02em;
-  }
-
-  .caso-cpl-label {
-    font-size: 11px;
-    color: var(--white-40);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  /* ─── COMO FUNCIONA ─── */
-  #como-funciona {
-    background: var(--card-dark);
-  }
-
-  .cf-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: end;
-    margin-bottom: 80px;
-  }
-
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2px;
-  }
-
-  .step {
-    background: var(--card-mid);
-    padding: 40px 32px;
-    position: relative;
-    transition: background 0.3s;
-  }
-
-  .step:hover { background: rgba(25,37,32,0.9); }
-
-  .step-num {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--green);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    display: block;
-  }
-
-  .step h3 {
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    margin-bottom: 14px;
-    line-height: 1.3;
-  }
-
-  .step p {
-    font-size: 14px;
-    color: var(--white-40);
-    line-height: 1.65;
-  }
-
-  .step-icon {
-    position: absolute;
-    bottom: 32px; right: 32px;
-    width: 36px; height: 36px;
-    opacity: 0.2;
-  }
-
-  /* ─── OFERTA ─── */
-  #oferta {
-    background: var(--brand-dark);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-
-  .oferta-left { position: sticky; top: 120px; }
-
-  .oferta-table {
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .oferta-plan {
-    padding: 40px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    transition: background 0.25s;
-  }
-
-  .oferta-plan:last-child { border-bottom: none; }
-
-  .oferta-plan:hover { background: var(--green-10); }
-
-  .oferta-plan-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-
-  .oferta-plan-name {
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .oferta-plan-price {
-    font-size: 24px;
-    font-weight: 900;
-    font-variation-settings: 'wght' 900;
-    color: var(--green);
-    letter-spacing: -0.02em;
-  }
-
-  .oferta-plan-price.free {
-    color: var(--green);
-  }
-
-  .oferta-plan-desc {
-    font-size: 14px;
-    color: var(--white-40);
-    line-height: 1.65;
-    margin-bottom: 20px;
-  }
-
-  .oferta-plan-items {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .oferta-plan-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.65);
-    line-height: 1.5;
-  }
-
-  .oferta-plan-item::before {
-    content: '';
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--green);
-    margin-top: 7px;
-    flex-shrink: 0;
-  }
-
-  .garantia-box {
-    margin-top: 32px;
-    background: var(--green-10);
-    border: 1px solid rgba(39,222,107,0.2);
-    border-radius: 6px;
-    padding: 28px 32px;
-  }
-
-  .garantia-box h4 {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--green);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .garantia-box p {
-    font-size: 14px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.7;
-  }
-
-  /* ─── PERFIL ─── */
-  #perfil {
-    background: var(--card-dark);
-    text-align: center;
-  }
-
-  .perfil-inner {
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .perfil-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin-top: 56px;
-    text-align: left;
-  }
-
-  .perfil-card {
-    background: var(--card-mid);
-    border-radius: 6px;
-    padding: 28px;
-    position: relative;
-    border: 1px solid transparent;
-    transition: border-color 0.3s;
-  }
-
-  .perfil-card:hover { border-color: rgba(39,222,107,0.15); }
-
-  .perfil-card h4 {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-
-  .perfil-card p {
-    font-size: 13px;
-    color: var(--white-40);
-    line-height: 1.6;
-  }
-
-  /* ─── CTA FINAL ─── */
-  #contacto {
-    background: var(--brand-dark);
-    text-align: center;
-    padding: 140px 48px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cta-glow {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 700px; height: 400px;
-    background: radial-gradient(ellipse, rgba(39,222,107,0.07) 0%, transparent 65%);
-    pointer-events: none;
-  }
-
-  #contacto .section-title {
-    max-width: 700px;
-    margin: 0 auto;
-    font-size: clamp(40px, 5vw, 64px);
-  }
-
-  #contacto .section-body {
-    max-width: 480px;
-    margin: 24px auto 0;
-    text-align: center;
-  }
-
-  .cta-actions {
-    margin-top: 48px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .cta-fine {
-    font-size: 12px;
-    color: rgba(255,255,255,0.25);
-    letter-spacing: 0.04em;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 32px 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-logo {
-    font-size: 13px;
-    font-weight: 900;
-    font-variation-settings: 'wght' 900;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.3);
-  }
-
-  .footer-logo span { color: var(--green); opacity: 0.7; }
-
-  .footer-copy {
-    font-size: 12px;
-    color: rgba(255,255,255,0.2);
-  }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ─── SCROLLBAR ─── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--brand-dark); }
-  ::-webkit-scrollbar-thumb { background: var(--card-mid); border-radius: 2px; }
-
-  /* ─── MOBILE ─── */
-  @media (max-width: 768px) {
-
-    /* Nav */
-    nav { padding: 0 20px; height: 60px; }
-    .nav-links { display: none; }
-    .nav-logo { font-size: 12px; letter-spacing: 0.08em; }
-
-    /* Sections */
-    section { padding: 72px 20px; }
-    #contacto { padding: 96px 20px; }
-
-    /* Hero */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mucho Marketing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --brand-dark: #010707;
+      --card-dark: #09140E;
+      --card-mid: #192520;
+      --green: #27DE6B;
+      --white: #FFFFFF;
+      --white-40: rgba(255, 255, 255, 0.4);
+      --white-10: rgba(255, 255, 255, 0.06);
+      --green-10: rgba(39, 222, 107, 0.08);
+      --green-20: rgba(39, 222, 107, 0.15);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--brand-dark);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 48px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(1, 7, 7, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .nav-logo {
+      font-size: 14px;
+      font-weight: 900;
+      font-variation-settings: 'wght' 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--green);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white-40);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-cta {
+      background: var(--green);
+      color: var(--brand-dark) !important;
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: opacity 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      opacity: 0.88;
+    }
+
+    /* ─── HERO ─── */
     .hero {
-      min-height: 100svh;
-      padding: 0 20px 72px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
       justify-content: flex-end;
+      padding: 0 48px 100px;
+      position: relative;
+      overflow: hidden;
     }
-    .hero-tag { font-size: 10px; margin-bottom: 28px; }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(39, 222, 107, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(39, 222, 107, 0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(39, 222, 107, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-10);
+      border: 1px solid rgba(39, 222, 107, 0.2);
+      border-radius: 3px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 40px;
+      width: fit-content;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
     .hero h1 {
-      font-size: clamp(38px, 11vw, 52px);
-      letter-spacing: -0.025em;
-      line-height: 1.05;
+      font-size: clamp(52px, 7vw, 96px);
+      font-weight: 900;
+      font-variation-settings: 'wght' 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.35s forwards;
     }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--green);
+    }
+
     .hero-sub {
-      font-size: 15px;
-      margin-top: 20px;
-      max-width: 100%;
+      margin-top: 32px;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--white-40);
+      max-width: 480px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
     }
+
     .hero-actions {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
-      margin-top: 36px;
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.65s forwards;
     }
-    .btn-primary { width: 100%; text-align: center; padding: 15px 24px; }
 
-    /* Stat bar */
-    .stat-bar { grid-template-columns: 1fr; }
+    .btn-primary {
+      background: var(--green);
+      color: var(--brand-dark);
+      padding: 16px 32px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white-40);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover {
+      color: var(--white);
+    }
+
+    .btn-ghost svg {
+      transition: transform 0.2s;
+    }
+
+    .btn-ghost:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* ─── STAT BAR ─── */
+    .stat-bar {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.85s forwards;
+    }
+
     .stat-item {
-      padding: 28px 20px;
+      padding: 40px 48px;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .stat-item:last-child {
       border-right: none;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .stat-item:last-child { border-bottom: none; }
-    .stat-number { font-size: clamp(36px, 10vw, 52px); }
 
-    /* Problema */
-    #problema { grid-template-columns: 1fr; gap: 0; padding-bottom: 0; }
-    .problema-left { position: static; padding-bottom: 48px; }
-    .problema-right { border-top: 1px solid rgba(255,255,255,0.06); }
-    .section-title { font-size: clamp(28px, 8vw, 40px); max-width: 100%; }
-    .section-body { font-size: 15px; max-width: 100%; }
-    .problema-item { padding: 24px 0; }
-    .problema-item h3 { font-size: 15px; }
-    .problema-item p { font-size: 14px; }
+    .stat-item:hover {
+      background: var(--green-10);
+      cursor: default;
+    }
 
-    /* Caso */
-    .caso-inner { grid-template-columns: 1fr; gap: 40px; }
-    .caso-card { padding: 28px 20px; }
-    .caso-metrics { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .caso-metric { padding: 18px 16px; }
-    .caso-metric-number { font-size: 30px; }
-    .caso-header { margin-bottom: 24px; }
-    .garantia-box { padding: 20px; margin-top: 28px; }
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--green);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
 
-    /* Como funciona */
-    .cf-header { grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; }
-    .steps { grid-template-columns: 1fr; gap: 2px; }
-    .step { padding: 28px 20px; }
-    .step-icon { display: none; }
+    .stat-item:hover::before {
+      opacity: 1;
+    }
 
-    /* Oferta */
-    #oferta { grid-template-columns: 1fr; gap: 40px; }
-    .oferta-left { position: static; }
-    .oferta-plan { padding: 28px 20px; }
-    .oferta-plan-header { flex-direction: column; align-items: flex-start; gap: 6px; }
-    .oferta-plan-price { font-size: 20px !important; }
+    .stat-number {
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 900;
+      font-variation-settings: 'wght' 900;
+      color: var(--green);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      display: block;
+    }
 
-    /* Perfil */
-    #perfil { padding: 72px 20px; }
-    .perfil-inner { max-width: 100%; }
-    .perfil-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 40px; }
-    .perfil-card { padding: 20px; }
-    #perfil .section-title { margin: 0 auto; }
-    #perfil .section-body { margin: 16px auto 0; }
+    .stat-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--white-40);
+      margin-top: 8px;
+      letter-spacing: 0.02em;
+      line-height: 1.5;
+    }
 
-    /* CTA */
-    #contacto .section-title { font-size: clamp(32px, 9vw, 48px); }
-    #contacto .section-body { font-size: 15px; }
-    .cta-actions { margin-top: 36px; }
-    .cta-actions .btn-primary { font-size: 14px !important; padding: 16px 28px !important; }
-    .cta-fine { font-size: 11px; text-align: center; line-height: 1.6; }
+    .stat-source {
+      font-size: 11px;
+      color: rgba(39, 222, 107, 0.5);
+      margin-top: 6px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
 
-    /* Footer */
-    footer {
+    /* ─── SECTION SHARED ─── */
+    section {
+      padding: 120px 48px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 900;
+      font-variation-settings: 'wght' 900;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      max-width: 680px;
+    }
+
+    .section-body {
+      font-size: 17px;
+      color: var(--white-40);
+      max-width: 540px;
+      line-height: 1.75;
+      margin-top: 24px;
+    }
+
+    /* ─── PROBLEMA ─── */
+    #problema {
+      background: var(--card-dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .problema-left {
+      position: sticky;
+      top: 120px;
+    }
+
+    .problema-right {
+      display: flex;
       flex-direction: column;
-      gap: 10px;
-      text-align: center;
-      padding: 28px 20px;
+      gap: 2px;
     }
-  }
 
-  @media (max-width: 380px) {
-    .hero h1 { font-size: 34px; }
-    .caso-metrics { grid-template-columns: 1fr; }
-  }
-</style>
+    .problema-item {
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .problema-item:last-child {
+      border-bottom: none;
+    }
+
+    .problema-item h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .problema-item p {
+      font-size: 15px;
+      color: var(--white-40);
+      line-height: 1.65;
+    }
+
+    /* ─── CASO DE ESTUDIO ─── */
+    #caso {
+      background: var(--brand-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .caso-glow {
+      position: absolute;
+      bottom: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(39, 222, 107, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .caso-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .caso-card {
+      background: var(--card-dark);
+      border: 1px solid rgba(39, 222, 107, 0.15);
+      border-radius: 8px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .caso-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--green);
+    }
+
+    .caso-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .caso-badge {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-10);
+      border: 1px solid rgba(39, 222, 107, 0.2);
+      padding: 5px 12px;
+      border-radius: 3px;
+    }
+
+    .caso-rubro {
+      font-size: 12px;
+      color: var(--white-40);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .caso-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .caso-metric {
+      padding: 24px;
+      background: var(--card-mid);
+      border-radius: 6px;
+    }
+
+    .caso-metric-number {
+      font-size: 40px;
+      font-weight: 900;
+      font-variation-settings: 'wght' 900;
+      color: var(--green);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      display: block;
+    }
+
+    .caso-metric-label {
+      font-size: 12px;
+      color: var(--white-40);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .caso-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.06);
+      margin: 32px 0;
+    }
+
+    .caso-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .caso-inv {
+      font-size: 13px;
+      color: var(--white-40);
+      line-height: 1.6;
+    }
+
+    .caso-inv strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .caso-cpl {
+      text-align: right;
+    }
+
+    .caso-cpl-number {
+      font-size: 28px;
+      font-weight: 900;
+      font-variation-settings: 'wght' 900;
+      color: var(--green);
+      display: block;
+      letter-spacing: -0.02em;
+    }
+
+    .caso-cpl-label {
+      font-size: 11px;
+      color: var(--white-40);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ─── COMO FUNCIONA ─── */
+    #como-funciona {
+      background: var(--card-dark);
+    }
+
+    .cf-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: end;
+      margin-bottom: 80px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .step {
+      background: var(--card-mid);
+      padding: 40px 32px;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .step:hover {
+      background: rgba(25, 37, 32, 0.9);
+    }
+
+    .step-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .step h3 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--white-40);
+      line-height: 1.65;
+    }
+
+    .step-icon {
+      position: absolute;
+      bottom: 32px;
+      right: 32px;
+      width: 36px;
+      height: 36px;
+      opacity: 0.2;
+    }
+
+    /* ─── OFERTA ─── */
+    #oferta {
+      background: var(--brand-dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .oferta-left {
+      position: sticky;
+      top: 120px;
+    }
+
+    .oferta-table {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .oferta-plan {
+      padding: 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: background 0.25s;
+    }
+
+    .oferta-plan:last-child {
+      border-bottom: none;
+    }
+
+    .oferta-plan:hover {
+      background: var(--green-10);
+    }
+
+    .oferta-plan-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .oferta-plan-name {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .oferta-plan-price {
+      font-size: 24px;
+      font-weight: 900;
+      font-variation-settings: 'wght' 900;
+      color: var(--green);
+      letter-spacing: -0.02em;
+    }
+
+    .oferta-plan-price.free {
+      color: var(--green);
+    }
+
+    .oferta-plan-desc {
+      font-size: 14px;
+      color: var(--white-40);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .oferta-plan-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .oferta-plan-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.5;
+    }
+
+    .oferta-plan-item::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    .garantia-box {
+      margin-top: 32px;
+      background: var(--green-10);
+      border: 1px solid rgba(39, 222, 107, 0.2);
+      border-radius: 6px;
+      padding: 28px 32px;
+    }
+
+    .garantia-box h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .garantia-box p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.7;
+    }
+
+    /* ─── PERFIL ─── */
+    #perfil {
+      background: var(--card-dark);
+      text-align: center;
+    }
+
+    .perfil-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .perfil-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+      text-align: left;
+    }
+
+    .perfil-card {
+      background: var(--card-mid);
+      border-radius: 6px;
+      padding: 28px;
+      position: relative;
+      border: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    .perfil-card:hover {
+      border-color: rgba(39, 222, 107, 0.15);
+    }
+
+    .perfil-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .perfil-card p {
+      font-size: 13px;
+      color: var(--white-40);
+      line-height: 1.6;
+    }
+
+    /* ─── CTA FINAL ─── */
+    #contacto {
+      background: var(--brand-dark);
+      text-align: center;
+      padding: 140px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(39, 222, 107, 0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    #contacto .section-title {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: clamp(40px, 5vw, 64px);
+    }
+
+    #contacto .section-body {
+      max-width: 480px;
+      margin: 24px auto 0;
+      text-align: center;
+    }
+
+    .cta-actions {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cta-fine {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-size: 13px;
+      font-weight: 900;
+      font-variation-settings: 'wght' 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .footer-logo span {
+      color: var(--green);
+      opacity: 0.7;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--brand-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--card-mid);
+      border-radius: 2px;
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+
+      /* Nav */
+      nav {
+        padding: 0 20px;
+        height: 60px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-logo {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+      }
+
+      /* Sections */
+      section {
+        padding: 72px 20px;
+      }
+
+      #contacto {
+        padding: 96px 20px;
+      }
+
+      /* Hero */
+      .hero {
+        min-height: 100svh;
+        padding: 0 20px 72px;
+        justify-content: flex-end;
+      }
+
+      .hero-tag {
+        font-size: 10px;
+        margin-bottom: 28px;
+      }
+
+      .hero h1 {
+        font-size: clamp(38px, 11vw, 52px);
+        letter-spacing: -0.025em;
+        line-height: 1.05;
+      }
+
+      .hero-sub {
+        font-size: 15px;
+        margin-top: 20px;
+        max-width: 100%;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        margin-top: 36px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        text-align: center;
+        padding: 15px 24px;
+      }
+
+      /* Stat bar */
+      .stat-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-item {
+        padding: 28px 20px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .stat-item:last-child {
+        border-bottom: none;
+      }
+
+      .stat-number {
+        font-size: clamp(36px, 10vw, 52px);
+      }
+
+      /* Problema */
+      #problema {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding-bottom: 0;
+      }
+
+      .problema-left {
+        position: static;
+        padding-bottom: 48px;
+      }
+
+      .problema-right {
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .section-title {
+        font-size: clamp(28px, 8vw, 40px);
+        max-width: 100%;
+      }
+
+      .section-body {
+        font-size: 15px;
+        max-width: 100%;
+      }
+
+      .problema-item {
+        padding: 24px 0;
+      }
+
+      .problema-item h3 {
+        font-size: 15px;
+      }
+
+      .problema-item p {
+        font-size: 14px;
+      }
+
+      /* Caso */
+      .caso-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .caso-card {
+        padding: 28px 20px;
+      }
+
+      .caso-metrics {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .caso-metric {
+        padding: 18px 16px;
+      }
+
+      .caso-metric-number {
+        font-size: 30px;
+      }
+
+      .caso-header {
+        margin-bottom: 24px;
+      }
+
+      .garantia-box {
+        padding: 20px;
+        margin-top: 28px;
+      }
+
+      /* Como funciona */
+      .cf-header {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 40px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+
+      .step {
+        padding: 28px 20px;
+      }
+
+      .step-icon {
+        display: none;
+      }
+
+      /* Oferta */
+      #oferta {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .oferta-left {
+        position: static;
+      }
+
+      .oferta-plan {
+        padding: 28px 20px;
+      }
+
+      .oferta-plan-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .oferta-plan-price {
+        font-size: 20px !important;
+      }
+
+      /* Perfil */
+      #perfil {
+        padding: 72px 20px;
+      }
+
+      .perfil-inner {
+        max-width: 100%;
+      }
+
+      .perfil-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 40px;
+      }
+
+      .perfil-card {
+        padding: 20px;
+      }
+
+      #perfil .section-title {
+        margin: 0 auto;
+      }
+
+      #perfil .section-body {
+        margin: 16px auto 0;
+      }
+
+      /* CTA */
+      #contacto .section-title {
+        font-size: clamp(32px, 9vw, 48px);
+      }
+
+      #contacto .section-body {
+        font-size: 15px;
+      }
+
+      .cta-actions {
+        margin-top: 36px;
+      }
+
+      .cta-actions .btn-primary {
+        font-size: 14px !important;
+        padding: 16px 28px !important;
+      }
+
+      .cta-fine {
+        font-size: 11px;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .nav-logo img {
+        height: 40px;
+        width: auto;
+        display: block;
+      }
+
+      /* Footer */
+      footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 28px 20px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .hero h1 {
+        font-size: 34px;
+      }
+
+      .caso-metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">MUCHO <span>MARKETING</span></a>
-  <ul class="nav-links">
-    <li><a href="#problema">El problema</a></li>
-    <li><a href="#caso">Caso real</a></li>
-    <li><a href="#como-funciona">El sistema</a></li>
-    <li><a href="#oferta">Oferta</a></li>
-    <li><a href="https://wa.me/543519046945" class="nav-cta">Hablar con Joel</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero" id="inicio">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-
-  <div class="hero-tag">Construcción y home improvement</div>
-
-  <h1>
-    El negocio va bien.<br>
-    Pero hay <em>plata<br>en la mesa</em>.
-  </h1>
-
-  <p class="hero-sub">
-    Generamos consultas calificadas por WhatsApp a costo predecible, usando Meta Ads y Kommo CRM. Para empresas de cerramientos, piscinas y reformas que ya venden bien.
-  </p>
-
-  <div class="hero-actions">
-    <a href="https://wa.me/543519046945" class="btn-primary">Hacer el diagnóstico gratuito</a>
-    <a href="#caso" class="btn-ghost">
-      Ver caso real
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <img src="images/logo.png" alt="Mucho Marketing Logo">
     </a>
-  </div>
-</section>
+    <ul class="nav-links">
+      <li><a href="#problema">El problema</a></li>
+      <li><a href="#caso">Caso real</a></li>
+      <li><a href="#como-funciona">El sistema</a></li>
+      <li><a href="#oferta">Oferta</a></li>
+      <li><a href="https://wa.me/543519046945" class="nav-cta">Hablar con Joel</a></li>
+    </ul>
+  </nav>
 
-<!-- STAT BAR -->
-<div class="stat-bar">
-  <div class="stat-item">
-    <span class="stat-number">150</span>
-    <div class="stat-label">consultas calificadas<br>en 30 días</div>
-    <div class="stat-source">Caso real · Construcción</div>
-  </div>
-  <div class="stat-item">
-    <span class="stat-number">USD 1–4</span>
-    <div class="stat-label">costo por consulta<br>calificada</div>
-    <div class="stat-source">USD 400 de inversión en Meta</div>
-  </div>
-  <div class="stat-item">
-    <span class="stat-number">84</span>
-    <div class="stat-label">presupuestos enviados<br>en el mismo período</div>
-    <div class="stat-source">Datos de Kommo CRM</div>
-  </div>
-</div>
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
 
-<!-- PROBLEMA -->
-<section id="problema">
-  <div class="problema-left reveal">
-    <span class="section-tag">El problema</span>
-    <h2 class="section-title">El 60% de tus ventas viene de referidos.</h2>
-    <p class="section-body">
-      Eso no es una fortaleza. Es una dependencia. Cuando los referidos afloran, el mes es bueno. Cuando no, no hay sistema que lo compense.
+    <div class="hero-tag">Construcción y home improvement</div>
+
+    <h1>
+      El negocio va bien.<br>
+      Pero hay <em>plata<br>en la mesa</em>.
+    </h1>
+
+    <p class="hero-sub">
+      Generamos consultas calificadas por WhatsApp a costo predecible, usando Meta Ads y Kommo CRM. Para empresas de
+      cerramientos, piscinas y reformas que ya venden bien.
     </p>
-  </div>
-  <div class="problema-right">
-    <div class="problema-item reveal">
-      <h3>Demanda impredecible</h3>
-      <p>No sabés cuántas consultas va a haber el mes que viene. No podés planificar el equipo, el stock, ni la operación sobre algo que no controlás.</p>
-    </div>
-    <div class="problema-item reveal">
-      <h3>Publicidad sin sistema</h3>
-      <p>Probaron Meta Ads, generaron consultas, pero nadie las atendió a tiempo. El lead llegó y se enfrió. La inversión no tuvo retorno visible.</p>
-    </div>
-    <div class="problema-item reveal">
-      <h3>Sin datos para decidir</h3>
-      <p>No hay registro de cuántas consultas entraron, cuántas se presupuestaron, ni cuántas se cerraron. El embudo existe, pero no se puede medir.</p>
-    </div>
-    <div class="problema-item reveal">
-      <h3>Crecimiento que depende de vos</h3>
-      <p>El negocio crece cuando vos empujás. Cuando aflojás, afloja. No hay un sistema que funcione sin que estés mirando el teléfono.</p>
-    </div>
-  </div>
-</section>
 
-<!-- CASO DE ESTUDIO -->
-<section id="caso">
-  <div class="caso-glow"></div>
-  <div class="caso-inner">
-    <div class="reveal">
-      <span class="section-tag">Caso real</span>
-      <h2 class="section-title">Un sistema que ya tiene números.</h2>
-      <p class="section-body">
-        El caso que mostramos es el primero. No está cherry-picked ni editado. Son los datos exactos de Kommo cruzados con Meta Ads al cierre de los 30 días.
-      </p>
-      <div class="garantia-box" style="margin-top: 40px;">
-        <h4>Garantía del retainer</h4>
-        <p>Si en los primeros 30 días desde el lanzamiento no generamos más consultas que el mes anterior al inicio del servicio, el mes siguiente no se cobra hasta alcanzar ese resultado.</p>
-      </div>
-    </div>
-    <div class="caso-card reveal">
-      <div class="caso-header">
-        <span class="caso-badge">Caso real</span>
-        <span class="caso-rubro">Construcción · GBA</span>
-      </div>
-      <div class="caso-metrics">
-        <div class="caso-metric">
-          <span class="caso-metric-number">150</span>
-          <div class="caso-metric-label">consultas calificadas por WhatsApp</div>
-        </div>
-        <div class="caso-metric">
-          <span class="caso-metric-number">84</span>
-          <div class="caso-metric-label">presupuestos enviados</div>
-        </div>
-        <div class="caso-metric">
-          <span class="caso-metric-number">30</span>
-          <div class="caso-metric-label">días desde el lanzamiento</div>
-        </div>
-        <div class="caso-metric">
-          <span class="caso-metric-number">USD 400</span>
-          <div class="caso-metric-label">inversión publicitaria total</div>
-        </div>
-      </div>
-      <div class="caso-divider"></div>
-      <div class="caso-footer">
-        <div class="caso-inv">
-          <strong>USD 1 a 4</strong><br>
-          costo por consulta calificada
-        </div>
-        <div class="caso-cpl">
-          <span class="caso-cpl-number">56%</span>
-          <div class="caso-cpl-label">tasa de presupuestación</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMO FUNCIONA -->
-<section id="como-funciona">
-  <div class="cf-header">
-    <div class="reveal">
-      <span class="section-tag">El sistema</span>
-      <h2 class="section-title">Del anuncio al presupuesto en menos de 2 horas.</h2>
-    </div>
-    <div class="reveal">
-      <p class="section-body" style="margin-top: 0;">
-        Cada parte del sistema está diseñada para un rubro específico. No es una solución genérica adaptada. Es el mismo proceso que generó los números del caso real.
-      </p>
-    </div>
-  </div>
-  <div class="steps reveal">
-    <div class="step">
-      <span class="step-num">01</span>
-      <h3>Meta Ads para tu rubro</h3>
-      <p>Campañas diseñadas específicamente para construcción y home improvement. Copy, creative y segmentación para el decisor de tu industria.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">02</span>
-      <h3>WhatsApp como único destino</h3>
-      <p>Todo el tráfico converge en WhatsApp Business. El lead llega calificado, con nombre, rubro y necesidad. Nada entra frío.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">03</span>
-      <h3>Kommo CRM desde el día 1</h3>
-      <p>Pipeline configurado, automatización de primer mensaje, etiquetas por etapa. Cada lead tiene un dueño y un estado. Nada se pierde.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">04</span>
-      <h3>Reporte semanal real</h3>
-      <p>CPL, volumen de consultas, tasa de presupuestación. No gráficos de Meta. El cruce de datos que muestra si el sistema está funcionando.</p>
-    </div>
-  </div>
-</section>
-
-<!-- OFERTA -->
-<section id="oferta">
-  <div class="oferta-left reveal">
-    <span class="section-tag">Oferta</span>
-    <h2 class="section-title">Tres capas. Un sistema.</h2>
-    <p class="section-body">
-      Empezamos con el mes de prueba para generar datos reales. El sistema mensual y los add-ons se construyen sobre esa base. No hay compromiso hasta que los números lo justifiquen.
-    </p>
-    <div style="margin-top: 48px;">
-      <div style="font-size: 13px; color: var(--white-40); line-height: 1.8;">
-        El budget publicitario lo administra el cliente<br>
-        directamente en su cuenta de Meta.<br>
-        <span style="color: var(--green); font-weight: 600;">Mínimo recomendado: USD 400/mes.</span>
-      </div>
-    </div>
-  </div>
-  <div class="oferta-table reveal">
-    <div class="oferta-plan">
-      <div class="oferta-plan-header">
-        <span class="oferta-plan-name">Mes de Prueba</span>
-        <span class="oferta-plan-price free">Gratis</span>
-      </div>
-      <p class="oferta-plan-desc">
-        30 días completos con Meta Ads activos, Kommo configurado y el equipo de ventas capacitado. Sin costo de agencia.
-      </p>
-      <div class="oferta-plan-items">
-        <div class="oferta-plan-item">Diseño y gestión de campaña de conversión</div>
-        <div class="oferta-plan-item">Setup de Kommo CRM con automatización de primer mensaje</div>
-        <div class="oferta-plan-item">Capacitación del equipo de ventas (60-90 min)</div>
-        <div class="oferta-plan-item">Script de calificación personalizado por industria</div>
-        <div class="oferta-plan-item">Soporte por WhatsApp en horario comercial</div>
-        <div class="oferta-plan-item">Reunión de diagnóstico al cierre del mes con datos reales</div>
-      </div>
-    </div>
-    <div class="oferta-plan">
-      <div class="oferta-plan-header">
-        <span class="oferta-plan-name">Sistema Mensual</span>
-        <span class="oferta-plan-price">USD 1.500/mes</span>
-      </div>
-      <p class="oferta-plan-desc">
-        A partir del mes 2, solo para clientes que calificaron en el diagnóstico post-prueba.
-      </p>
-      <div class="oferta-plan-items">
-        <div class="oferta-plan-item">Gestión y optimización continua de Meta Ads</div>
-        <div class="oferta-plan-item">12 piezas de contenido orgánico por mes para Instagram y Facebook</div>
-        <div class="oferta-plan-item">Distribución a TikTok, YouTube Shorts y Reels sin costo adicional</div>
-        <div class="oferta-plan-item">Mantenimiento mensual de Kommo y automatizaciones</div>
-        <div class="oferta-plan-item">Reporte semanal y mensual interpretado con diagnóstico</div>
-        <div class="oferta-plan-item">Revisión estratégica mensual de 45 min con el dueño</div>
-      </div>
-    </div>
-    <div class="oferta-plan">
-      <div class="oferta-plan-header">
-        <span class="oferta-plan-name">Add-ons</span>
-        <span class="oferta-plan-price" style="font-size: 16px; color: var(--white-40); font-weight: 500;">Desde mes 2</span>
-      </div>
-      <p class="oferta-plan-desc">
-        Activados cuando los datos del mes de prueba lo justifican.
-      </p>
-      <div class="oferta-plan-items">
-        <div class="oferta-plan-item">Retargeting a audiencias calientes</div>
-        <div class="oferta-plan-item">Contenido adicional +12 piezas por mes</div>
-        <div class="oferta-plan-item">Automatizaciones avanzadas de nurturing en Kommo</div>
-        <div class="oferta-plan-item">Campañas TOFU / awareness</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PERFIL -->
-<section id="perfil">
-  <div class="perfil-inner">
-    <div class="reveal">
-      <span class="section-tag">Para quién es</span>
-      <h2 class="section-title">¿Tu empresa entra en este perfil?</h2>
-      <p class="section-body" style="margin: 24px auto 0;">
-        Trabajamos exclusivamente con construcción y home improvement. Ese foco es lo que permite garantizar resultados comparables a los del caso real.
-      </p>
-    </div>
-    <div class="perfil-grid reveal">
-      <div class="perfil-card">
-        <h4>Rubro</h4>
-        <p>Piscinas, cerramientos de aluminio, reformas integrales, muebles a medida, cortinas a medida.</p>
-      </div>
-      <div class="perfil-card">
-        <h4>Equipo comercial</h4>
-        <p>Mínimo 2 vendedores activos con capacidad de responder en menos de 2 horas en horario comercial.</p>
-      </div>
-      <div class="perfil-card">
-        <h4>Facturación</h4>
-        <p>Entre ARS $40M y $150M/mes. Negocio rentable con margen para invertir en generar demanda.</p>
-      </div>
-      <div class="perfil-card">
-        <h4>El estado correcto</h4>
-        <p>No desesperado, sí ambicioso. El negocio va bien, pero hay claridad de que se está dejando plata en la mesa.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section id="contacto">
-  <div class="cta-glow"></div>
-  <div class="reveal">
-    <span class="section-tag">El primer paso</span>
-    <h2 class="section-title">Una llamada de 20 minutos.</h2>
-    <p class="section-body">
-      Calculamos cuántas consultas necesita tu empresa para cerrar una venta, cuánto vale cada venta, y cuál es el ROI esperado del sistema con tus números reales.
-    </p>
-    <div class="cta-actions">
-      <a href="https://wa.me/543519046945?text=Hola%20Joel%2C%20quiero%20hacer%20el%20diagnóstico%20gratuito" class="btn-primary" style="font-size: 15px; padding: 18px 40px;">
-        Hablar con Joel por WhatsApp
+    <div class="hero-actions">
+      <a href="https://wa.me/543519046945" class="btn-primary">Hacer el diagnóstico gratuito</a>
+      <a href="#caso" class="btn-ghost">
+        Ver caso real
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
       </a>
-      <span class="cta-fine">Sin propuesta de venta en esa primera llamada · Respuesta en menos de 1 hora</span>
+    </div>
+  </section>
+
+  <!-- STAT BAR -->
+  <div class="stat-bar">
+    <div class="stat-item">
+      <span class="stat-number">150</span>
+      <div class="stat-label">consultas calificadas<br>en 30 días</div>
+      <div class="stat-source">Caso real · Construcción</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">USD 1–4</span>
+      <div class="stat-label">costo por consulta<br>calificada</div>
+      <div class="stat-source">USD 400 de inversión en Meta</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">84</span>
+      <div class="stat-label">presupuestos enviados<br>en el mismo período</div>
+      <div class="stat-source">Datos de Kommo CRM</div>
     </div>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-  <span class="footer-logo">MUCHO <span>MARKETING</span></span>
-  <span class="footer-copy">© 2025 Mucho Marketing</span>
-</footer>
+  <!-- PROBLEMA -->
+  <section id="problema">
+    <div class="problema-left reveal">
+      <span class="section-tag">El problema</span>
+      <h2 class="section-title">El 60% de tus ventas viene de referidos.</h2>
+      <p class="section-body">
+        Eso no es una fortaleza. Es una dependencia. Cuando los referidos afloran, el mes es bueno. Cuando no, no hay
+        sistema que lo compense.
+      </p>
+    </div>
+    <div class="problema-right">
+      <div class="problema-item reveal">
+        <h3>Demanda impredecible</h3>
+        <p>No sabés cuántas consultas va a haber el mes que viene. No podés planificar el equipo, el stock, ni la
+          operación sobre algo que no controlás.</p>
+      </div>
+      <div class="problema-item reveal">
+        <h3>Publicidad sin sistema</h3>
+        <p>Probaron Meta Ads, generaron consultas, pero nadie las atendió a tiempo. El lead llegó y se enfrió. La
+          inversión no tuvo retorno visible.</p>
+      </div>
+      <div class="problema-item reveal">
+        <h3>Sin datos para decidir</h3>
+        <p>No hay registro de cuántas consultas entraron, cuántas se presupuestaron, ni cuántas se cerraron. El embudo
+          existe, pero no se puede medir.</p>
+      </div>
+      <div class="problema-item reveal">
+        <h3>Crecimiento que depende de vos</h3>
+        <p>El negocio crece cuando vos empujás. Cuando aflojás, afloja. No hay un sistema que funcione sin que estés
+          mirando el teléfono.</p>
+      </div>
+    </div>
+  </section>
 
-<script>
-  // Intersection Observer for reveal animations
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('visible');
-        }, 60 * i);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  <!-- CASO DE ESTUDIO -->
+  <section id="caso">
+    <div class="caso-glow"></div>
+    <div class="caso-inner">
+      <div class="reveal">
+        <span class="section-tag">Caso real</span>
+        <h2 class="section-title">Un sistema que ya tiene números.</h2>
+        <p class="section-body">
+          El caso que mostramos es el primero. No está cherry-picked ni editado. Son los datos exactos de Kommo cruzados
+          con Meta Ads al cierre de los 30 días.
+        </p>
+        <div class="garantia-box" style="margin-top: 40px;">
+          <h4>Garantía del retainer</h4>
+          <p>Si en los primeros 30 días desde el lanzamiento no generamos más consultas que el mes anterior al inicio
+            del servicio, el mes siguiente no se cobra hasta alcanzar ese resultado.</p>
+        </div>
+      </div>
+      <div class="caso-card reveal">
+        <div class="caso-header">
+          <span class="caso-badge">Caso real</span>
+          <span class="caso-rubro">Construcción · GBA</span>
+        </div>
+        <div class="caso-metrics">
+          <div class="caso-metric">
+            <span class="caso-metric-number">150</span>
+            <div class="caso-metric-label">consultas calificadas por WhatsApp</div>
+          </div>
+          <div class="caso-metric">
+            <span class="caso-metric-number">84</span>
+            <div class="caso-metric-label">presupuestos enviados</div>
+          </div>
+          <div class="caso-metric">
+            <span class="caso-metric-number">30</span>
+            <div class="caso-metric-label">días desde el lanzamiento</div>
+          </div>
+          <div class="caso-metric">
+            <span class="caso-metric-number">USD 400</span>
+            <div class="caso-metric-label">inversión publicitaria total</div>
+          </div>
+        </div>
+        <div class="caso-divider"></div>
+        <div class="caso-footer">
+          <div class="caso-inv">
+            <strong>USD 1 a 4</strong><br>
+            costo por consulta calificada
+          </div>
+          <div class="caso-cpl">
+            <span class="caso-cpl-number">56%</span>
+            <div class="caso-cpl-label">tasa de presupuestación</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  reveals.forEach(el => observer.observe(el));
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona">
+    <div class="cf-header">
+      <div class="reveal">
+        <span class="section-tag">El sistema</span>
+        <h2 class="section-title">Del anuncio al presupuesto en menos de 2 horas.</h2>
+      </div>
+      <div class="reveal">
+        <p class="section-body" style="margin-top: 0;">
+          Cada parte del sistema está diseñada para un rubro específico. No es una solución genérica adaptada. Es el
+          mismo proceso que generó los números del caso real.
+        </p>
+      </div>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3>Meta Ads para tu rubro</h3>
+        <p>Campañas diseñadas específicamente para construcción y home improvement. Copy, creative y segmentación para
+          el decisor de tu industria.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3>WhatsApp como único destino</h3>
+        <p>Todo el tráfico converge en WhatsApp Business. El lead llega calificado, con nombre, rubro y necesidad. Nada
+          entra frío.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Kommo CRM desde el día 1</h3>
+        <p>Pipeline configurado, automatización de primer mensaje, etiquetas por etapa. Cada lead tiene un dueño y un
+          estado. Nada se pierde.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <h3>Reporte semanal real</h3>
+        <p>CPL, volumen de consultas, tasa de presupuestación. No gráficos de Meta. El cruce de datos que muestra si el
+          sistema está funcionando.</p>
+      </div>
+    </div>
+  </section>
 
-  // Smooth active nav link
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
+  <!-- OFERTA -->
+  <section id="oferta">
+    <div class="oferta-left reveal">
+      <span class="section-tag">Oferta</span>
+      <h2 class="section-title">Tres capas. Un sistema.</h2>
+      <p class="section-body">
+        Empezamos con el mes de prueba para generar datos reales. El sistema mensual y los add-ons se construyen sobre
+        esa base. No hay compromiso hasta que los números lo justifiquen.
+      </p>
+      <div style="margin-top: 48px;">
+        <div style="font-size: 13px; color: var(--white-40); line-height: 1.8;">
+          El budget publicitario lo administra el cliente<br>
+          directamente en su cuenta de Meta.<br>
+          <span style="color: var(--green); font-weight: 600;">Mínimo recomendado: USD 400/mes.</span>
+        </div>
+      </div>
+    </div>
+    <div class="oferta-table reveal">
+      <div class="oferta-plan">
+        <div class="oferta-plan-header">
+          <span class="oferta-plan-name">Mes de Prueba</span>
+          <span class="oferta-plan-price free">Gratis</span>
+        </div>
+        <p class="oferta-plan-desc">
+          30 días completos con Meta Ads activos, Kommo configurado y el equipo de ventas capacitado. Sin costo de
+          agencia.
+        </p>
+        <div class="oferta-plan-items">
+          <div class="oferta-plan-item">Diseño y gestión de campaña de conversión</div>
+          <div class="oferta-plan-item">Setup de Kommo CRM con automatización de primer mensaje</div>
+          <div class="oferta-plan-item">Capacitación del equipo de ventas (60-90 min)</div>
+          <div class="oferta-plan-item">Script de calificación personalizado por industria</div>
+          <div class="oferta-plan-item">Soporte por WhatsApp en horario comercial</div>
+          <div class="oferta-plan-item">Reunión de diagnóstico al cierre del mes con datos reales</div>
+        </div>
+      </div>
+      <div class="oferta-plan">
+        <div class="oferta-plan-header">
+          <span class="oferta-plan-name">Sistema Mensual</span>
+          <span class="oferta-plan-price">USD 1.500/mes</span>
+        </div>
+        <p class="oferta-plan-desc">
+          A partir del mes 2, solo para clientes que calificaron en el diagnóstico post-prueba.
+        </p>
+        <div class="oferta-plan-items">
+          <div class="oferta-plan-item">Gestión y optimización continua de Meta Ads</div>
+          <div class="oferta-plan-item">12 piezas de contenido orgánico por mes para Instagram y Facebook</div>
+          <div class="oferta-plan-item">Distribución a TikTok, YouTube Shorts y Reels sin costo adicional</div>
+          <div class="oferta-plan-item">Mantenimiento mensual de Kommo y automatizaciones</div>
+          <div class="oferta-plan-item">Reporte semanal y mensual interpretado con diagnóstico</div>
+          <div class="oferta-plan-item">Revisión estratégica mensual de 45 min con el dueño</div>
+        </div>
+      </div>
+      <div class="oferta-plan">
+        <div class="oferta-plan-header">
+          <span class="oferta-plan-name">Add-ons</span>
+          <span class="oferta-plan-price" style="font-size: 16px; color: var(--white-40); font-weight: 500;">Desde mes
+            2</span>
+        </div>
+        <p class="oferta-plan-desc">
+          Activados cuando los datos del mes de prueba lo justifican.
+        </p>
+        <div class="oferta-plan-items">
+          <div class="oferta-plan-item">Retargeting a audiencias calientes</div>
+          <div class="oferta-plan-item">Contenido adicional +12 piezas por mes</div>
+          <div class="oferta-plan-item">Automatizaciones avanzadas de nurturing en Kommo</div>
+          <div class="oferta-plan-item">Campañas TOFU / awareness</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.style.color = '';
-          if (link.getAttribute('href') === '#' + entry.target.id) {
-            link.style.color = 'var(--white)';
-          }
-        });
-      }
-    });
-  }, { threshold: 0.4 });
+  <!-- PERFIL -->
+  <section id="perfil">
+    <div class="perfil-inner">
+      <div class="reveal">
+        <span class="section-tag">Para quién es</span>
+        <h2 class="section-title">¿Tu empresa entra en este perfil?</h2>
+        <p class="section-body" style="margin: 24px auto 0;">
+          Trabajamos exclusivamente con construcción y home improvement. Ese foco es lo que permite garantizar
+          resultados comparables a los del caso real.
+        </p>
+      </div>
+      <div class="perfil-grid reveal">
+        <div class="perfil-card">
+          <h4>Rubro</h4>
+          <p>Piscinas, cerramientos de aluminio, reformas integrales, muebles a medida, cortinas a medida.</p>
+        </div>
+        <div class="perfil-card">
+          <h4>Equipo comercial</h4>
+          <p>Mínimo 2 vendedores activos con capacidad de responder en menos de 2 horas en horario comercial.</p>
+        </div>
+        <div class="perfil-card">
+          <h4>Facturación</h4>
+          <p>Entre ARS $40M y $150M/mes. Negocio rentable con margen para invertir en generar demanda.</p>
+        </div>
+        <div class="perfil-card">
+          <h4>El estado correcto</h4>
+          <p>No desesperado, sí ambicioso. El negocio va bien, pero hay claridad de que se está dejando plata en la
+            mesa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  sections.forEach(s => navObserver.observe(s));
+  <!-- CTA -->
+  <section id="contacto">
+    <div class="cta-glow"></div>
+    <div class="reveal">
+      <span class="section-tag">El primer paso</span>
+      <h2 class="section-title">Una llamada de 20 minutos.</h2>
+      <p class="section-body">
+        Calculamos cuántas consultas necesita tu empresa para cerrar una venta, cuánto vale cada venta, y cuál es el ROI
+        esperado del sistema con tus números reales.
+      </p>
+      <div class="cta-actions">
+        <a href="https://wa.me/543519046945?text=Hola%20Joel%2C%20quiero%20hacer%20el%20diagnóstico%20gratuito"
+          class="btn-primary" style="font-size: 15px; padding: 18px 40px;">
+          Hablar con Joel por WhatsApp
+        </a>
+        <span class="cta-fine">Sin propuesta de venta en esa primera llamada · Respuesta en menos de 1 hora</span>
+      </div>
+    </div>
+  </section>
 
-  // Animate stat numbers on scroll
-  const statNumbers = document.querySelectorAll('.stat-number');
-  const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '0';
-        entry.target.style.transform = 'translateY(12px)';
-        setTimeout(() => {
-          entry.target.style.transition = 'all 0.6s ease';
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }, 100);
-        statObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">MUCHO <span>MARKETING</span></span>
+    <span class="footer-copy">© 2025 Mucho Marketing</span>
+  </footer>
 
-  statNumbers.forEach(n => statObserver.observe(n));
-</script>
+  <script>
+    // Intersection Observer for reveal animations
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 60 * i);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    reveals.forEach(el => observer.observe(el));
+
+    // Smooth active nav link
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.style.color = '';
+            if (link.getAttribute('href') === '#' + entry.target.id) {
+              link.style.color = 'var(--white)';
+            }
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(s => navObserver.observe(s));
+
+    // Animate stat numbers on scroll
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '0';
+          entry.target.style.transform = 'translateY(12px)';
+          setTimeout(() => {
+            entry.target.style.transition = 'all 0.6s ease';
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, 100);
+          statObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(n => statObserver.observe(n));
+  </script>
 </body>
+
 </html>
