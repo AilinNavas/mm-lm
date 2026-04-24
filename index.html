@@ -1132,11 +1132,20 @@
         line-height: 1.6;
       }
 
-      .nav-logo img {
-        height: 10px;
-        width: auto;
-        display: block;
-      }
+   .nav-logo {
+  display: flex;
+  align-items: center;
+  height: 40px; /* altura del navbar */
+  overflow: hidden;
+}
+
+.nav-logo img {
+  height: 100%;
+  width: auto;
+  max-height: 40px;
+  object-fit: contain;
+  display: block;
+}
 
       /* Footer */
       footer {
