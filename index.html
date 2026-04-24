@@ -63,15 +63,6 @@
       -webkit-backdrop-filter: blur(20px);
     }
 
-    .nav-logo {
-      font-size: 14px;
-      font-weight: 900;
-      font-variation-settings: 'wght' 900;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--white);
-      text-decoration: none;
-    }
 
     .nav-logo span {
       color: var(--green);
@@ -111,6 +102,17 @@
     .nav-cta:hover {
       opacity: 0.88;
     }
+    .nav-logo {
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo img {
+  height: 32px;   /* tamaño real del logo */
+  width: auto;
+  max-height: 32px;
+  display: block;
+}
 
     /* ─── HERO ─── */
     .hero {
@@ -897,11 +899,6 @@
         display: none;
       }
 
-      .nav-logo {
-        font-size: 12px;
-        letter-spacing: 0.08em;
-      }
-
       /* Sections */
       section {
         padding: 72px 20px;
@@ -1132,20 +1129,7 @@
         line-height: 1.6;
       }
 
-   .nav-logo {
-  display: flex;
-  align-items: center;
-  height: 40px; /* altura del navbar */
-  overflow: hidden;
-}
 
-.nav-logo img {
-  height: 100%;
-  width: auto;
-  max-height: 40px;
-  object-fit: contain;
-  display: block;
-}
 
       /* Footer */
       footer {
