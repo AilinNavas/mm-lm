@@ -63,14 +63,17 @@ header {
   border-bottom: 1px solid var(--border);
 }
 
-.logo {
-  font-size: 14px;
-  font-weight: 900;
-  color: var(--white);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.logo span { color: var(--green); }
+.nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 60px;
+      /* tamaño real del logo */
+      width: auto;
+      display: block;
+    }
 
 .header-badge {
   font-size: 10px;
@@ -1116,13 +1119,16 @@ main {
   .scorecard { grid-template-columns: 1fr; }
   .impact-block { flex-direction: column; gap: 8px; }
   .unlock-section { padding: 24px 18px; }
+  footer{ flex-direction: column; align-items: center; gap: 12px;}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">Mucho <span>Marketing</span></div>
+   <div class="logo"><a href="" class="nav-logo">
+        <img src="../images/logo.png" alt="Mucho Marketing Logo">
+      </a></div>
   <div class="header-badge">Diagnóstico Gratuito</div>
 </header>
 

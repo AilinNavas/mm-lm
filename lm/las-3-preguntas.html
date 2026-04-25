@@ -1,404 +1,1095 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Las 3 preguntas que separan una consulta real de una que no va a cerrar · Mucho Marketing</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --brand-dark: #010707;
-    --card-dark: #09140E;
-    --card-mid: #192520;
-    --green: #27DE6B;
-    --white: #FFFFFF;
-    --text-body: rgba(255,255,255,0.72);
-    --text-muted: rgba(255,255,255,0.38);
-    --border: rgba(255,255,255,0.08);
-    --green-dim: rgba(39,222,107,0.08);
-    --green-border: rgba(39,222,107,0.25);
-    --red: rgba(255,100,100,0.85);
-    --red-dim: rgba(255,80,80,0.07);
-    --red-border: rgba(255,80,80,0.18);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Las 3 preguntas que separan una consulta real de una que no va a cerrar · Mucho Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-dark: #010707;
+      --card-dark: #09140E;
+      --card-mid: #192520;
+      --green: #27DE6B;
+      --white: #FFFFFF;
+      --text-body: rgba(255, 255, 255, 0.72);
+      --text-muted: rgba(255, 255, 255, 0.38);
+      --border: rgba(255, 255, 255, 0.08);
+      --green-dim: rgba(39, 222, 107, 0.08);
+      --green-border: rgba(39, 222, 107, 0.25);
+      --red: rgba(255, 100, 100, 0.85);
+      --red-dim: rgba(255, 80, 80, 0.07);
+      --red-border: rgba(255, 80, 80, 0.18);
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
-  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
-  .logo span { color: var(--green); }
-  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+    body {
+      background: var(--brand-dark);
+      color: var(--text-body);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.85;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
-  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
-  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
-  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
-  h1 em { font-style: normal; color: var(--green); }
-  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
-  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--green);
+      z-index: 100;
+      transition: width 0.1s linear;
+    }
 
-  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
-  .content p { margin-bottom: 24px; }
-  .content p strong { color: var(--white); font-weight: 600; }
-  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(1, 7, 7, 0.97);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
 
-  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
-  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+    }
 
-  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+    .nav-logo img {
+      height: 60px;
+      /* tamaño real del logo */
+      width: auto;
+      display: block;
+    }
 
-  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
-  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 72px; }
-  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
-  .data-text strong { color: var(--white); font-weight: 600; }
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-  /* QUESTION CARDS */
-  .question-card { margin: 48px 0; background: var(--card-dark); border: 1px solid var(--border); overflow: hidden; }
-  .question-card-top { background: var(--card-mid); padding: 20px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
-  .q-num { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand-dark); background: var(--green); padding: 4px 10px; flex-shrink: 0; }
-  .q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
-  .question-card-body { padding: 28px; }
-  .question-text { font-size: 20px; font-weight: 700; color: var(--white); letter-spacing: -0.02em; line-height: 1.3; margin-bottom: 20px; font-style: italic; }
-  .question-text::before { content: '"'; color: var(--green); }
-  .question-text::after { content: '"'; color: var(--green); }
-  .question-why { font-size: 15px; color: var(--text-body); line-height: 1.7; margin-bottom: 20px; }
-  .question-why strong { color: var(--white); font-weight: 600; }
+    .footer-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  /* RESPONSES TABLE */
-  .responses { border: 1px solid var(--border); margin-top: 16px; }
-  .response-header { display: grid; grid-template-columns: 1fr 1fr; background: var(--brand-dark); border-bottom: 1px solid var(--border); }
-  .rh-col { padding: 10px 16px; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
-  .rh-col.green { color: var(--green); }
-  .rh-col.red { color: var(--red); }
-  .response-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
-  .response-row:last-child { border-bottom: none; }
-  .r-col { padding: 12px 16px; font-size: 14px; line-height: 1.55; }
-  .r-col.avanza { color: var(--text-body); border-right: 1px solid var(--border); }
-  .r-col.avanza::before { content: '→ '; color: var(--green); font-weight: 700; }
-  .r-col.descarta { color: var(--text-muted); }
-  .r-col.descarta::before { content: '× '; color: var(--red); font-weight: 700; }
+    .footer-logo img {
+      height: 60px;
+      width: auto;
+      display: block;
+    }
 
-  /* TIMING BOX */
-  .timing-box { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); padding: 24px 28px; margin: 48px 0; }
-  .timing-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
-  .timing-title { font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: -0.02em; margin-bottom: 12px; }
-  .timing-body { font-size: 15px; color: var(--text-body); line-height: 1.7; }
-  .timing-body strong { color: var(--white); font-weight: 600; }
+    .header-tag {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
 
-  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
-  .warning strong { color: var(--red); font-weight: 600; }
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 40px 56px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
 
-  /* LEAD MAGNET */
-  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
-  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
-  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
-  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
-  .lm-body { padding: 28px; }
-  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
-  .lm-intro strong { color: var(--white); font-weight: 600; }
+    .article-category {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
 
-  .script-preview { border: 1px solid var(--border); margin-bottom: 0; }
-  .script-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
-  .script-row:last-child { border-bottom: none; }
-  .script-speaker { width: 100px; min-height: 100%; background: var(--card-mid); padding: 14px 14px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; flex-shrink: 0; border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 16px; }
-  .script-speaker.vendedor { color: var(--green); }
-  .script-speaker.cliente { color: var(--text-muted); }
-  .script-text { padding: 14px 18px; font-size: 14px; color: var(--text-body); line-height: 1.65; flex: 1; }
-  .script-text em { color: var(--text-muted); font-style: italic; }
+    .article-category::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--green);
+    }
 
-  /* GATE */
-  .lm-gate { position: relative; overflow: hidden; border-top: 1px solid var(--border); }
-  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.4; }
-  .lm-gate-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: linear-gradient(to bottom, transparent, rgba(9,20,14,0.98) 30%); }
-  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
-  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
-  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
-  .gate-kw { display: inline-block; background: var(--green); color: var(--brand-dark); padding: 5px 16px; font-size: 13px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; margin-bottom: 8px; transition: background 0.2s, transform 0.2s; }
-  .gate-kw:hover { background: #4eff8a; transform: translateY(-1px); }
-  .gate-note { font-size: 11px; color: var(--text-muted); }
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      line-height: 1.07;
+      color: var(--white);
+      margin-bottom: 28px;
+      letter-spacing: -0.03em;
+    }
 
-  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+    h1 em {
+      font-style: normal;
+      color: var(--green);
+    }
 
-  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      border-left: 3px solid var(--green);
+      padding-left: 20px;
+    }
 
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
 
-  @media (max-width: 600px) {
-    header { padding: 16px 20px; }
-    .hero, .content { padding-left: 20px; padding-right: 20px; }
-    .hero { padding-top: 48px; }
-    .data-callout { flex-direction: column; gap: 10px; }
-    .lm-body { padding: 20px; }
-    .question-card-body { padding: 20px; }
-    .response-header, .response-row { grid-template-columns: 1fr; }
-    .rh-col:last-child, .r-col.descarta { border-top: 1px solid var(--border); }
-    .r-col.avanza { border-right: none; }
-    .script-speaker { width: 72px; }
-  }
-</style>
+    .meta-dot {
+      width: 3px;
+      height: 3px;
+      background: var(--green);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+
+    .content p {
+      margin-bottom: 24px;
+    }
+
+    .content p strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 900;
+      color: var(--white);
+      margin: 64px 0 20px;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--green);
+      padding: 22px 28px;
+      margin: 48px 0;
+      background: var(--card-dark);
+    }
+
+    .pull-quote p {
+      font-size: clamp(17px, 2.2vw, 21px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.45;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .source-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      padding: 2px 7px;
+      font-weight: 600;
+      vertical-align: middle;
+      margin-left: 5px;
+      position: relative;
+      top: -1px;
+    }
+
+    .data-callout {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      padding: 20px 24px;
+      margin: 32px 0;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .data-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      flex-shrink: 0;
+      min-width: 72px;
+    }
+
+    .data-text {
+      flex: 1;
+      padding-top: 4px;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .data-text strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* QUESTION CARDS */
+    .question-card {
+      margin: 48px 0;
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .question-card-top {
+      background: var(--card-mid);
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .q-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brand-dark);
+      background: var(--green);
+      padding: 4px 10px;
+      flex-shrink: 0;
+    }
+
+    .q-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .question-card-body {
+      padding: 28px;
+    }
+
+    .question-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .question-text::before {
+      content: '"';
+      color: var(--green);
+    }
+
+    .question-text::after {
+      content: '"';
+      color: var(--green);
+    }
+
+    .question-why {
+      font-size: 15px;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .question-why strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* RESPONSES TABLE */
+    .responses {
+      border: 1px solid var(--border);
+      margin-top: 16px;
+    }
+
+    .response-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--brand-dark);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rh-col {
+      padding: 10px 16px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .rh-col.green {
+      color: var(--green);
+    }
+
+    .rh-col.red {
+      color: var(--red);
+    }
+
+    .response-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .response-row:last-child {
+      border-bottom: none;
+    }
+
+    .r-col {
+      padding: 12px 16px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .r-col.avanza {
+      color: var(--text-body);
+      border-right: 1px solid var(--border);
+    }
+
+    .r-col.avanza::before {
+      content: '→ ';
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .r-col.descarta {
+      color: var(--text-muted);
+    }
+
+    .r-col.descarta::before {
+      content: '× ';
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    /* TIMING BOX */
+    .timing-box {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--green);
+      padding: 24px 28px;
+      margin: 48px 0;
+    }
+
+    .timing-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .timing-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .timing-body {
+      font-size: 15px;
+      color: var(--text-body);
+      line-height: 1.7;
+    }
+
+    .timing-body strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .warning {
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      border-left: 3px solid var(--red);
+      padding: 18px 22px;
+      margin: 32px 0;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .warning strong {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    /* LEAD MAGNET */
+    .lm-teaser {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--green);
+      margin: 64px 0 0;
+      overflow: hidden;
+    }
+
+    .lm-header {
+      padding: 24px 28px;
+      background: var(--card-mid);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lm-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .lm-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .lm-body {
+      padding: 28px;
+    }
+
+    .lm-intro {
+      font-size: 15px;
+      color: var(--text-body);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .lm-intro strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .script-preview {
+      border: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+
+    .script-row {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .script-row:last-child {
+      border-bottom: none;
+    }
+
+    .script-speaker {
+      width: 100px;
+      min-height: 100%;
+      background: var(--card-mid);
+      padding: 14px 14px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      padding-top: 16px;
+    }
+
+    .script-speaker.vendedor {
+      color: var(--green);
+    }
+
+    .script-speaker.cliente {
+      color: var(--text-muted);
+    }
+
+    .script-text {
+      padding: 14px 18px;
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .script-text em {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* GATE */
+    .lm-gate {
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+    }
+
+    .lm-gate-blur {
+      filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    .lm-gate-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      background: linear-gradient(to bottom, transparent, rgba(9, 20, 14, 0.98) 30%);
+    }
+
+    .gate-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+
+    .gate-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .gate-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+
+    .gate-kw {
+      display: inline-block;
+      background: var(--green);
+      color: var(--brand-dark);
+      padding: 5px 16px;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 8px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .gate-kw:hover {
+      background: #4eff8a;
+      transform: translateY(-1px);
+    }
+
+    .gate-note {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 56px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-icon {
+      color: var(--green);
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      font-weight: 700;
+    }
+
+    .footnote {
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      margin-top: 48px;
+      line-height: 1.8;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 16px 20px;
+      }
+
+      .hero,
+      .content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero {
+        padding-top: 48px;
+      }
+
+      .data-callout {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .lm-body {
+        padding: 20px;
+      }
+
+      .question-card-body {
+        padding: 20px;
+      }
+
+      .response-header,
+      .response-row {
+        grid-template-columns: 1fr;
+      }
+
+      .rh-col:last-child,
+      .r-col.descarta {
+        border-top: 1px solid var(--border);
+      }
+
+      .r-col.avanza {
+        border-right: none;
+      }
+
+      .script-speaker {
+        width: 72px;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="progress-bar"></div>
+  <div id="progress-bar"></div>
 
-<header>
-  <div class="logo">Mucho <span>Marketing</span></div>
-  <div class="header-tag">Calificación de Leads</div>
-</header>
+  <header>
+    <div class="logo"><a href="" class="nav-logo">
+        <img src="../images/logo.png" alt="Mucho Marketing Logo">
+      </a></div>
+    <div class="header-tag">Calificación de Leads</div>
+  </header>
 
-<article>
-  <div class="hero">
-    <div class="article-category">Diagnóstico B — Calificación</div>
-    <h1>Las 3 preguntas que separan una consulta real de una que <em>no va a cerrar</em></h1>
-    <p class="hero-subtitle">El problema no es la cantidad de consultas. Es el tiempo que el equipo invierte en las que nunca iban a convertirse en proyectos. Tres preguntas en los primeros cinco minutos cambian eso completamente.</p>
-    <div class="article-meta">
-      <span>Mucho Marketing</span>
-      <span class="meta-dot"></span>
-      <span>10 min de lectura</span>
-      <span class="meta-dot"></span>
-      <span>Fuentes: HubSpot · InsideSales · Dr. James Oldroyd</span>
-    </div>
-  </div>
-
-  <div class="content">
-
-    <p>Cuando un negocio de construcción o home improvement empieza a recibir consultas por el canal digital, pasa algo predecible: el equipo de ventas las trata a todas igual. Responden con la misma energía a quien escribió "¿cuánto sale una pileta?" a las 11 de la noche y a quien escribió describiendo el proyecto con dimensiones, zona, y fecha de inicio.</p>
-
-    <p>Esa igualdad de trato es cara. El tiempo que se invierte en calificar una consulta que nunca iba a cerrar es tiempo que no se dedicó a cerrar una que sí podría haberlo hecho.</p>
-
-    <p>La calificación no es un filtro para descartar gente. Es un proceso para saber a quién dedicarle el mejor tiempo del equipo. Y en negocios de alto ticket, donde cada vendedor puede manejar entre 20 y 40 consultas activas por mes, esa distribución del tiempo determina la tasa de cierre del mes.</p>
-
-    <div class="pull-quote reveal">
-      <p>Calificar no es rechazar. Es decidir conscientemente dónde poner la energía del equipo para que rinda más.</p>
-    </div>
-
-    <h2>Por qué la velocidad de respuesta no alcanza</h2>
-
-    <p>Existe un principio bien documentado en ventas: quien responde primero tiene ventaja. El estudio de Dr. James Oldroyd sobre respuesta a leads — uno de los más citados en la industria — encontró que las probabilidades de calificar un lead son <strong>21 veces mayores cuando se lo contacta dentro de los primeros 5 minutos</strong> en lugar de esperar 30 minutos.</p>
-
-    <div class="data-callout reveal">
-      <div class="data-num">21x</div>
-      <div class="data-text"><p><strong>Más probable es que un lead avance en el proceso de venta si se lo contacta dentro de los primeros 5 minutos</strong> versus 30 minutos después. El 50% de las ventas va al proveedor que responde primero. La velocidad importa — pero solo si la respuesta es la correcta. <span class="source-tag">Oldroyd / InsideSales via HubSpot</span></p></div>
-    </div>
-
-    <p>Pero responder rápido a todas las consultas con el mismo mensaje genérico no es una ventaja competitiva. Es trabajo operativo que no diferencia ni califica. La ventaja real combina velocidad con una primera pregunta que inmediatamente empieza a separar quién tiene un proyecto real de quién está curioseando.</p>
-
-    <p>El primer mensaje automático confirma la recepción y genera la expectativa de respuesta. Las tres preguntas que siguen — en los primeros cinco minutos del intercambio real — son las que determinan si esa consulta merece el tiempo completo del vendedor o entra a una secuencia de nurturing de largo plazo.</p>
-
-    <h2>El marco BANT adaptado a alto ticket en construcción</h2>
-
-    <p>HubSpot documenta el framework BANT como el punto de partida más establecido para calificación de ventas: Budget (presupuesto), Authority (autoridad para decidir), Need (necesidad real), Timeline (plazo). Es un marco diseñado originalmente para ventas B2B corporativas, pero su lógica es perfectamente transferible a negocios de alto ticket B2C.</p>
-
-    <p>En construcción y home improvement, las tres preguntas que importan son una versión simplificada y conversacional de ese marco, adaptadas para WhatsApp y para el contexto cultural argentino. No suenan a interrogatorio. Suenan a que el vendedor está tratando de entender el proyecto para poder ayudar bien.</p>
-
-    <h2>Pregunta 1: el proyecto</h2>
-
-    <div class="question-card reveal">
-      <div class="question-card-top">
-        <div class="q-num">Pregunta 01</div>
-        <div class="q-label">Necesidad y alcance</div>
+  <article>
+    <div class="hero">
+      <div class="article-category">Diagnóstico B — Calificación</div>
+      <h1>Las 3 preguntas que separan una consulta real de una que <em>no va a cerrar</em></h1>
+      <p class="hero-subtitle">El problema no es la cantidad de consultas. Es el tiempo que el equipo invierte en las
+        que nunca iban a convertirse en proyectos. Tres preguntas en los primeros cinco minutos cambian eso
+        completamente.</p>
+      <div class="article-meta">
+        <span>Mucho Marketing</span>
+        <span class="meta-dot"></span>
+        <span>10 min de lectura</span>
+        <span class="meta-dot"></span>
+        <span>Fuentes: HubSpot · InsideSales · Dr. James Oldroyd</span>
       </div>
-      <div class="question-card-body">
-        <div class="question-text">¿Me contás un poco más sobre el proyecto? ¿Qué tenés en mente y en qué zona está la propiedad?</div>
-        <p class="question-why">Esta pregunta hace dos cosas al mismo tiempo. Primero, abre la conversación de forma consultiva — no está pidiendo datos fríos, está invitando a describir. Segundo, la zona es el primer filtro de calificación: si está fuera del radio de operación, se descarta sin más intercambio. <strong>La calidad y el detalle de la respuesta son la primera señal de temperatura del lead.</strong></p>
-        <div class="responses">
-          <div class="response-header">
-            <div class="rh-col green">Respuesta que avanza</div>
-            <div class="rh-col red">Respuesta que descarta o pone en espera</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Describe el proyecto con detalle: dimensiones, tipo de espacio, referencia visual, o contexto de la propiedad</div>
-            <div class="r-col descarta">Responde con una sola palabra o "quiero info" sin ningún contexto adicional</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Menciona la zona con precisión: barrio, calle, o partido concreto dentro del radio de trabajo</div>
-            <div class="r-col descarta">Zona fuera del radio de operación o no responde</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Hace preguntas específicas sobre materiales, plazos, o proceso — señal de que ya investigó</div>
-            <div class="r-col descarta">Solo pregunta por el precio sin describir nada del proyecto</div>
-          </div>
+    </div>
+
+    <div class="content">
+
+      <p>Cuando un negocio de construcción o home improvement empieza a recibir consultas por el canal digital, pasa
+        algo predecible: el equipo de ventas las trata a todas igual. Responden con la misma energía a quien escribió
+        "¿cuánto sale una pileta?" a las 11 de la noche y a quien escribió describiendo el proyecto con dimensiones,
+        zona, y fecha de inicio.</p>
+
+      <p>Esa igualdad de trato es cara. El tiempo que se invierte en calificar una consulta que nunca iba a cerrar es
+        tiempo que no se dedicó a cerrar una que sí podría haberlo hecho.</p>
+
+      <p>La calificación no es un filtro para descartar gente. Es un proceso para saber a quién dedicarle el mejor
+        tiempo del equipo. Y en negocios de alto ticket, donde cada vendedor puede manejar entre 20 y 40 consultas
+        activas por mes, esa distribución del tiempo determina la tasa de cierre del mes.</p>
+
+      <div class="pull-quote reveal">
+        <p>Calificar no es rechazar. Es decidir conscientemente dónde poner la energía del equipo para que rinda más.
+        </p>
+      </div>
+
+      <h2>Por qué la velocidad de respuesta no alcanza</h2>
+
+      <p>Existe un principio bien documentado en ventas: quien responde primero tiene ventaja. El estudio de Dr. James
+        Oldroyd sobre respuesta a leads — uno de los más citados en la industria — encontró que las probabilidades de
+        calificar un lead son <strong>21 veces mayores cuando se lo contacta dentro de los primeros 5 minutos</strong>
+        en lugar de esperar 30 minutos.</p>
+
+      <div class="data-callout reveal">
+        <div class="data-num">21x</div>
+        <div class="data-text">
+          <p><strong>Más probable es que un lead avance en el proceso de venta si se lo contacta dentro de los primeros
+              5 minutos</strong> versus 30 minutos después. El 50% de las ventas va al proveedor que responde primero.
+            La velocidad importa — pero solo si la respuesta es la correcta. <span class="source-tag">Oldroyd /
+              InsideSales via HubSpot</span></p>
         </div>
       </div>
-    </div>
 
-    <h2>Pregunta 2: el momento</h2>
+      <p>Pero responder rápido a todas las consultas con el mismo mensaje genérico no es una ventaja competitiva. Es
+        trabajo operativo que no diferencia ni califica. La ventaja real combina velocidad con una primera pregunta que
+        inmediatamente empieza a separar quién tiene un proyecto real de quién está curioseando.</p>
 
-    <div class="question-card reveal">
-      <div class="question-card-top">
-        <div class="q-num">Pregunta 02</div>
-        <div class="q-label">Plazo y urgencia</div>
-      </div>
-      <div class="question-card-body">
-        <div class="question-text">¿Cuándo estás pensando en arrancar? ¿Tenés alguna fecha en mente o estás en la etapa de explorar opciones?</div>
-        <p class="question-why">Esta pregunta detecta la etapa de decisión sin presionar. La segunda parte — "o estás explorando" — es clave: le da al lead una salida sin fricción si todavía no está listo, y la respuesta dice exactamente en qué momento del proceso está. <strong>Un lead con fecha de inicio en los próximos 30 a 60 días merece atención prioritaria. Uno sin fecha definida va a nurturing.</strong> No es un lead malo — es un lead para otro momento.</p>
-        <div class="responses">
-          <div class="response-header">
-            <div class="rh-col green">Respuesta que avanza</div>
-            <div class="rh-col red">Respuesta que descarta o pone en espera</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Tiene una fecha concreta o un rango definido: "en los próximos dos meses", "antes de las vacaciones"</div>
-            <div class="r-col descarta">"En algún momento del año que viene" o "cuando consiga el dinero"</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Ya tomó decisiones previas relacionadas: compró los materiales, contrató el arquitecto, demolió algo</div>
-            <div class="r-col descarta">Recién está "viendo si es posible" sin ningún paso concreto dado todavía</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Hay una razón concreta detrás de la urgencia: una fecha de evento, una mudanza, una reforma en curso</div>
-            <div class="r-col descarta">No puede explicar por qué lo quiere hacer ni cuándo, más allá de "algún día"</div>
-          </div>
+      <p>El primer mensaje automático confirma la recepción y genera la expectativa de respuesta. Las tres preguntas que
+        siguen — en los primeros cinco minutos del intercambio real — son las que determinan si esa consulta merece el
+        tiempo completo del vendedor o entra a una secuencia de nurturing de largo plazo.</p>
+
+      <h2>El marco BANT adaptado a alto ticket en construcción</h2>
+
+      <p>HubSpot documenta el framework BANT como el punto de partida más establecido para calificación de ventas:
+        Budget (presupuesto), Authority (autoridad para decidir), Need (necesidad real), Timeline (plazo). Es un marco
+        diseñado originalmente para ventas B2B corporativas, pero su lógica es perfectamente transferible a negocios de
+        alto ticket B2C.</p>
+
+      <p>En construcción y home improvement, las tres preguntas que importan son una versión simplificada y
+        conversacional de ese marco, adaptadas para WhatsApp y para el contexto cultural argentino. No suenan a
+        interrogatorio. Suenan a que el vendedor está tratando de entender el proyecto para poder ayudar bien.</p>
+
+      <h2>Pregunta 1: el proyecto</h2>
+
+      <div class="question-card reveal">
+        <div class="question-card-top">
+          <div class="q-num">Pregunta 01</div>
+          <div class="q-label">Necesidad y alcance</div>
         </div>
-      </div>
-    </div>
-
-    <h2>Pregunta 3: la decisión</h2>
-
-    <div class="question-card reveal">
-      <div class="question-card-top">
-        <div class="q-num">Pregunta 03</div>
-        <div class="q-label">Autoridad y proceso</div>
-      </div>
-      <div class="question-card-body">
-        <div class="question-text">¿Sos vos quien toma la decisión final, o hay alguien más que participa en la elección del proveedor?</div>
-        <p class="question-why">Esta es la pregunta que más se omite y la que más tiempo ahorra. En proyectos de alto ticket para el hogar, muchas veces la persona que consulta no es quien decide — o no es la única que decide. <strong>Saber esto desde el inicio evita invertir horas en alguien que después va a tener que "consultar con mi pareja" sin haberse involucrado en el proceso.</strong> No es un descalificador per se — pero cambia completamente cómo se maneja la conversación siguiente.</p>
-        <div class="responses">
-          <div class="response-header">
-            <div class="rh-col green">Respuesta que avanza</div>
-            <div class="rh-col red">Respuesta que requiere ajuste de estrategia</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Es el decisor único: propietario con autonomía total sobre el proyecto</div>
-            <div class="r-col descarta">Hay otro decisor que no participa en la conversación y que no se ha podido involucrar aún</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Hay otro decisor (pareja, socio) pero ya están alineados en avanzar — solo están eligiendo proveedor</div>
-            <div class="r-col descarta">El otro decisor no sabe que está consultando y todavía no hubo una conversación interna al respecto</div>
-          </div>
-          <div class="response-row">
-            <div class="r-col avanza">Puede organizar una reunión o llamada con ambos decisores en los próximos días</div>
-            <div class="r-col descarta">No puede comprometerse a nada sin una conversación que todavía no tuvo</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <h2>El momento correcto para hacer cada pregunta</h2>
-
-    <p>Las tres preguntas no son un interrogatorio que se dispara de golpe. Se distribuyen en la conversación natural del primer intercambio por WhatsApp, con el ritmo del chat y sin sonar a formulario.</p>
-
-    <div class="timing-box reveal">
-      <div class="timing-eyebrow">Secuencia recomendada en el primer intercambio</div>
-      <div class="timing-title">Cómo fluye la conversación en la práctica</div>
-      <div class="timing-body">
-        <p><strong>Mensaje automático (0-5 min):</strong> confirmación de recepción + pregunta de apertura del proyecto (Pregunta 1 integrada naturalmente).</p>
-        <p><strong>Respuesta del vendedor (dentro de 2 horas en horario comercial):</strong> acusar recibo del proyecto descrito, mostrar interés genuino, e introducir la Pregunta 2 de manera conversacional.</p>
-        <p><strong>Segundo intercambio:</strong> una vez que hay contexto de proyecto y plazo, la Pregunta 3 aparece de forma natural antes de proponer una visita o llamada: "Para coordinar bien la reunión, ¿sos vos quien toma la decisión final o conviene que también esté tu pareja/socio cuando nos juntamos?"</p>
-      </div>
-    </div>
-
-    <div class="data-callout reveal">
-      <div class="data-num">8x</div>
-      <div class="data-text"><p><strong>Más alta es la tasa de conversión cuando la respuesta inicial llega dentro de los primeros 5 minutos</strong> comparada con una respuesta más tardía. Pero la velocidad sin calificación solo acelera el trabajo en consultas que no van a cerrar. La combinación de velocidad + las tres preguntas correctas es lo que mueve la tasa de cierre. <span class="source-tag">HubSpot Lead Routing Research 2025</span></p></div>
-    </div>
-
-    <h2>Qué hacer con los leads que no califican</h2>
-
-    <p>Una consulta que no califica hoy no es una consulta perdida para siempre. Es una consulta que no está lista ahora. La diferencia entre descartarla y ponerla en nurturing es la diferencia entre perder esa oportunidad y recuperarla en tres meses cuando el timing cambia.</p>
-
-    <p>HubSpot documenta que los leads descalificados que entran en una secuencia de nurturing estructurada tienen tasas de conversión posteriores significativamente más altas que los que simplemente se ignoran. La pregunta no es si vale la pena nutrir. La pregunta es qué tipo de contenido y con qué frecuencia.</p>
-
-    <div class="warning reveal">
-      <strong>El error más frecuente:</strong> tratar todos los leads igual porque "nunca se sabe". Esa lógica distribuye el tiempo del equipo uniformemente entre consultas de alta temperatura y consultas frías, lo que baja la tasa de cierre de las primeras porque no recibieron la atención que merecían. Calificar activamente no es ser selectivo por soberbia — es respetar el tiempo propio y el del cliente.
-    </div>
-
-    <div class="divider reveal">
-      <span class="divider-icon">◆ ◆ ◆</span>
-    </div>
-
-    <!-- LEAD MAGNET -->
-    <div class="lm-teaser reveal">
-      <div class="lm-header">
-        <div class="lm-eyebrow">Script incluido</div>
-        <div class="lm-title">El script completo de calificación: qué decir exactamente, en qué orden, y cómo interpretar cada respuesta</div>
-      </div>
-      <div class="lm-body">
-        <p class="lm-intro">Este script está escrito para WhatsApp, en el tono conversacional que funciona en Argentina para negocios de alto ticket. Incluye el mensaje automático de bienvenida, las tres preguntas en su versión lista para copiar y pegar, variantes para cada situación, y la guía de interpretación de respuestas para saber cuándo avanzar y cuándo no.</p>
-
-        <!-- PREVIEW: first exchange only -->
-        <div class="script-preview">
-          <div class="script-row">
-            <div class="script-speaker vendedor">Bot / Vendedor</div>
-            <div class="script-text">Hola [nombre], gracias por contactarnos 👋 Recibimos tu consulta y en breve te responde uno de nuestros asesores. Para poder ayudarte mejor cuando te contactemos: <em>¿podés contarnos brevemente qué proyecto tenés en mente y en qué zona está la propiedad?</em></div>
-          </div>
-          <div class="script-row">
-            <div class="script-speaker cliente">Cliente</div>
-            <div class="script-text"><em>[Respuesta del cliente]</em></div>
-          </div>
-          <div class="script-row">
-            <div class="script-speaker vendedor">Vendedor</div>
-            <div class="script-text">Qué bueno, [referencia al proyecto descrito]. Eso es exactamente el tipo de proyecto que manejamos. Una pregunta para coordinar bien: <em>¿cuándo estás pensando en arrancar? ¿Tenés alguna fecha en mente o estás explorando opciones todavía?</em></div>
-          </div>
-        </div>
-
-        <!-- GATE -->
-        <div class="lm-gate">
-          <div class="lm-gate-blur">
-            <div class="script-preview" style="margin-top:1px">
-              <div class="script-row">
-                <div class="script-speaker cliente">Cliente</div>
-                <div class="script-text"><em>[Respuesta sobre el plazo]</em></div>
+        <div class="question-card-body">
+          <div class="question-text">¿Me contás un poco más sobre el proyecto? ¿Qué tenés en mente y en qué zona está la
+            propiedad?</div>
+          <p class="question-why">Esta pregunta hace dos cosas al mismo tiempo. Primero, abre la conversación de forma
+            consultiva — no está pidiendo datos fríos, está invitando a describir. Segundo, la zona es el primer filtro
+            de calificación: si está fuera del radio de operación, se descarta sin más intercambio. <strong>La calidad y
+              el detalle de la respuesta son la primera señal de temperatura del lead.</strong></p>
+          <div class="responses">
+            <div class="response-header">
+              <div class="rh-col green">Respuesta que avanza</div>
+              <div class="rh-col red">Respuesta que descarta o pone en espera</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Describe el proyecto con detalle: dimensiones, tipo de espacio, referencia
+                visual, o contexto de la propiedad</div>
+              <div class="r-col descarta">Responde con una sola palabra o "quiero info" sin ningún contexto adicional
               </div>
-              <div class="script-row">
-                <div class="script-speaker vendedor">Vendedor</div>
-                <div class="script-text">Perfecto, ese plazo lo podemos manejar. Antes de coordinar una visita: ¿sos vos quien toma la decisión final o conviene que también esté tu pareja cuando nos juntamos?</div>
-              </div>
-              <div class="script-row">
-                <div class="script-speaker">Guía</div>
-                <div class="script-text">→ Cómo interpretar cada respuesta y qué hacer en cada caso: avanzar a visita, proponer llamada, o pasar a nurturing...</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Menciona la zona con precisión: barrio, calle, o partido concreto dentro del
+                radio de trabajo</div>
+              <div class="r-col descarta">Zona fuera del radio de operación o no responde</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Hace preguntas específicas sobre materiales, plazos, o proceso — señal de que ya
+                investigó</div>
+              <div class="r-col descarta">Solo pregunta por el precio sin describir nada del proyecto</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Pregunta 2: el momento</h2>
+
+      <div class="question-card reveal">
+        <div class="question-card-top">
+          <div class="q-num">Pregunta 02</div>
+          <div class="q-label">Plazo y urgencia</div>
+        </div>
+        <div class="question-card-body">
+          <div class="question-text">¿Cuándo estás pensando en arrancar? ¿Tenés alguna fecha en mente o estás en la
+            etapa de explorar opciones?</div>
+          <p class="question-why">Esta pregunta detecta la etapa de decisión sin presionar. La segunda parte — "o estás
+            explorando" — es clave: le da al lead una salida sin fricción si todavía no está listo, y la respuesta dice
+            exactamente en qué momento del proceso está. <strong>Un lead con fecha de inicio en los próximos 30 a 60
+              días merece atención prioritaria. Uno sin fecha definida va a nurturing.</strong> No es un lead malo — es
+            un lead para otro momento.</p>
+          <div class="responses">
+            <div class="response-header">
+              <div class="rh-col green">Respuesta que avanza</div>
+              <div class="rh-col red">Respuesta que descarta o pone en espera</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Tiene una fecha concreta o un rango definido: "en los próximos dos meses",
+                "antes de las vacaciones"</div>
+              <div class="r-col descarta">"En algún momento del año que viene" o "cuando consiga el dinero"</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Ya tomó decisiones previas relacionadas: compró los materiales, contrató el
+                arquitecto, demolió algo</div>
+              <div class="r-col descarta">Recién está "viendo si es posible" sin ningún paso concreto dado todavía</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Hay una razón concreta detrás de la urgencia: una fecha de evento, una mudanza,
+                una reforma en curso</div>
+              <div class="r-col descarta">No puede explicar por qué lo quiere hacer ni cuándo, más allá de "algún día"
               </div>
             </div>
           </div>
-          <div class="lm-gate-overlay">
-            <div class="gate-label">Script completo disponible por WhatsApp</div>
-            <div class="gate-title">Recibí el script completo con guía de interpretación</div>
-            <div class="gate-sub">Incluye las 3 preguntas completas, variantes para cada situación, y el árbol de decisión para saber cuándo avanzar y cuándo no.</div>
-            <a class="gate-kw" href="https://wa.me/5491155557890?text=SCRIPT" target="_blank" rel="noopener">SCRIPT</a>
-            <div class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
+        </div>
+      </div>
+
+      <h2>Pregunta 3: la decisión</h2>
+
+      <div class="question-card reveal">
+        <div class="question-card-top">
+          <div class="q-num">Pregunta 03</div>
+          <div class="q-label">Autoridad y proceso</div>
+        </div>
+        <div class="question-card-body">
+          <div class="question-text">¿Sos vos quien toma la decisión final, o hay alguien más que participa en la
+            elección del proveedor?</div>
+          <p class="question-why">Esta es la pregunta que más se omite y la que más tiempo ahorra. En proyectos de alto
+            ticket para el hogar, muchas veces la persona que consulta no es quien decide — o no es la única que decide.
+            <strong>Saber esto desde el inicio evita invertir horas en alguien que después va a tener que "consultar con
+              mi pareja" sin haberse involucrado en el proceso.</strong> No es un descalificador per se — pero cambia
+            completamente cómo se maneja la conversación siguiente.</p>
+          <div class="responses">
+            <div class="response-header">
+              <div class="rh-col green">Respuesta que avanza</div>
+              <div class="rh-col red">Respuesta que requiere ajuste de estrategia</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Es el decisor único: propietario con autonomía total sobre el proyecto</div>
+              <div class="r-col descarta">Hay otro decisor que no participa en la conversación y que no se ha podido
+                involucrar aún</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Hay otro decisor (pareja, socio) pero ya están alineados en avanzar — solo están
+                eligiendo proveedor</div>
+              <div class="r-col descarta">El otro decisor no sabe que está consultando y todavía no hubo una
+                conversación interna al respecto</div>
+            </div>
+            <div class="response-row">
+              <div class="r-col avanza">Puede organizar una reunión o llamada con ambos decisores en los próximos días
+              </div>
+              <div class="r-col descarta">No puede comprometerse a nada sin una conversación que todavía no tuvo</div>
+            </div>
           </div>
         </div>
-
       </div>
+
+      <h2>El momento correcto para hacer cada pregunta</h2>
+
+      <p>Las tres preguntas no son un interrogatorio que se dispara de golpe. Se distribuyen en la conversación natural
+        del primer intercambio por WhatsApp, con el ritmo del chat y sin sonar a formulario.</p>
+
+      <div class="timing-box reveal">
+        <div class="timing-eyebrow">Secuencia recomendada en el primer intercambio</div>
+        <div class="timing-title">Cómo fluye la conversación en la práctica</div>
+        <div class="timing-body">
+          <p><strong>Mensaje automático (0-5 min):</strong> confirmación de recepción + pregunta de apertura del
+            proyecto (Pregunta 1 integrada naturalmente).</p>
+          <p><strong>Respuesta del vendedor (dentro de 2 horas en horario comercial):</strong> acusar recibo del
+            proyecto descrito, mostrar interés genuino, e introducir la Pregunta 2 de manera conversacional.</p>
+          <p><strong>Segundo intercambio:</strong> una vez que hay contexto de proyecto y plazo, la Pregunta 3 aparece
+            de forma natural antes de proponer una visita o llamada: "Para coordinar bien la reunión, ¿sos vos quien
+            toma la decisión final o conviene que también esté tu pareja/socio cuando nos juntamos?"</p>
+        </div>
+      </div>
+
+      <div class="data-callout reveal">
+        <div class="data-num">8x</div>
+        <div class="data-text">
+          <p><strong>Más alta es la tasa de conversión cuando la respuesta inicial llega dentro de los primeros 5
+              minutos</strong> comparada con una respuesta más tardía. Pero la velocidad sin calificación solo acelera
+            el trabajo en consultas que no van a cerrar. La combinación de velocidad + las tres preguntas correctas es
+            lo que mueve la tasa de cierre. <span class="source-tag">HubSpot Lead Routing Research 2025</span></p>
+        </div>
+      </div>
+
+      <h2>Qué hacer con los leads que no califican</h2>
+
+      <p>Una consulta que no califica hoy no es una consulta perdida para siempre. Es una consulta que no está lista
+        ahora. La diferencia entre descartarla y ponerla en nurturing es la diferencia entre perder esa oportunidad y
+        recuperarla en tres meses cuando el timing cambia.</p>
+
+      <p>HubSpot documenta que los leads descalificados que entran en una secuencia de nurturing estructurada tienen
+        tasas de conversión posteriores significativamente más altas que los que simplemente se ignoran. La pregunta no
+        es si vale la pena nutrir. La pregunta es qué tipo de contenido y con qué frecuencia.</p>
+
+      <div class="warning reveal">
+        <strong>El error más frecuente:</strong> tratar todos los leads igual porque "nunca se sabe". Esa lógica
+        distribuye el tiempo del equipo uniformemente entre consultas de alta temperatura y consultas frías, lo que baja
+        la tasa de cierre de las primeras porque no recibieron la atención que merecían. Calificar activamente no es ser
+        selectivo por soberbia — es respetar el tiempo propio y el del cliente.
+      </div>
+
+      <div class="divider reveal">
+        <span class="divider-icon">◆ ◆ ◆</span>
+      </div>
+
+      <!-- LEAD MAGNET -->
+      <div class="lm-teaser reveal">
+        <div class="lm-header">
+          <div class="lm-eyebrow">Script incluido</div>
+          <div class="lm-title">El script completo de calificación: qué decir exactamente, en qué orden, y cómo
+            interpretar cada respuesta</div>
+        </div>
+        <div class="lm-body">
+          <p class="lm-intro">Este script está escrito para WhatsApp, en el tono conversacional que funciona en
+            Argentina para negocios de alto ticket. Incluye el mensaje automático de bienvenida, las tres preguntas en
+            su versión lista para copiar y pegar, variantes para cada situación, y la guía de interpretación de
+            respuestas para saber cuándo avanzar y cuándo no.</p>
+
+          <!-- PREVIEW: first exchange only -->
+          <div class="script-preview">
+            <div class="script-row">
+              <div class="script-speaker vendedor">Bot / Vendedor</div>
+              <div class="script-text">Hola [nombre], gracias por contactarnos 👋 Recibimos tu consulta y en breve te
+                responde uno de nuestros asesores. Para poder ayudarte mejor cuando te contactemos: <em>¿podés contarnos
+                  brevemente qué proyecto tenés en mente y en qué zona está la propiedad?</em></div>
+            </div>
+            <div class="script-row">
+              <div class="script-speaker cliente">Cliente</div>
+              <div class="script-text"><em>[Respuesta del cliente]</em></div>
+            </div>
+            <div class="script-row">
+              <div class="script-speaker vendedor">Vendedor</div>
+              <div class="script-text">Qué bueno, [referencia al proyecto descrito]. Eso es exactamente el tipo de
+                proyecto que manejamos. Una pregunta para coordinar bien: <em>¿cuándo estás pensando en arrancar? ¿Tenés
+                  alguna fecha en mente o estás explorando opciones todavía?</em></div>
+            </div>
+          </div>
+
+          <!-- GATE -->
+          <div class="lm-gate">
+            <div class="lm-gate-blur">
+              <div class="script-preview" style="margin-top:1px">
+                <div class="script-row">
+                  <div class="script-speaker cliente">Cliente</div>
+                  <div class="script-text"><em>[Respuesta sobre el plazo]</em></div>
+                </div>
+                <div class="script-row">
+                  <div class="script-speaker vendedor">Vendedor</div>
+                  <div class="script-text">Perfecto, ese plazo lo podemos manejar. Antes de coordinar una visita: ¿sos
+                    vos quien toma la decisión final o conviene que también esté tu pareja cuando nos juntamos?</div>
+                </div>
+                <div class="script-row">
+                  <div class="script-speaker">Guía</div>
+                  <div class="script-text">→ Cómo interpretar cada respuesta y qué hacer en cada caso: avanzar a visita,
+                    proponer llamada, o pasar a nurturing...</div>
+                </div>
+              </div>
+            </div>
+            <div class="lm-gate-overlay">
+              <div class="gate-label">Script completo disponible por WhatsApp</div>
+              <div class="gate-title">Recibí el script completo con guía de interpretación</div>
+              <div class="gate-sub">Incluye las 3 preguntas completas, variantes para cada situación, y el árbol de
+                decisión para saber cuándo avanzar y cuándo no.</div>
+              <a class="gate-kw" href="https://wa.me/5491155557890?text=SCRIPT" target="_blank"
+                rel="noopener">SCRIPT</a>
+              <div class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="footnote reveal">
+        <p>Fuentes citadas: Dr. James Oldroyd, Lead Response Management Study (citado en HubSpot e InsideSales.com) —
+          probabilidades de contacto y calificación según tiempo de respuesta. HubSpot Sales Qualification Guide 2024 —
+          framework BANT y metodologías de calificación. HubSpot Lead Routing Research 2025 — tasa de conversión según
+          velocidad de respuesta. HubSpot State of Sales Report 2024 — datos sobre pipeline management y calificación
+          activa. Los datos de Oldroyd corresponden a investigación con 2.241 empresas en mercado de EE.UU.; los
+          principios de calificación son aplicables independientemente del mercado geográfico.</p>
+      </div>
+
     </div>
-
-    <div class="footnote reveal">
-      <p>Fuentes citadas: Dr. James Oldroyd, Lead Response Management Study (citado en HubSpot e InsideSales.com) — probabilidades de contacto y calificación según tiempo de respuesta. HubSpot Sales Qualification Guide 2024 — framework BANT y metodologías de calificación. HubSpot Lead Routing Research 2025 — tasa de conversión según velocidad de respuesta. HubSpot State of Sales Report 2024 — datos sobre pipeline management y calificación activa. Los datos de Oldroyd corresponden a investigación con 2.241 empresas en mercado de EE.UU.; los principios de calificación son aplicables independientemente del mercado geográfico.</p>
+  </article>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
     </div>
+    <span class="footer-copy">© 2025 Mucho Marketing</span>
+  </footer>
 
-  </div>
-</article>
-
-<script>
-  window.addEventListener('scroll', () => {
-    const doc = document.documentElement;
-    document.getElementById('progress-bar').style.width =
-      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-  });
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+  <script>
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      document.getElementById('progress-bar').style.width =
+        ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 
 </body>
+
 </html>
