@@ -57,16 +57,37 @@
     z-index: 50;
   }
 
-  .logo {
-    font-size: 15px;
-    font-weight: 900;
-    color: var(--white);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
+.nav-logo {
+      display: flex;
+      align-items: center;
+    }
 
-  .logo span { color: var(--green); }
+    .nav-logo img {
+      height: 60px;
+      /* tamaño real del logo */
+      width: auto;
+      display: block;
+    }
+  
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.footer-logo img {
+  height: 60px;
+  width: auto;
+  display: block;
+}
   .header-tag {
     font-size: 11px;
     letter-spacing: 0.15em;
@@ -639,6 +660,7 @@
     .calculator-body { padding: 20px; }
     .cta-section { padding: 36px 20px; }
     .benchmark-label-text { width: 90px; font-size: 11px; }
+     footer{ flex-direction: column; align-items: center; gap: 12px;}
   }
 </style>
 </head>
@@ -647,7 +669,9 @@
 <div id="progress-bar"></div>
 
 <header>
-  <div class="logo">Mucho <span>Marketing</span></div>
+   <div class="logo"><a href="" class="nav-logo">
+        <img src="../images/logo.png" alt="Mucho Marketing Logo">
+      </a></div>
   <div class="header-tag">Herramienta Práctica</div>
 </header>
 
@@ -983,6 +1007,13 @@
 
   </div>
 </article>
+   <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
+    </div>
+    <span class="footer-copy">© 2025 Mucho Marketing</span>
+  </footer>
 
 <script>
   window.addEventListener('scroll', () => {

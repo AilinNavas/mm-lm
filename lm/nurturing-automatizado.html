@@ -29,8 +29,37 @@
   #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
 
   header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
-  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
-  .logo span { color: var(--green); }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 60px;
+      /* tamaño real del logo */
+      width: auto;
+      display: block;
+    }
+  
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-logo img {
+  height: 60px;
+  width: auto;
+  display: block;
+}
   .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
 
   .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
@@ -122,6 +151,7 @@
     .split-table { grid-template-columns: 1fr; }
     .data-callout { flex-direction: column; gap: 10px; }
     .lm-body { padding: 20px; }
+     footer{ flex-direction: column; align-items: center; gap: 12px;}
   }
 </style>
 </head>
@@ -130,7 +160,9 @@
 <div id="progress-bar"></div>
 
 <header>
-  <div class="logo">Mucho <span>Marketing</span></div>
+ <div class="logo"><a href="" class="nav-logo">
+        <img src="../images/logo.png" alt="Mucho Marketing Logo">
+      </a></div>
   <div class="header-tag">Nurturing Automatizado</div>
 </header>
 
@@ -329,6 +361,13 @@
 
   </div>
 </article>
+   <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
+    </div>
+    <span class="footer-copy">© 2025 Mucho Marketing</span>
+  </footer>
 
 <script>
   window.addEventListener('scroll', () => {
