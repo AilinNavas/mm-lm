@@ -1,354 +1,979 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>De proveedor a partner estratégico · Mucho Marketing</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --brand-dark: #010707;
-    --card-dark: #09140E;
-    --card-mid: #192520;
-    --green: #27DE6B;
-    --white: #FFFFFF;
-    --text-body: rgba(255,255,255,0.72);
-    --text-muted: rgba(255,255,255,0.38);
-    --border: rgba(255,255,255,0.08);
-    --green-dim: rgba(39,222,107,0.08);
-    --green-border: rgba(39,222,107,0.25);
-    --red: rgba(255,100,100,0.85);
-    --red-dim: rgba(255,80,80,0.07);
-    --red-border: rgba(255,80,80,0.18);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>De proveedor a partner estratégico · Mucho Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-dark: #010707;
+      --card-dark: #09140E;
+      --card-mid: #192520;
+      --green: #27DE6B;
+      --white: #FFFFFF;
+      --text-body: rgba(255, 255, 255, 0.72);
+      --text-muted: rgba(255, 255, 255, 0.38);
+      --border: rgba(255, 255, 255, 0.08);
+      --green-dim: rgba(39, 222, 107, 0.08);
+      --green-border: rgba(39, 222, 107, 0.25);
+      --red: rgba(255, 100, 100, 0.85);
+      --red-dim: rgba(255, 80, 80, 0.07);
+      --red-border: rgba(255, 80, 80, 0.18);
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
-  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
-  .logo span { color: var(--green); }
-  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+    body {
+      background: var(--brand-dark);
+      color: var(--text-body);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.85;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
-  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
-  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
-  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
-  h1 em { font-style: normal; color: var(--green); }
-  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
-  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--green);
+      z-index: 100;
+      transition: width 0.1s linear;
+    }
 
-  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
-  .content p { margin-bottom: 24px; }
-  .content p strong { color: var(--white); font-weight: 600; }
-  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(1, 7, 7, 0.97);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
 
-  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
-  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+    .logo {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
 
-  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+    .logo span {
+      color: var(--green);
+    }
 
-  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
-  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 72px; }
-  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
-  .data-text strong { color: var(--white); font-weight: 600; }
+    .header-tag {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
 
-  /* COMPARE TABLE */
-  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin: 48px 0; border: 1px solid var(--border); }
-  .compare-col { background: var(--card-dark); }
-  .compare-header { padding: 14px 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  .compare-col.vendor .compare-header { color: var(--text-muted); background: var(--card-mid); }
-  .compare-col.partner .compare-header { color: var(--green); background: var(--green-dim); }
-  .compare-item { padding: 14px 20px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-body); line-height: 1.55; display: flex; gap: 10px; }
-  .compare-item:last-child { border-bottom: none; }
-  .compare-col.vendor .compare-item { color: var(--text-muted); }
-  .compare-col.vendor .compare-item::before { content: '×'; color: var(--red); font-weight: 700; flex-shrink: 0; }
-  .compare-col.partner .compare-item::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 40px 56px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
 
-  /* SIGNAL CARDS */
-  .signal-card { background: var(--card-dark); border: 1px solid var(--border); margin: 20px 0; overflow: hidden; border-left: 3px solid var(--red); }
-  .signal-card.resolved { border-left-color: var(--green); }
-  .signal-header { display: flex; align-items: center; gap: 0; border-bottom: 1px solid var(--border); }
-  .signal-tag { background: var(--card-mid); border-right: 1px solid var(--border); padding: 12px 16px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; flex-shrink: 0; min-width: 96px; text-align: center; }
-  .signal-card .signal-tag { color: var(--red); }
-  .signal-card.resolved .signal-tag { color: var(--green); }
-  .signal-title { padding: 12px 18px; font-size: 15px; font-weight: 700; color: var(--white); letter-spacing: -0.01em; }
-  .signal-body { padding: 18px 22px; }
-  .signal-desc { font-size: 14px; color: var(--text-body); line-height: 1.7; margin-bottom: 12px; }
-  .signal-desc strong { color: var(--white); font-weight: 600; }
-  .signal-fix { font-size: 14px; color: var(--text-body); border-left: 2px solid var(--green); padding-left: 12px; line-height: 1.65; }
-  .signal-fix strong { color: var(--white); font-weight: 600; }
+    .article-category {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
 
-  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
-  .warning strong { color: var(--red); font-weight: 600; }
+    .article-category::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--green);
+    }
 
-  /* LEAD MAGNET */
-  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
-  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
-  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
-  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
-  .lm-body { padding: 28px; }
-  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      line-height: 1.07;
+      color: var(--white);
+      margin-bottom: 28px;
+      letter-spacing: -0.03em;
+    }
 
-  .diag-items { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .diag-item { background: var(--card-dark); padding: 14px 20px; display: flex; gap: 12px; font-size: 14px; color: var(--text-body); line-height: 1.55; }
-  .diag-item::before { content: '→'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    h1 em {
+      font-style: normal;
+      color: var(--green);
+    }
 
-  .lm-gate { position: relative; border-top: 1px solid var(--border); }
-  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.45; max-height: 160px; overflow: hidden; }
-  .lm-gate-overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: var(--card-dark); border-top: 1px solid var(--green-border); }
-  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
-  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
-  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
-  .gate-instruction { font-size: 13px; color: var(--text-body); margin-bottom: 14px; line-height: 1.6; background: var(--card-mid); border: 1px solid var(--green-border); padding: 10px 14px; }
-  .gate-instruction strong { color: var(--green); font-weight: 700; }
-  .gate-kw { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--green); color: var(--brand-dark); padding: 14px 28px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; margin-bottom: 10px; transition: background 0.2s, transform 0.2s; cursor: pointer; }
-  .gate-kw:hover { background: #4eff8a; transform: translateY(-2px); }
-  .gate-kw-arrow { font-size: 16px; }
-  .gate-note { font-size: 11px; color: var(--text-muted); }
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      border-left: 3px solid var(--green);
+      padding-left: 20px;
+    }
 
-  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
 
- .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+    .meta-dot {
+      width: 3px;
+      height: 3px;
+      background: var(--green);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
 
-  @media (max-width: 600px) {
-    header { padding: 16px 20px; }
-    .hero, .content { padding-left: 20px; padding-right: 20px; }
-    .hero { padding-top: 48px; }
-    .compare { grid-template-columns: 1fr; }
-    .data-callout { flex-direction: column; gap: 10px; }
-    .lm-body { padding: 20px; }
-  }
-</style>
+    .content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+
+    .content p {
+      margin-bottom: 24px;
+    }
+
+    .content p strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 900;
+      color: var(--white);
+      margin: 64px 0 20px;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--green);
+      padding: 22px 28px;
+      margin: 48px 0;
+      background: var(--card-dark);
+    }
+
+    .pull-quote p {
+      font-size: clamp(17px, 2.2vw, 21px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.45;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .source-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      padding: 2px 7px;
+      font-weight: 600;
+      vertical-align: middle;
+      margin-left: 5px;
+      position: relative;
+      top: -1px;
+    }
+
+    .data-callout {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      padding: 20px 24px;
+      margin: 32px 0;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .data-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      flex-shrink: 0;
+      min-width: 72px;
+    }
+
+    .data-text {
+      flex: 1;
+      padding-top: 4px;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .data-text strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* COMPARE TABLE */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin: 48px 0;
+      border: 1px solid var(--border);
+    }
+
+    .compare-col {
+      background: var(--card-dark);
+    }
+
+    .compare-header {
+      padding: 14px 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .compare-col.vendor .compare-header {
+      color: var(--text-muted);
+      background: var(--card-mid);
+    }
+
+    .compare-col.partner .compare-header {
+      color: var(--green);
+      background: var(--green-dim);
+    }
+
+    .compare-item {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.55;
+      display: flex;
+      gap: 10px;
+    }
+
+    .compare-item:last-child {
+      border-bottom: none;
+    }
+
+    .compare-col.vendor .compare-item {
+      color: var(--text-muted);
+    }
+
+    .compare-col.vendor .compare-item::before {
+      content: '×';
+      color: var(--red);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .compare-col.partner .compare-item::before {
+      content: '→';
+      color: var(--green);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* SIGNAL CARDS */
+    .signal-card {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      margin: 20px 0;
+      overflow: hidden;
+      border-left: 3px solid var(--red);
+    }
+
+    .signal-card.resolved {
+      border-left-color: var(--green);
+    }
+
+    .signal-header {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .signal-tag {
+      background: var(--card-mid);
+      border-right: 1px solid var(--border);
+      padding: 12px 16px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      min-width: 96px;
+      text-align: center;
+    }
+
+    .signal-card .signal-tag {
+      color: var(--red);
+    }
+
+    .signal-card.resolved .signal-tag {
+      color: var(--green);
+    }
+
+    .signal-title {
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .signal-body {
+      padding: 18px 22px;
+    }
+
+    .signal-desc {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .signal-desc strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .signal-fix {
+      font-size: 14px;
+      color: var(--text-body);
+      border-left: 2px solid var(--green);
+      padding-left: 12px;
+      line-height: 1.65;
+    }
+
+    .signal-fix strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .warning {
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      border-left: 3px solid var(--red);
+      padding: 18px 22px;
+      margin: 32px 0;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .warning strong {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    /* LEAD MAGNET */
+    .lm-teaser {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--green);
+      margin: 64px 0 0;
+      overflow: hidden;
+    }
+
+    .lm-header {
+      padding: 24px 28px;
+      background: var(--card-mid);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lm-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .lm-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .lm-body {
+      padding: 28px;
+    }
+
+    .lm-intro {
+      font-size: 15px;
+      color: var(--text-body);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .diag-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .diag-item {
+      background: var(--card-dark);
+      padding: 14px 20px;
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.55;
+    }
+
+    .diag-item::before {
+      content: '→';
+      color: var(--green);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .lm-gate {
+      position: relative;
+      border-top: 1px solid var(--border);
+    }
+
+    .lm-gate-blur {
+      filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.45;
+      max-height: 160px;
+      overflow: hidden;
+    }
+
+    .lm-gate-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      background: var(--card-dark);
+      border-top: 1px solid var(--green-border);
+    }
+
+    .gate-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+
+    .gate-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .gate-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+
+    .gate-instruction {
+      font-size: 13px;
+      color: var(--text-body);
+      margin-bottom: 14px;
+      line-height: 1.6;
+      background: var(--card-mid);
+      border: 1px solid var(--green-border);
+      padding: 10px 14px;
+    }
+
+    .gate-instruction strong {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .gate-kw {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--green);
+      color: var(--brand-dark);
+      padding: 14px 28px;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .gate-kw:hover {
+      background: #4eff8a;
+      transform: translateY(-2px);
+    }
+
+    .gate-kw-arrow {
+      font-size: 16px;
+    }
+
+    .gate-note {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 56px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-icon {
+      color: var(--green);
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      font-weight: 700;
+    }
+
+    .footnote {
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      margin-top: 48px;
+      line-height: 1.8;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 16px 20px;
+      }
+
+      .hero,
+      .content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero {
+        padding-top: 48px;
+      }
+
+      .compare {
+        grid-template-columns: 1fr;
+      }
+
+      .data-callout {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .lm-body {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="progress-bar"></div>
+  <div id="progress-bar"></div>
 
-<header>
-  <div class="logo">Mucho <span>Marketing</span></div>
-  <div class="header-tag">Posicionamiento Premium</div>
-</header>
+  <header>
+    <div class="logo">Mucho <span>Marketing</span></div>
+    <div class="header-tag">Posicionamiento Premium</div>
+  </header>
 
-<article>
-  <div class="hero">
-    <div class="article-category">Diagnóstico D — Optimización</div>
-    <h1>De proveedor a partner estratégico: cómo posicionarte para <em>justificar el ticket premium</em></h1>
-    <p class="hero-subtitle">El problema no es la calidad del trabajo. Es que el mercado percibe tu negocio como uno más entre varios. Cambiar esa percepción empieza antes de la primera conversación de precio.</p>
-    <div class="article-meta">
-      <span>Mucho Marketing</span>
-      <span class="meta-dot"></span>
-      <span>11 min de lectura</span>
-      <span class="meta-dot"></span>
-      <span>Fuentes: HubSpot · BCG · Gartner · RAIN Group</span>
-    </div>
-  </div>
-
-  <div class="content">
-
-    <p>Hay una conversación que ocurre en casi todos los negocios de construcción y home improvement de alto ticket en algún momento de su crecimiento. Roberto, o alguien en su equipo, manda un presupuesto y recibe como respuesta: "Gracias, lo estoy comparando con otras opciones." A veces el precio es el mismo que siempre. A veces incluso bajó. Pero la comparación ocurre igual.</p>
-
-    <p>Ese momento no es un problema de precio. Es un problema de posicionamiento. El cliente no está eligiendo entre dos precios — está eligiendo entre dos proveedores que siente intercambiables. Y cuando dos opciones se perciben como equivalentes, el precio se convierte en el único criterio de decisión.</p>
-
-    <p>La solución no es bajar el precio. Es salir de la categoría donde la comparación es posible.</p>
-
-    <div class="pull-quote reveal">
-      <p>El 88% de los compradores dice que la confianza es lo más importante en una relación comercial. El 36% de los vendedores dice que su rol más importante hoy es ayudar al cliente a sentirse seguro en su decisión. El precio es secundario cuando hay confianza real. <span class="source-tag">HubSpot State of Sales 2025</span></p>
-    </div>
-
-    <h2>La diferencia entre proveedor y partner no es el producto</h2>
-
-    <p>Un proveedor entrega lo que se le pidió. Un partner estratégico ayuda al cliente a entender qué debería pedir.</p>
-
-    <p>En construcción y home improvement, esa distinción es concreta. El proveedor manda el presupuesto que le solicitaron. El partner estratégico manda el presupuesto y además señala que el diseño del espacio tiene un problema que el cliente no detectó, que el material que eligió va a requerir mantenimiento costoso en dos años, o que hay una configuración alternativa que logra el mismo resultado a menor costo total de vida útil.</p>
-
-    <p>Esa segunda conversación no cuesta nada. Pero cambia fundamentalmente cómo el cliente percibe quién está del otro lado.</p>
-
-    <div class="compare reveal">
-      <div class="compare-col vendor">
-        <div class="compare-header">Comportamiento de proveedor</div>
-        <div class="compare-item">Responde lo que se le pregunta, nada más</div>
-        <div class="compare-item">Manda el presupuesto y espera la decisión</div>
-        <div class="compare-item">Compite en precio porque no hay otro criterio visible</div>
-        <div class="compare-item">El cliente siente que puede reemplazarlo fácilmente</div>
-        <div class="compare-item">La conversación es transaccional desde el primer mensaje</div>
-        <div class="compare-item">No comparte perspectiva propia sobre el proyecto</div>
-      </div>
-      <div class="compare-col partner">
-        <div class="compare-header">Comportamiento de partner</div>
-        <div class="compare-item">Responde y agrega algo que el cliente no había considerado</div>
-        <div class="compare-item">Manda el presupuesto y explica las decisiones detrás de él</div>
-        <div class="compare-item">Compite en expertise porque el cliente percibe diferencia real</div>
-        <div class="compare-item">El cliente siente que perder este proveedor tiene un costo</div>
-        <div class="compare-item">La conversación es consultiva desde el primer contacto</div>
-        <div class="compare-item">Tiene perspectiva propia y la comparte con confianza</div>
+  <article>
+    <div class="hero">
+      <div class="article-category">Diagnóstico D — Optimización</div>
+      <h1>De proveedor a partner estratégico: cómo posicionarte para <em>justificar el ticket premium</em></h1>
+      <p class="hero-subtitle">El problema no es la calidad del trabajo. Es que el mercado percibe tu negocio como uno
+        más entre varios. Cambiar esa percepción empieza antes de la primera conversación de precio.</p>
+      <div class="article-meta">
+        <span>Mucho Marketing</span>
+        <span class="meta-dot"></span>
+        <span>11 min de lectura</span>
+        <span class="meta-dot"></span>
+        <span>Fuentes: HubSpot · BCG · Gartner · RAIN Group</span>
       </div>
     </div>
 
-    <h2>Por qué la calidad del trabajo no es suficiente</h2>
+    <div class="content">
 
-    <p>Muchos empresarios de construcción y home improvement confían en que la calidad de su trabajo va a hablar por sí sola. Y en parte tienen razón: la calidad es condición necesaria para mantener el negocio. Pero no es suficiente para posicionarse en el segmento premium.</p>
+      <p>Hay una conversación que ocurre en casi todos los negocios de construcción y home improvement de alto ticket en
+        algún momento de su crecimiento. Roberto, o alguien en su equipo, manda un presupuesto y recibe como respuesta:
+        "Gracias, lo estoy comparando con otras opciones." A veces el precio es el mismo que siempre. A veces incluso
+        bajó. Pero la comparación ocurre igual.</p>
 
-    <p>El problema es que la calidad del trabajo es mayormente invisible para el cliente antes de que empiece la obra. Lo que el cliente sí puede comparar antes de decidir es cómo lo trataron, qué tan bien entendieron su proyecto, si la propuesta fue genérica o específica para su caso, y si la persona que lo atendió le transmitió confianza o solo le mandó un PDF con precios.</p>
+      <p>Ese momento no es un problema de precio. Es un problema de posicionamiento. El cliente no está eligiendo entre
+        dos precios — está eligiendo entre dos proveedores que siente intercambiables. Y cuando dos opciones se perciben
+        como equivalentes, el precio se convierte en el único criterio de decisión.</p>
 
-    <div class="data-callout reveal">
-      <div class="data-num">40%</div>
-      <div class="data-text"><p><strong>De los vendedores dice que establecer confianza y construir relación es la estrategia más efectiva para generar ventas adicionales</strong> con clientes existentes. La confianza no se construye mostrando el portafolio, se construye demostrando que entendés el problema del cliente mejor que él mismo. <span class="source-tag">HubSpot State of Sales 2025</span></p></div>
-    </div>
+      <p>La solución no es bajar el precio. Es salir de la categoría donde la comparación es posible.</p>
 
-    <p>La calidad del trabajo justifica el precio de la segunda venta, cuando el cliente ya sabe lo que recibe. El posicionamiento justifica el precio de la primera venta, cuando todavía no lo sabe.</p>
-
-    <h2>Las 5 señales de que tu negocio está siendo percibido como proveedor</h2>
-
-    <p>Cada una de estas señales es un punto de fuga donde el cliente pierde la percepción de diferencia y la conversación deriva hacia el precio.</p>
-
-    <div class="signal-card reveal">
-      <div class="signal-header">
-        <div class="signal-tag">Señal 01</div>
-        <div class="signal-title">El cliente pide "solo el precio" antes de describir el proyecto</div>
+      <div class="pull-quote reveal">
+        <p>El 88% de los compradores dice que la confianza es lo más importante en una relación comercial. El 36% de los
+          vendedores dice que su rol más importante hoy es ayudar al cliente a sentirse seguro en su decisión. El precio
+          es secundario cuando hay confianza real. <span class="source-tag">HubSpot State of Sales 2025</span></p>
       </div>
-      <div class="signal-body">
-        <div class="signal-desc">Cuando alguien escribe "cuánto sale una piscina de 8x4" sin ningún otro contexto, no está calificando proveedores, está buscando un número para comparar. <strong>Ese comportamiento es la consecuencia directa de comunicar el negocio como si fuera un catálogo de productos con precios.</strong> Si el primer punto de contacto es un precio, la conversación completa va a girar alrededor del precio.</div>
-        <div class="signal-fix"><strong>El cambio:</strong> antes de responder con un precio, hacer la pregunta que desplaza el marco. "Para darte un número que tenga sentido necesito entender el proyecto. Qué tenés en mente y qué resultado esperás?" Esa pregunta posiciona como asesor antes de que la conversación de precio empiece.</div>
-      </div>
-    </div>
 
-    <div class="signal-card reveal">
-      <div class="signal-header">
-        <div class="signal-tag">Señal 02</div>
-        <div class="signal-title">El presupuesto es una lista de ítems con precios, no una propuesta</div>
-      </div>
-      <div class="signal-body">
-        <div class="signal-desc">Un presupuesto con ítems y precios es un documento que invita a la comparación línea por línea. El cliente puede tomar cualquier ítem, buscar un proveedor más barato para esa parte específica, y construir la obra con distintos proveedores. <strong>Un presupuesto que no explica las decisiones detrás de cada elección se convierte automáticamente en una commoditiy.</strong></div>
-        <div class="signal-fix"><strong>El cambio:</strong> transformar el presupuesto en una propuesta que explica por qué se eligió cada material, qué alternativa se descartó y por qué, y qué resultado concreto va a tener el cliente. Ese documento no se puede comparar línea por línea porque la lógica detrás de las elecciones no está en otras propuestas.</div>
-      </div>
-    </div>
+      <h2>La diferencia entre proveedor y partner no es el producto</h2>
 
-    <div class="signal-card reveal">
-      <div class="signal-header">
-        <div class="signal-tag">Señal 03</div>
-        <div class="signal-title">La visita al proyecto termina con "te mando el presupuesto"</div>
-      </div>
-      <div class="signal-body">
-        <div class="signal-desc">Cuando la visita termina sin que el vendedor haya compartido ninguna perspectiva propia sobre el proyecto, el cliente se queda con la sensación de que lo fue a ver para medir y cotizar. <strong>Eso es exactamente lo que hace un proveedor. Un partner estratégico termina la visita habiendo compartido al menos una observación que el cliente no tenía.</strong></div>
-        <div class="signal-fix"><strong>El cambio:</strong> durante o al final de la visita, compartir una perspectiva concreta. "Noté que la orientación del espacio tiene mucha entrada de sol de tarde — eso afecta la elección del material del deck si querés que sea cómodo en verano. Te lo incluyo en la propuesta con dos opciones." Esa observación no sale de ningún otro presupuesto.</div>
-      </div>
-    </div>
+      <p>Un proveedor entrega lo que se le pidió. Un partner estratégico ayuda al cliente a entender qué debería pedir.
+      </p>
 
-    <div class="signal-card reveal">
-      <div class="signal-header">
-        <div class="signal-tag">Señal 04</div>
-        <div class="signal-title">La respuesta al "está caro" es justificar el precio</div>
-      </div>
-      <div class="signal-body">
-        <div class="signal-desc">Cuando un cliente dice "está caro" y la respuesta es una lista de razones por las que el precio está justificado, el vendedor está aceptando implícitamente que el precio es el eje de la conversación. <strong>Un partner estratégico no defiende el precio — redirecciona la conversación hacia el valor del resultado.</strong></div>
-        <div class="signal-fix"><strong>El cambio:</strong> "Entiendo. Cuando decís que está caro, lo estás comparando con otra propuesta que recibiste o con lo que esperabas invertir al principio?" Esa pregunta cambia el marco de "justificar el precio" a "entender el contexto de la comparación". Son conversaciones completamente distintas.</div>
-      </div>
-    </div>
+      <p>En construcción y home improvement, esa distinción es concreta. El proveedor manda el presupuesto que le
+        solicitaron. El partner estratégico manda el presupuesto y además señala que el diseño del espacio tiene un
+        problema que el cliente no detectó, que el material que eligió va a requerir mantenimiento costoso en dos años,
+        o que hay una configuración alternativa que logra el mismo resultado a menor costo total de vida útil.</p>
 
-    <div class="signal-card reveal">
-      <div class="signal-header">
-        <div class="signal-tag">Señal 05</div>
-        <div class="signal-title">Las referencias y el portfolio se muestran solo cuando se piden</div>
-      </div>
-      <div class="signal-body">
-        <div class="signal-desc">Un proveedor muestra su trabajo cuando el cliente lo pide. Un partner lo comparte proactivamente como parte de la conversación, <strong>y lo hace de forma específica: no un portfolio genérico, sino trabajos similares al proyecto del cliente con contexto sobre las decisiones que se tomaron.</strong> Eso demuestra expertise aplicado a la situación concreta, no solo experiencia general.</div>
-        <div class="signal-fix"><strong>El cambio:</strong> en el Día 5 del sistema de seguimiento post-presupuesto, compartir un proyecto similar terminado con contexto específico. "Terminamos esta semana un proyecto parecido al tuyo en [zona/tipo de propiedad]. El cliente tenía el mismo desafío de [problema específico]. Te mando las fotos y te cuento cómo lo resolvimos." Eso es diferente a "mirá nuestro Instagram".</div>
-      </div>
-    </div>
+      <p>Esa segunda conversación no cuesta nada. Pero cambia fundamentalmente cómo el cliente percibe quién está del
+        otro lado.</p>
 
-    <h2>El cambio que lo integra todo: la venta consultiva</h2>
-
-    <p>La venta consultiva no es una técnica de cierre. Es una forma de conducir la conversación completa desde el primer contacto. El vendedor que opera como consultor hace preguntas para entender el problema del cliente antes de proponer la solución, comparte perspectiva propia basada en experiencia, y posiciona la propuesta como el resultado de ese diagnóstico.</p>
-
-    <p>HubSpot documenta que este enfoque tiene un efecto directo en los resultados: los vendedores que operan como asesores de confianza tienen un 50% más de probabilidades de cerrar la venta a un tercio del costo de los métodos tradicionales. La razón es simple: cuando el cliente percibe que el vendedor entiende su problema mejor que él mismo, el precio deja de ser el criterio principal de decisión.</p>
-
-    <div class="data-callout reveal">
-      <div class="data-num">50%</div>
-      <div class="data-text"><p><strong>Más probabilidades de cerrar la venta tienen los vendedores que construyen una relación personal basada en confianza</strong>, a aproximadamente un tercio del costo de los métodos transaccionales. La confianza no es un activo blando. Es el diferencial de precio más sostenible que existe. <span class="source-tag">HubSpot / Personal Selling Research</span></p></div>
-    </div>
-
-    <p>En términos prácticos para un negocio de construcción y home improvement, operar como partner estratégico significa tres cosas concretas:</p>
-
-    <p><strong>La visita al proyecto es un diagnóstico, no una medición.</strong> El vendedor llega con preguntas sobre cómo usa el espacio el cliente, qué resultado quiere lograr, qué problemas tuvo en el pasado con ese tipo de obra. Las respuestas a esas preguntas informan una propuesta que difícilmente puede replicar alguien que solo fue a medir.</p>
-
-    <p><strong>El presupuesto es una recomendación argumentada, no una lista de precios.</strong> Incluye la lógica detrás de cada decisión, la alternativa que se descartó y por qué, y una estimación del costo total de vida útil del proyecto, no solo el costo de la obra. Ese documento no se compara en una tabla de Excel.</p>
-
-    <p><strong>El seguimiento post-visita agrega valor antes de que se tome la decisión.</strong> El vendedor comparte algo útil para el cliente en cada contacto — un proyecto similar, un dato técnico relevante, una pregunta que el cliente debería hacerle a cualquier proveedor antes de decidir. Ese comportamiento diferencia activamente incluso antes de que el cliente compare los presupuestos.</p>
-
-    <div class="warning reveal">
-      <strong>El error más frecuente al intentar este cambio:</strong> hacer preguntas consultivas en la visita y volver a un presupuesto genérico de ítems y precios. El cliente percibe la contradicción. La conversación consultiva tiene que continuar en el documento, en el seguimiento, y en cómo se manejan las objeciones. No puede ser solo la visita.
-    </div>
-
-    <div class="divider reveal">
-      <span class="divider-icon">◆ ◆ ◆</span>
-    </div>
-
-    <!-- LEAD MAGNET -->
-    <div class="lm-teaser reveal">
-      <div class="lm-header">
-        <div class="lm-eyebrow">Diagnóstico incluido</div>
-        <div class="lm-title">Las 5 señales de que tu negocio está siendo tratado como proveedor y los cambios concretos para cada una</div>
-      </div>
-      <div class="lm-body">
-        <p class="lm-intro">Este diagnóstico incluye las 5 señales completas con el cambio específico para cada una, más una guía para transformar el presupuesto de lista de precios a propuesta de valor, y las preguntas exactas para conducir la visita como un diagnóstico en lugar de una medición.</p>
-
-        <div class="diag-items">
-          <div class="diag-item">Señal 01: el cliente pide "solo el precio" — qué responder para cambiar el marco de la conversación antes de que empiece</div>
-          <div class="diag-item">Señal 02: el presupuesto es una lista de ítems — estructura exacta de una propuesta que no se puede comparar en tabla</div>
+      <div class="compare reveal">
+        <div class="compare-col vendor">
+          <div class="compare-header">Comportamiento de proveedor</div>
+          <div class="compare-item">Responde lo que se le pregunta, nada más</div>
+          <div class="compare-item">Manda el presupuesto y espera la decisión</div>
+          <div class="compare-item">Compite en precio porque no hay otro criterio visible</div>
+          <div class="compare-item">El cliente siente que puede reemplazarlo fácilmente</div>
+          <div class="compare-item">La conversación es transaccional desde el primer mensaje</div>
+          <div class="compare-item">No comparte perspectiva propia sobre el proyecto</div>
         </div>
+        <div class="compare-col partner">
+          <div class="compare-header">Comportamiento de partner</div>
+          <div class="compare-item">Responde y agrega algo que el cliente no había considerado</div>
+          <div class="compare-item">Manda el presupuesto y explica las decisiones detrás de él</div>
+          <div class="compare-item">Compite en expertise porque el cliente percibe diferencia real</div>
+          <div class="compare-item">El cliente siente que perder este proveedor tiene un costo</div>
+          <div class="compare-item">La conversación es consultiva desde el primer contacto</div>
+          <div class="compare-item">Tiene perspectiva propia y la comparte con confianza</div>
+        </div>
+      </div>
 
-        <!-- GATE -->
-        <div class="lm-gate">
-          <div class="lm-gate-blur">
-<div class="diag-item">Señal 04: responder "está caro" con justificaciones — el reencuadre exacto que desplaza la conversación del precio al valor</div>
-              <div class="diag-item">Señal 05: el portfolio se muestra solo cuando se pide — cómo compartir trabajo proactivamente para diferenciarte antes de la decisión</div>
-              <div class="diag-item">Guía de transformación del presupuesto: de lista de ítems a propuesta argumentada — estructura y ejemplos de copy</div>
+      <h2>Por qué la calidad del trabajo no es suficiente</h2>
+
+      <p>Muchos empresarios de construcción y home improvement confían en que la calidad de su trabajo va a hablar por
+        sí sola. Y en parte tienen razón: la calidad es condición necesaria para mantener el negocio. Pero no es
+        suficiente para posicionarse en el segmento premium.</p>
+
+      <p>El problema es que la calidad del trabajo es mayormente invisible para el cliente antes de que empiece la obra.
+        Lo que el cliente sí puede comparar antes de decidir es cómo lo trataron, qué tan bien entendieron su proyecto,
+        si la propuesta fue genérica o específica para su caso, y si la persona que lo atendió le transmitió confianza o
+        solo le mandó un PDF con precios.</p>
+
+      <div class="data-callout reveal">
+        <div class="data-num">40%</div>
+        <div class="data-text">
+          <p><strong>De los vendedores dice que establecer confianza y construir relación es la estrategia más efectiva
+              para generar ventas adicionales</strong> con clientes existentes. La confianza no se construye mostrando
+            el portafolio, se construye demostrando que entendés el problema del cliente mejor que él mismo. <span
+              class="source-tag">HubSpot State of Sales 2025</span></p>
+        </div>
+      </div>
+
+      <p>La calidad del trabajo justifica el precio de la segunda venta, cuando el cliente ya sabe lo que recibe. El
+        posicionamiento justifica el precio de la primera venta, cuando todavía no lo sabe.</p>
+
+      <h2>Las 5 señales de que tu negocio está siendo percibido como proveedor</h2>
+
+      <p>Cada una de estas señales es un punto de fuga donde el cliente pierde la percepción de diferencia y la
+        conversación deriva hacia el precio.</p>
+
+      <div class="signal-card reveal">
+        <div class="signal-header">
+          <div class="signal-tag">Señal 01</div>
+          <div class="signal-title">El cliente pide "solo el precio" antes de describir el proyecto</div>
+        </div>
+        <div class="signal-body">
+          <div class="signal-desc">Cuando alguien escribe "cuánto sale una piscina de 8x4" sin ningún otro contexto, no
+            está calificando proveedores, está buscando un número para comparar. <strong>Ese comportamiento es la
+              consecuencia directa de comunicar el negocio como si fuera un catálogo de productos con precios.</strong>
+            Si el primer punto de contacto es un precio, la conversación completa va a girar alrededor del precio.</div>
+          <div class="signal-fix"><strong>El cambio:</strong> antes de responder con un precio, hacer la pregunta que
+            desplaza el marco. "Para darte un número que tenga sentido necesito entender el proyecto. Qué tenés en mente
+            y qué resultado esperás?" Esa pregunta posiciona como asesor antes de que la conversación de precio empiece.
+          </div>
+        </div>
+      </div>
+
+      <div class="signal-card reveal">
+        <div class="signal-header">
+          <div class="signal-tag">Señal 02</div>
+          <div class="signal-title">El presupuesto es una lista de ítems con precios, no una propuesta</div>
+        </div>
+        <div class="signal-body">
+          <div class="signal-desc">Un presupuesto con ítems y precios es un documento que invita a la comparación línea
+            por línea. El cliente puede tomar cualquier ítem, buscar un proveedor más barato para esa parte específica,
+            y construir la obra con distintos proveedores. <strong>Un presupuesto que no explica las decisiones detrás
+              de cada elección se convierte automáticamente en una commoditiy.</strong></div>
+          <div class="signal-fix"><strong>El cambio:</strong> transformar el presupuesto en una propuesta que explica
+            por qué se eligió cada material, qué alternativa se descartó y por qué, y qué resultado concreto va a tener
+            el cliente. Ese documento no se puede comparar línea por línea porque la lógica detrás de las elecciones no
+            está en otras propuestas.</div>
+        </div>
+      </div>
+
+      <div class="signal-card reveal">
+        <div class="signal-header">
+          <div class="signal-tag">Señal 03</div>
+          <div class="signal-title">La visita al proyecto termina con "te mando el presupuesto"</div>
+        </div>
+        <div class="signal-body">
+          <div class="signal-desc">Cuando la visita termina sin que el vendedor haya compartido ninguna perspectiva
+            propia sobre el proyecto, el cliente se queda con la sensación de que lo fue a ver para medir y cotizar.
+            <strong>Eso es exactamente lo que hace un proveedor. Un partner estratégico termina la visita habiendo
+              compartido al menos una observación que el cliente no tenía.</strong>
+          </div>
+          <div class="signal-fix"><strong>El cambio:</strong> durante o al final de la visita, compartir una perspectiva
+            concreta. "Noté que la orientación del espacio tiene mucha entrada de sol de tarde — eso afecta la elección
+            del material del deck si querés que sea cómodo en verano. Te lo incluyo en la propuesta con dos opciones."
+            Esa observación no sale de ningún otro presupuesto.</div>
+        </div>
+      </div>
+
+      <div class="signal-card reveal">
+        <div class="signal-header">
+          <div class="signal-tag">Señal 04</div>
+          <div class="signal-title">La respuesta al "está caro" es justificar el precio</div>
+        </div>
+        <div class="signal-body">
+          <div class="signal-desc">Cuando un cliente dice "está caro" y la respuesta es una lista de razones por las que
+            el precio está justificado, el vendedor está aceptando implícitamente que el precio es el eje de la
+            conversación. <strong>Un partner estratégico no defiende el precio — redirecciona la conversación hacia el
+              valor del resultado.</strong></div>
+          <div class="signal-fix"><strong>El cambio:</strong> "Entiendo. Cuando decís que está caro, lo estás comparando
+            con otra propuesta que recibiste o con lo que esperabas invertir al principio?" Esa pregunta cambia el marco
+            de "justificar el precio" a "entender el contexto de la comparación". Son conversaciones completamente
+            distintas.</div>
+        </div>
+      </div>
+
+      <div class="signal-card reveal">
+        <div class="signal-header">
+          <div class="signal-tag">Señal 05</div>
+          <div class="signal-title">Las referencias y el portfolio se muestran solo cuando se piden</div>
+        </div>
+        <div class="signal-body">
+          <div class="signal-desc">Un proveedor muestra su trabajo cuando el cliente lo pide. Un partner lo comparte
+            proactivamente como parte de la conversación, <strong>y lo hace de forma específica: no un portfolio
+              genérico, sino trabajos similares al proyecto del cliente con contexto sobre las decisiones que se
+              tomaron.</strong> Eso demuestra expertise aplicado a la situación concreta, no solo experiencia general.
+          </div>
+          <div class="signal-fix"><strong>El cambio:</strong> en el Día 5 del sistema de seguimiento post-presupuesto,
+            compartir un proyecto similar terminado con contexto específico. "Terminamos esta semana un proyecto
+            parecido al tuyo en [zona/tipo de propiedad]. El cliente tenía el mismo desafío de [problema específico]. Te
+            mando las fotos y te cuento cómo lo resolvimos." Eso es diferente a "mirá nuestro Instagram".</div>
+        </div>
+      </div>
+
+      <h2>El cambio que lo integra todo: la venta consultiva</h2>
+
+      <p>La venta consultiva no es una técnica de cierre. Es una forma de conducir la conversación completa desde el
+        primer contacto. El vendedor que opera como consultor hace preguntas para entender el problema del cliente antes
+        de proponer la solución, comparte perspectiva propia basada en experiencia, y posiciona la propuesta como el
+        resultado de ese diagnóstico.</p>
+
+      <p>HubSpot documenta que este enfoque tiene un efecto directo en los resultados: los vendedores que operan como
+        asesores de confianza tienen un 50% más de probabilidades de cerrar la venta a un tercio del costo de los
+        métodos tradicionales. La razón es simple: cuando el cliente percibe que el vendedor entiende su problema mejor
+        que él mismo, el precio deja de ser el criterio principal de decisión.</p>
+
+      <div class="data-callout reveal">
+        <div class="data-num">50%</div>
+        <div class="data-text">
+          <p><strong>Más probabilidades de cerrar la venta tienen los vendedores que construyen una relación personal
+              basada en confianza</strong>, a aproximadamente un tercio del costo de los métodos transaccionales. La
+            confianza no es un activo blando. Es el diferencial de precio más sostenible que existe. <span
+              class="source-tag">HubSpot / Personal Selling Research</span></p>
+        </div>
+      </div>
+
+      <p>En términos prácticos para un negocio de construcción y home improvement, operar como partner estratégico
+        significa tres cosas concretas:</p>
+
+      <p><strong>La visita al proyecto es un diagnóstico, no una medición.</strong> El vendedor llega con preguntas
+        sobre cómo usa el espacio el cliente, qué resultado quiere lograr, qué problemas tuvo en el pasado con ese tipo
+        de obra. Las respuestas a esas preguntas informan una propuesta que difícilmente puede replicar alguien que solo
+        fue a medir.</p>
+
+      <p><strong>El presupuesto es una recomendación argumentada, no una lista de precios.</strong> Incluye la lógica
+        detrás de cada decisión, la alternativa que se descartó y por qué, y una estimación del costo total de vida útil
+        del proyecto, no solo el costo de la obra. Ese documento no se compara en una tabla de Excel.</p>
+
+      <p><strong>El seguimiento post-visita agrega valor antes de que se tome la decisión.</strong> El vendedor comparte
+        algo útil para el cliente en cada contacto — un proyecto similar, un dato técnico relevante, una pregunta que el
+        cliente debería hacerle a cualquier proveedor antes de decidir. Ese comportamiento diferencia activamente
+        incluso antes de que el cliente compare los presupuestos.</p>
+
+      <div class="warning reveal">
+        <strong>El error más frecuente al intentar este cambio:</strong> hacer preguntas consultivas en la visita y
+        volver a un presupuesto genérico de ítems y precios. El cliente percibe la contradicción. La conversación
+        consultiva tiene que continuar en el documento, en el seguimiento, y en cómo se manejan las objeciones. No puede
+        ser solo la visita.
+      </div>
+
+      <div class="divider reveal">
+        <span class="divider-icon">◆ ◆ ◆</span>
+      </div>
+
+      <!-- LEAD MAGNET -->
+      <div class="lm-teaser reveal">
+        <div class="lm-header">
+          <div class="lm-eyebrow">Diagnóstico incluido</div>
+          <div class="lm-title">Las 5 señales de que tu negocio está siendo tratado como proveedor y los cambios
+            concretos para cada una</div>
+        </div>
+        <div class="lm-body">
+          <p class="lm-intro">Este diagnóstico incluye las 5 señales completas con el cambio específico para cada una,
+            más una guía para transformar el presupuesto de lista de precios a propuesta de valor, y las preguntas
+            exactas para conducir la visita como un diagnóstico en lugar de una medición.</p>
+
+          <div class="diag-items">
+            <div class="diag-item">Señal 01: el cliente pide "solo el precio" — qué responder para cambiar el marco de
+              la conversación antes de que empiece</div>
+            <div class="diag-item">Señal 02: el presupuesto es una lista de ítems — estructura exacta de una propuesta
+              que no se puede comparar en tabla</div>
+          </div>
+
+          <!-- GATE -->
+          <div class="lm-gate">
+            <div class="lm-gate-blur">
+              <div class="diag-item">Señal 04: responder "está caro" con justificaciones — el reencuadre exacto que
+                desplaza la conversación del precio al valor</div>
+              <div class="diag-item">Señal 05: el portfolio se muestra solo cuando se pide — cómo compartir trabajo
+                proactivamente para diferenciarte antes de la decisión</div>
+              <div class="diag-item">Guía de transformación del presupuesto: de lista de ítems a propuesta argumentada —
+                estructura y ejemplos de copy</div>
             </div>
           </div>
-          </div>
-          <div class="lm-gate-overlay">
-            <div class="gate-label">Diagnóstico completo disponible por WhatsApp</div>
-            <div class="gate-title">Recibí el diagnóstico completo con los cambios para cada señal</div>
-            <div class="gate-sub">Incluye guía de transformación del presupuesto y preguntas de diagnóstico para la visita.</div>
-            <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito. <strong>La respuesta llega automáticamente.</strong></p>
-            <a class="gate-kw" href="https://wa.me/5491155557890?text=PARTNER" target="_blank" rel="noopener">
-              Escribir PARTNER por WhatsApp <span class="gate-kw-arrow">→</span>
-            </a>
-            <div class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
-          </div>
         </div>
-
+        <div class="lm-gate-overlay">
+          <div class="gate-label">Diagnóstico completo disponible por WhatsApp</div>
+          <div class="gate-title">Recibí el diagnóstico completo con los cambios para cada señal</div>
+          <div class="gate-sub">Incluye guía de transformación del presupuesto y preguntas de diagnóstico para la
+            visita.</div>
+          <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito. <strong>La
+              respuesta llega automáticamente.</strong></p>
+          <a class="gate-kw" href="https://wa.me/5491155557890?text=PARTNER" target="_blank" rel="noopener">
+            Escribir PARTNER por WhatsApp <span class="gate-kw-arrow">→</span>
+          </a>
+          <div class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
+        </div>
+      </div>
+      <div class="footnote reveal">
+        <p>Fuentes citadas: HubSpot State of Sales 2025 — 88% de compradores dice que la confianza es lo más importante;
+          36% de vendedores identifica ayudar al cliente a sentirse seguro como su rol principal; 40% dice que
+          establecer
+          confianza es la estrategia de upsell más efectiva. HubSpot Personal Selling Research — vendedores con
+          relaciones
+          personales tienen 50% más probabilidades de cerrar a un tercio del costo. HubSpot Consultative Selling Guide
+          2024 — principios de venta consultiva y posicionamiento como asesor de confianza. Boston Consulting Group — la
+          percepción de valor es esencial para el buy-in del cliente. RAIN Group — marco de venta consultiva y su
+          impacto
+          en diferenciación de precio. Los porcentajes corresponden a estudios con muestras documentadas en mercados
+          globales.</p>
       </div>
     </div>
-
-    <div class="footnote reveal">
-      <p>Fuentes citadas: HubSpot State of Sales 2025 — 88% de compradores dice que la confianza es lo más importante; 36% de vendedores identifica ayudar al cliente a sentirse seguro como su rol principal; 40% dice que establecer confianza es la estrategia de upsell más efectiva. HubSpot Personal Selling Research — vendedores con relaciones personales tienen 50% más probabilidades de cerrar a un tercio del costo. HubSpot Consultative Selling Guide 2024 — principios de venta consultiva y posicionamiento como asesor de confianza. Boston Consulting Group — la percepción de valor es esencial para el buy-in del cliente. RAIN Group — marco de venta consultiva y su impacto en diferenciación de precio. Los porcentajes corresponden a estudios con muestras documentadas en mercados globales.</p>
     </div>
 
-  </div>
-</article>
 
-<script>
-  window.addEventListener('scroll', () => {
-    const doc = document.documentElement;
-    document.getElementById('progress-bar').style.width =
-      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-  });
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+
+    </div>
+  </article>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      document.getElementById('progress-bar').style.width =
+        ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 
 </body>
+
 </html>
