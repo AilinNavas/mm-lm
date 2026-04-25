@@ -1,123 +1,609 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cómo escalar la captación sin perder la calidad del proceso de ventas · Mucho Marketing</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --brand-dark: #010707;
-    --card-dark: #09140E;
-    --card-mid: #192520;
-    --green: #27DE6B;
-    --white: #FFFFFF;
-    --text-body: rgba(255,255,255,0.72);
-    --text-muted: rgba(255,255,255,0.38);
-    --border: rgba(255,255,255,0.08);
-    --green-dim: rgba(39,222,107,0.08);
-    --green-border: rgba(39,222,107,0.25);
-    --red: rgba(255,100,100,0.85);
-    --red-dim: rgba(255,80,80,0.07);
-    --red-border: rgba(255,80,80,0.18);
-    --yellow: #F5C842;
-    --yellow-dim: rgba(245,200,66,0.07);
-    --yellow-border: rgba(245,200,66,0.22);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cómo escalar la captación sin perder la calidad del proceso de ventas · Mucho Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-dark: #010707;
+      --card-dark: #09140E;
+      --card-mid: #192520;
+      --green: #27DE6B;
+      --white: #FFFFFF;
+      --text-body: rgba(255, 255, 255, 0.72);
+      --text-muted: rgba(255, 255, 255, 0.38);
+      --border: rgba(255, 255, 255, 0.08);
+      --green-dim: rgba(39, 222, 107, 0.08);
+      --green-border: rgba(39, 222, 107, 0.25);
+      --red: rgba(255, 100, 100, 0.85);
+      --red-dim: rgba(255, 80, 80, 0.07);
+      --red-border: rgba(255, 80, 80, 0.18);
+      --yellow: #F5C842;
+      --yellow-dim: rgba(245, 200, 66, 0.07);
+      --yellow-border: rgba(245, 200, 66, 0.22);
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
-  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
-  .logo span { color: var(--green); }
-  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+    body {
+      background: var(--brand-dark);
+      color: var(--text-body);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.85;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
-  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
-  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
-  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
-  h1 em { font-style: normal; color: var(--green); }
-  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
-  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--green);
+      z-index: 100;
+      transition: width 0.1s linear;
+    }
 
-  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
-  .content p { margin-bottom: 24px; }
-  .content p strong { color: var(--white); font-weight: 600; }
-  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(1, 7, 7, 0.97);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
 
-  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
-  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+    .logo {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
 
-  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+    .logo span {
+      color: var(--green);
+    }
 
-  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
-  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 72px; }
-  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
-  .data-text strong { color: var(--white); font-weight: 600; }
+    .header-tag {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
 
-  /* PHASE CARDS */
-  .phase-card { background: var(--card-dark); border: 1px solid var(--border); margin: 28px 0; overflow: hidden; }
-  .phase-header { display: grid; grid-template-columns: 80px 1fr; }
-  .phase-num { background: var(--card-mid); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; border-right: 1px solid var(--border); }
-  .phase-num-val { font-size: 32px; font-weight: 900; color: var(--green); line-height: 1; }
-  .phase-num-label { font-size: 9px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; text-align: center; }
-  .phase-title-block { padding: 18px 22px; border-bottom: 1px solid var(--border); }
-  .phase-range { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green); margin-bottom: 4px; }
-  .phase-name { font-size: 17px; font-weight: 700; color: var(--white); line-height: 1.2; letter-spacing: -0.01em; }
-  .phase-body { padding: 20px 24px; }
-  .phase-desc { font-size: 15px; color: var(--text-body); line-height: 1.7; margin-bottom: 14px; }
-  .phase-desc strong { color: var(--white); font-weight: 600; }
-  .phase-signal { font-size: 13px; color: var(--text-muted); border-left: 2px solid var(--green-border); padding-left: 12px; line-height: 1.65; font-style: italic; }
-  .phase-signal strong { color: var(--green); font-weight: 600; }
-  .phase-ok { font-size: 13px; color: var(--text-muted); border-left: 2px solid var(--green); padding-left: 12px; line-height: 1.65; font-style: italic; margin-top: 10px; }
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 40px 56px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
 
-  /* CHECKLIST PREVIEW */
-  .check-items { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .check-item { background: var(--card-dark); padding: 14px 20px; display: flex; gap: 14px; align-items: flex-start; }
-  .check-box { width: 18px; height: 18px; border: 2px solid var(--green-border); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
-  .check-box.ok { border-color: var(--green); background: var(--green-dim); }
-  .check-box.ok::after { content: '✓'; font-size: 10px; color: var(--green); font-weight: 700; }
-  .check-text { font-size: 14px; color: var(--text-body); line-height: 1.55; }
-  .check-text strong { color: var(--white); font-weight: 600; }
+    .article-category {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
 
-  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
-  .warning strong { color: var(--red); font-weight: 600; }
+    .article-category::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--green);
+    }
 
-  .insight { background: var(--green-dim); border: 1px solid var(--green-border); border-left: 3px solid var(--green); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
-  .insight strong { color: var(--green); font-weight: 600; }
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      line-height: 1.07;
+      color: var(--white);
+      margin-bottom: 28px;
+      letter-spacing: -0.03em;
+    }
 
-  /* LEAD MAGNET */
-  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
-  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
-  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
-  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
-  .lm-body { padding: 28px; }
-  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+    h1 em {
+      font-style: normal;
+      color: var(--green);
+    }
 
-  .lm-gate { position: relative; border-top: 1px solid var(--border); }
-  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.45; max-height: 160px; overflow: hidden; }
-  .lm-gate-overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: var(--card-dark); border-top: 1px solid var(--green-border); }
-  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
-  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
-  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
-  .gate-instruction { font-size: 13px; color: var(--text-body); margin-bottom: 14px; line-height: 1.6; background: var(--card-mid); border: 1px solid var(--green-border); padding: 10px 14px; }
-  .gate-instruction strong { color: var(--green); font-weight: 700; }
-  .gate-kw { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--green); color: var(--brand-dark); padding: 14px 28px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; margin-bottom: 10px; transition: background 0.2s, transform 0.2s; cursor: pointer; }
-  .gate-kw:hover { background: #4eff8a; transform: translateY(-2px); }
-  .gate-note { font-size: 11px; color: var(--text-muted); }
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      border-left: 3px solid var(--green);
+      padding-left: 20px;
+    }
 
-  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
 
-  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+    .meta-dot {
+      width: 3px;
+      height: 3px;
+      background: var(--green);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
 
-.nav-logo {
+    .content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+
+    .content p {
+      margin-bottom: 24px;
+    }
+
+    .content p strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 900;
+      color: var(--white);
+      margin: 64px 0 20px;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--green);
+      padding: 22px 28px;
+      margin: 48px 0;
+      background: var(--card-dark);
+    }
+
+    .pull-quote p {
+      font-size: clamp(17px, 2.2vw, 21px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.45;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .source-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      padding: 2px 7px;
+      font-weight: 600;
+      vertical-align: middle;
+      margin-left: 5px;
+      position: relative;
+      top: -1px;
+    }
+
+    .data-callout {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      padding: 20px 24px;
+      margin: 32px 0;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .data-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      flex-shrink: 0;
+      min-width: 72px;
+    }
+
+    .data-text {
+      flex: 1;
+      padding-top: 4px;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .data-text strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* PHASE CARDS */
+    .phase-card {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      margin: 28px 0;
+      overflow: hidden;
+    }
+
+    .phase-header {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+    }
+
+    .phase-num {
+      background: var(--card-mid);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 10px;
+      border-right: 1px solid var(--border);
+    }
+
+    .phase-num-val {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    .phase-num-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .phase-title-block {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .phase-range {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 4px;
+    }
+
+    .phase-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .phase-body {
+      padding: 20px 24px;
+    }
+
+    .phase-desc {
+      font-size: 15px;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .phase-desc strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .phase-signal {
+      font-size: 13px;
+      color: var(--text-muted);
+      border-left: 2px solid var(--green-border);
+      padding-left: 12px;
+      line-height: 1.65;
+      font-style: italic;
+    }
+
+    .phase-signal strong {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .phase-ok {
+      font-size: 13px;
+      color: var(--text-muted);
+      border-left: 2px solid var(--green);
+      padding-left: 12px;
+      line-height: 1.65;
+      font-style: italic;
+      margin-top: 10px;
+    }
+
+    /* CHECKLIST PREVIEW */
+    .check-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .check-item {
+      background: var(--card-dark);
+      padding: 14px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .check-box {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--green-border);
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .check-box.ok {
+      border-color: var(--green);
+      background: var(--green-dim);
+    }
+
+    .check-box.ok::after {
+      content: '✓';
+      font-size: 10px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .check-text {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.55;
+    }
+
+    .check-text strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .warning {
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      border-left: 3px solid var(--red);
+      padding: 18px 22px;
+      margin: 32px 0;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .warning strong {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    .insight {
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      border-left: 3px solid var(--green);
+      padding: 18px 22px;
+      margin: 32px 0;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .insight strong {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    /* LEAD MAGNET */
+    .lm-teaser {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--green);
+      margin: 64px 0 0;
+      overflow: hidden;
+    }
+
+    .lm-header {
+      padding: 24px 28px;
+      background: var(--card-mid);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lm-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .lm-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .lm-body {
+      padding: 28px;
+    }
+
+    .lm-intro {
+      font-size: 15px;
+      color: var(--text-body);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .lm-gate {
+      position: relative;
+      border-top: 1px solid var(--border);
+    }
+
+    .lm-gate-blur {
+      filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.45;
+      max-height: 160px;
+      overflow: hidden;
+    }
+
+    .lm-gate-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      background: var(--card-dark);
+      border-top: 1px solid var(--green-border);
+    }
+
+    .gate-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+
+    .gate-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .gate-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+
+    .gate-instruction {
+      font-size: 13px;
+      color: var(--text-body);
+      margin-bottom: 14px;
+      line-height: 1.6;
+      background: var(--card-mid);
+      border: 1px solid var(--green-border);
+      padding: 10px 14px;
+    }
+
+    .gate-instruction strong {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .gate-kw {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--green);
+      color: var(--brand-dark);
+      padding: 14px 28px;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .gate-kw:hover {
+      background: #4eff8a;
+      transform: translateY(-2px);
+    }
+
+    .gate-note {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 56px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-icon {
+      color: var(--green);
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      font-weight: 700;
+    }
+
+    .footnote {
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      margin-top: 48px;
+      line-height: 1.8;
+    }
+
+    .nav-logo {
       display: flex;
       align-items: center;
     }
@@ -128,7 +614,7 @@
       width: auto;
       display: block;
     }
-  
+
     /* ─── FOOTER ─── */
     footer {
       border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -137,251 +623,387 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .footer-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.footer-logo img {
-  height: 60px;
-  width: auto;
-  display: block;
-}
+    .footer-logo img {
+      height: 60px;
+      width: auto;
+      display: block;
+    }
 
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-  @media (max-width: 600px) {
-    header { padding: 16px 20px; }
-    .hero, .content { padding-left: 20px; padding-right: 20px; }
-    .hero { padding-top: 48px; }
-    .phase-header { grid-template-columns: 60px 1fr; }
-    .data-callout { flex-direction: column; gap: 10px; }
-    .lm-body { padding: 20px; }
-      footer{ flex-direction: column; align-items: center; gap: 12px;}
-  }
-</style>
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 16px 20px;
+      }
+
+      .hero,
+      .content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero {
+        padding-top: 48px;
+      }
+
+      .phase-header {
+        grid-template-columns: 60px 1fr;
+      }
+
+      .data-callout {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .lm-body {
+        padding: 20px;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="progress-bar"></div>
+  <div id="progress-bar"></div>
 
-<header>
-  <div class="logo"><a href="" class="nav-logo">
+  <header>
+    <div class="logo"><a href="" class="nav-logo">
         <img src="../images/logo.png" alt="Mucho Marketing Logo">
       </a></div>
-  <div class="header-tag">Escalado del Sistema</div>
-</header>
+    <div class="header-tag">Escalado del Sistema</div>
+  </header>
 
-<article>
-  <div class="hero">
-    <div class="article-category">Diagnóstico E — Escala</div>
-    <h1>Cómo escalar la captación <em>sin perder la calidad</em> del proceso de ventas</h1>
-    <p class="hero-subtitle">El cuello de botella cuando un negocio de construcción escala no suele ser la captación. Es el proceso de ventas. Más leads con el mismo proceso produce más presupuestos que nadie sigue y un close rate que cae.</p>
-    <div class="article-meta">
-      <span>Mucho Marketing</span>
-      <span class="meta-dot"></span>
-      <span>11 min de lectura</span>
-      <span class="meta-dot"></span>
-      <span>Fuentes: HubSpot · Ebsta · MySalesCoach</span>
-    </div>
-  </div>
-
-  <div class="content">
-
-    <p>Hay un patrón que se repite en negocios de construcción y home improvement que deciden escalar su inversión en captación. El primer mes después de duplicar el presupuesto de ads, los leads suben. El close rate empieza a caer. Tres meses después, la facturación es parecida a la de antes pero con el doble de inversión y el triple de trabajo.</p>
-
-    <p>El diagnóstico instintivo es que los leads son peores. A veces es correcto. Pero más frecuentemente el problema es otro: el proceso de ventas tenía capacidad para gestionar bien 15 leads por mes, y nadie lo preparó para gestionar bien 35.</p>
-
-    <p>Escalar la captación sin escalar el proceso de ventas en paralelo es como ampliar el frente de entrada de un local sin ampliar el mostrador. Más gente entra, pero el tiempo de atención cae y la experiencia se deteriora.</p>
-
-    <div class="pull-quote reveal">
-      <p>Si la tasa de conversión baja mientras el volumen de leads sube, hay un problema en el proceso de ventas, el equipo, o la calidad de los leads. Las tres posibilidades requieren diagnósticos distintos. Escalar el presupuesto sin identificar cuál es el problema multiplica el problema, no los resultados. <span class="source-tag">HubSpot 2026</span></p>
-    </div>
-
-    <h2>Por qué el close rate cae cuando se escala sin preparar el proceso</h2>
-
-    <p>Los vendedores dedican solo dos horas al día a vender activamente. El resto del tiempo se va en tareas administrativas, registro de actividad, coordinación, y seguimiento manual que no genera facturación. Ese número es el mismo con 15 leads por mes que con 40.</p>
-
-    <p>Lo que cambia con el volumen es la distribución de esas dos horas. Con 15 leads, el vendedor puede hacer un seguimiento activo y personalizado de cada uno. Con 40, tiene que elegir cuáles seguir y cuáles ignorar. Sin un sistema explícito de priorización, esa elección se hace por intuición, y la intuición tiende a favorecer los leads más fáciles, no los más valiosos.</p>
-
-    <div class="data-callout reveal">
-      <div class="data-num">2h</div>
-      <div class="data-text"><p><strong>Es el tiempo que un vendedor dedica al día a actividades de venta activa</strong>, independientemente de cuántos leads tiene en el pipeline. Cuando el volumen de leads se duplica sin automatizar las tareas administrativas, esas 2 horas se dividen entre más leads, el seguimiento de cada uno se deteriora, y el close rate cae. <span class="source-tag">HubSpot State of Sales 2025</span></p></div>
-    </div>
-
-    <p>El close rate no cae porque los leads sean peores. Cae porque cada lead recibe menos atención. Y en alto ticket, la atención es exactamente lo que convierte.</p>
-
-    <h2>Las tres fases del escalado</h2>
-
-    <p>Escalar bien no es un evento sino un proceso. Cada fase tiene precondiciones que tienen que estar resueltas antes de avanzar a la siguiente. Saltar una fase no acelera el escalado, lo desestabiliza.</p>
-
-    <!-- PHASE 1 -->
-    <div class="phase-card reveal">
-      <div class="phase-header">
-        <div class="phase-num">
-          <div class="phase-num-val">1</div>
-          <div class="phase-num-label">Fase</div>
-        </div>
-        <div class="phase-title-block">
-          <div class="phase-range">Antes de escalar</div>
-          <div class="phase-name">Verificar que el proceso base está funcionando</div>
-        </div>
-      </div>
-      <div class="phase-body">
-        <p class="phase-desc">No tiene sentido escalar un proceso que todavía no funciona bien. Si el close rate está por debajo del 25%, si el ciclo de venta supera los 30 días, o si hay más de 10 leads estancados en el pipeline sin una decisión tomada, escalar va a amplificar esos problemas, no resolverlos.</p>
-        <p class="phase-desc"><strong>La pregunta concreta:</strong> ¿el sistema actual convierte consistentemente, semana a semana, o los cierres son esporádicos y difíciles de predecir? Si la respuesta es lo segundo, hay un problema de proceso que resolver antes de aumentar el volumen.</p>
-        <div class="phase-signal"><strong>Señal de que el proceso todavía no está listo:</strong> el equipo de ventas no puede nombrar los 5 leads más calientes sin revisar el CRM, o el pipeline tiene leads con más de 21 días sin actividad que nadie está archivando.</div>
-        <div class="phase-ok"><strong>Señal de que está listo:</strong> el close rate se mantuvo estable o mejoró en los últimos tres meses, el ciclo promedio es de menos de 21 días, y el ritual semanal de pipeline se ejecuta consistentemente.</div>
+  <article>
+    <div class="hero">
+      <div class="article-category">Diagnóstico E — Escala</div>
+      <h1>Cómo escalar la captación <em>sin perder la calidad</em> del proceso de ventas</h1>
+      <p class="hero-subtitle">El cuello de botella cuando un negocio de construcción escala no suele ser la captación.
+        Es el proceso de ventas. Más leads con el mismo proceso produce más presupuestos que nadie sigue y un close rate
+        que cae.</p>
+      <div class="article-meta">
+        <span>Mucho Marketing</span>
+        <span class="meta-dot"></span>
+        <span>11 min de lectura</span>
+        <span class="meta-dot"></span>
+        <span>Fuentes: HubSpot · Ebsta · MySalesCoach</span>
       </div>
     </div>
 
-    <!-- PHASE 2 -->
-    <div class="phase-card reveal">
-      <div class="phase-header">
-        <div class="phase-num">
-          <div class="phase-num-val">2</div>
-          <div class="phase-num-label">Fase</div>
-        </div>
-        <div class="phase-title-block">
-          <div class="phase-range">Al escalar</div>
-          <div class="phase-name">Automatizar lo que no requiere presencia humana</div>
+    <div class="content">
+
+      <p>Hay un patrón que se repite en negocios de construcción y home improvement que deciden escalar su inversión en
+        captación. El primer mes después de duplicar el presupuesto de ads, los leads suben. El close rate empieza a
+        caer. Tres meses después, la facturación es parecida a la de antes pero con el doble de inversión y el triple de
+        trabajo.</p>
+
+      <p>El diagnóstico instintivo es que los leads son peores. A veces es correcto. Pero más frecuentemente el problema
+        es otro: el proceso de ventas tenía capacidad para gestionar bien 15 leads por mes, y nadie lo preparó para
+        gestionar bien 35.</p>
+
+      <p>Escalar la captación sin escalar el proceso de ventas en paralelo es como ampliar el frente de entrada de un
+        local sin ampliar el mostrador. Más gente entra, pero el tiempo de atención cae y la experiencia se deteriora.
+      </p>
+
+      <div class="pull-quote reveal">
+        <p>Si la tasa de conversión baja mientras el volumen de leads sube, hay un problema en el proceso de ventas, el
+          equipo, o la calidad de los leads. Las tres posibilidades requieren diagnósticos distintos. Escalar el
+          presupuesto sin identificar cuál es el problema multiplica el problema, no los resultados. <span
+            class="source-tag">HubSpot 2026</span></p>
+      </div>
+
+      <h2>Por qué el close rate cae cuando se escala sin preparar el proceso</h2>
+
+      <p>Los vendedores dedican solo dos horas al día a vender activamente. El resto del tiempo se va en tareas
+        administrativas, registro de actividad, coordinación, y seguimiento manual que no genera facturación. Ese número
+        es el mismo con 15 leads por mes que con 40.</p>
+
+      <p>Lo que cambia con el volumen es la distribución de esas dos horas. Con 15 leads, el vendedor puede hacer un
+        seguimiento activo y personalizado de cada uno. Con 40, tiene que elegir cuáles seguir y cuáles ignorar. Sin un
+        sistema explícito de priorización, esa elección se hace por intuición, y la intuición tiende a favorecer los
+        leads más fáciles, no los más valiosos.</p>
+
+      <div class="data-callout reveal">
+        <div class="data-num">2h</div>
+        <div class="data-text">
+          <p><strong>Es el tiempo que un vendedor dedica al día a actividades de venta activa</strong>,
+            independientemente de cuántos leads tiene en el pipeline. Cuando el volumen de leads se duplica sin
+            automatizar las tareas administrativas, esas 2 horas se dividen entre más leads, el seguimiento de cada uno
+            se deteriora, y el close rate cae. <span class="source-tag">HubSpot State of Sales 2025</span></p>
         </div>
       </div>
-      <div class="phase-body">
-        <p class="phase-desc">El objetivo de la automatización al escalar no es reemplazar al vendedor. Es liberar las dos horas diarias de venta activa de tareas que un sistema puede hacer igual de bien o mejor: bienvenidas automáticas, recordatorios de seguimiento, movimiento de leads entre etapas, alertas de reactivación.</p>
-        <p class="phase-desc"><strong>Con el mismo equipo, la automatización correcta permite gestionar un 40-60% más de leads sin que el close rate se deteriore</strong>, porque las tareas administrativas que consumían tiempo de venta activa pasan al sistema. El vendedor se enfoca en las conversaciones que requieren juicio humano: la visita, la respuesta a objeciones, el cierre.</p>
-        <div class="phase-signal"><strong>Señal de que la automatización está mal configurada:</strong> el lead recibe un mensaje automático en un momento que requería un contacto humano — por ejemplo, después de expresar una objeción — y la confianza se rompe.</div>
-        <div class="phase-ok"><strong>Señal de que está bien configurada:</strong> el vendedor gasta menos tiempo en tareas administrativas y más tiempo en conversaciones de alta calidad con leads calificados.</div>
-      </div>
-    </div>
 
-    <!-- PHASE 3 -->
-    <div class="phase-card reveal">
-      <div class="phase-header">
-        <div class="phase-num">
-          <div class="phase-num-val">3</div>
-          <div class="phase-num-label">Fase</div>
-        </div>
-        <div class="phase-title-block">
-          <div class="phase-range">Después de escalar</div>
-          <div class="phase-name">Monitorear el close rate semana a semana como indicador de salud</div>
-        </div>
-      </div>
-      <div class="phase-body">
-        <p class="phase-desc">Después de aumentar el volumen de leads, el close rate es el primer número que avisa si algo está saliendo mal. Una caída de más de 5 puntos sostenida por dos semanas es una señal de que el proceso está saturado o de que la calidad de los leads cambió.</p>
-        <p class="phase-desc">La respuesta correcta no es bajar el presupuesto de ads. <strong>Es diagnosticar si el problema está en la calidad de los leads (problema de targeting) o en la capacidad del proceso de ventas (problema de sistema).</strong> Los dos problemas tienen soluciones distintas y confundirlos lleva a tomar la decisión equivocada.</p>
-        <div class="phase-signal"><strong>Close rate cae + CPL se mantiene:</strong> el problema es el proceso de ventas, no la captación. El equipo no tiene capacidad para gestionar el volumen actual.</div>
-        <div class="phase-ok"><strong>Close rate cae + CPL sube:</strong> el problema es la calidad de los leads. Hay que revisar el targeting y los criterios de calificación antes de seguir escalando.</div>
-      </div>
-    </div>
+      <p>El close rate no cae porque los leads sean peores. Cae porque cada lead recibe menos atención. Y en alto
+        ticket, la atención es exactamente lo que convierte.</p>
 
-    <h2>El indicador que predice si el escalado va a funcionar</h2>
+      <h2>Las tres fases del escalado</h2>
 
-    <p>Antes de aumentar el presupuesto de captación, hay una métrica que predice si el escalado va a ser sostenible: la Lead Velocity Rate. Mide el crecimiento porcentual de leads calificados mes a mes. Si crece a un ritmo que el proceso de ventas puede absorber, el escalado es sostenible. Si crece más rápido que la capacidad del proceso, el close rate va a caer.</p>
+      <p>Escalar bien no es un evento sino un proceso. Cada fase tiene precondiciones que tienen que estar resueltas
+        antes de avanzar a la siguiente. Saltar una fase no acelera el escalado, lo desestabiliza.</p>
 
-    <p>Para negocios de construcción y home improvement de alto ticket con un solo vendedor o responsable de ventas, <strong>el límite de absorción suele estar entre 15 y 25 leads calificados por mes</strong>. Por encima de ese número sin automatización adicional o expansión del equipo, el close rate empieza a deteriorarse porque el seguimiento activo de cada lead se vuelve imposible de sostener.</p>
-
-    <div class="data-callout reveal">
-      <div class="data-num">61%</div>
-      <div class="data-text"><p><strong>De los equipos de alto rendimiento usan su CRM para automatizar partes del proceso de ventas</strong>, lo que permite a los vendedores enfocarse en vender en lugar de en tareas administrativas. La automatización es la condición que hace posible escalar sin deteriorar la calidad del seguimiento. <span class="source-tag">HubSpot Global Sales Enablement Survey</span></p></div>
-    </div>
-
-    <h2>Las 6 condiciones que tienen que estar en verde antes de escalar</h2>
-
-    <p>Esta es la pregunta concreta que hay que responder antes de aumentar el presupuesto de captación. Si alguna de las seis está en rojo, escalar va a producir más leads que el sistema no va a poder convertir.</p>
-
-    <div class="check-items reveal">
-      <div class="check-item">
-        <div class="check-box ok"></div>
-        <div class="check-text"><strong>Close rate estable o en mejora</strong> — el porcentaje de presupuestos que se convierte en obra se mantuvo o mejoró en los últimos 3 meses.</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box ok"></div>
-        <div class="check-text"><strong>Ciclo de venta menor a 21 días</strong> — el tiempo promedio entre primer contacto y firma no supera las 3 semanas. Si supera ese umbral, hay leads estancados que están inflando el número.</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div class="check-text"><strong>Pipeline sin más de 5 leads estancados</strong> — leads sin actividad en más de 7 días sin una decisión tomada (seguir, nurturing, o archivar).</div>
-      </div>
-      <div class="check-item">
-        <div class="check-box"></div>
-        <div class="check-text"><strong>Bienvenida automática configurada</strong> — el primer mensaje al lead nuevo llega en menos de 5 minutos sin intervención manual, independientemente del horario.</div>
-      </div>
-    </div>
-
-
-    <h2>Qué hacer cuando el close rate cae al escalar</h2>
-
-    <p>El diagnóstico importa antes de tomar cualquier decisión. Hay dos causas posibles y requieren respuestas opuestas.</p>
-
-    <p><strong>Si el CPL se mantiene pero el close rate cae:</strong> el problema es la capacidad del proceso de ventas, no la calidad de los leads. La respuesta correcta es reducir temporalmente el volumen de leads hasta que el proceso esté optimizado para absorber el nuevo volumen. Agregar automatización en los puntos de mayor fricción. Solo después volver a escalar.</p>
-
-    <p><strong>Si el CPL sube y el close rate cae simultáneamente:</strong> el problema está en la calidad de los leads. El targeting de los ads está captando un perfil diferente al que el equipo de ventas puede convertir. La respuesta correcta es revisar la segmentación y los criterios de calificación, no mejorar el proceso de seguimiento.</p>
-
-    <div class="insight reveal">
-      <strong>La señal que más se malinterpreta:</strong> el close rate cae después de escalar y el equipo de ventas dice que "los leads son malos". Eso puede ser verdad o puede ser una racionalización del problema real, que es que el equipo tiene más leads de los que puede gestionar bien. Antes de cambiar el targeting de los ads, comparar el close rate con el CPL. Si el CPL se mantuvo, el problema está en el proceso, no en los leads.
-    </div>
-
-    <div class="divider reveal">
-      <span class="divider-icon">◆ ◆ ◆</span>
-    </div>
-
-
-    <!-- LEAD MAGNET -->
-    <div class="lm-teaser reveal">
-      <div class="lm-header">
-        <div class="lm-eyebrow">Checklist incluido</div>
-        <div class="lm-title">Las 6 condiciones que tienen que estar en verde antes de escalar — con criterio de evaluación para cada una</div>
-      </div>
-      <div class="lm-body">
-        <p class="lm-intro">Este checklist incluye las 6 condiciones completas con el criterio exacto para evaluarlas, más el protocolo de diagnóstico para identificar si el cuello de botella está en la captación o en el proceso de ventas cuando el close rate cae.</p>
-
-        <div class="check-items">
-          <div class="check-item">
-            <div class="check-box"></div>
-            <div class="check-text"><strong>Sistema de seguimiento post-presupuesto operativo</strong> — los 5 contactos del sistema tienen tareas creadas en Kommo y el equipo los ejecuta consistentemente.</div>
+      <!-- PHASE 1 -->
+      <div class="phase-card reveal">
+        <div class="phase-header">
+          <div class="phase-num">
+            <div class="phase-num-val">1</div>
+            <div class="phase-num-label">Fase</div>
           </div>
-          <div class="check-item">
-            <div class="check-box"></div>
-            <div class="check-text"><strong>Ritual semanal de pipeline establecido</strong> — la revisión de los 3 dashboards se hace todos los lunes antes de atender consultas, con registro de los 3 números clave.</div>
+          <div class="phase-title-block">
+            <div class="phase-range">Antes de escalar</div>
+            <div class="phase-name">Verificar que el proceso base está funcionando</div>
           </div>
         </div>
+        <div class="phase-body">
+          <p class="phase-desc">No tiene sentido escalar un proceso que todavía no funciona bien. Si el close rate está
+            por debajo del 25%, si el ciclo de venta supera los 30 días, o si hay más de 10 leads estancados en el
+            pipeline sin una decisión tomada, escalar va a amplificar esos problemas, no resolverlos.</p>
+          <p class="phase-desc"><strong>La pregunta concreta:</strong> ¿el sistema actual convierte consistentemente,
+            semana a semana, o los cierres son esporádicos y difíciles de predecir? Si la respuesta es lo segundo, hay
+            un problema de proceso que resolver antes de aumentar el volumen.</p>
+          <div class="phase-signal"><strong>Señal de que el proceso todavía no está listo:</strong> el equipo de ventas
+            no puede nombrar los 5 leads más calientes sin revisar el CRM, o el pipeline tiene leads con más de 21 días
+            sin actividad que nadie está archivando.</div>
+          <div class="phase-ok"><strong>Señal de que está listo:</strong> el close rate se mantuvo estable o mejoró en
+            los últimos tres meses, el ciclo promedio es de menos de 21 días, y el ritual semanal de pipeline se ejecuta
+            consistentemente.</div>
+        </div>
+      </div>
 
-        <div class="lm-gate">
-          <div class="lm-gate-blur">
-            <div style="padding: 20px 24px;">
-              <p style="font-size:14px;font-weight:700;color:#27DE6B;margin-bottom:12px;">PROTOCOLO DE DIAGNÓSTICO INCLUIDO</p>
-              <p style="font-size:15px;margin-bottom:10px;">Paso 1: Comparar el close rate con el CPL del mismo período</p>
-              <p style="font-size:15px;margin-bottom:10px;">Paso 2: Si el CPL se mantuvo — el cuello está en el proceso de ventas</p>
-              <p style="font-size:15px;margin-bottom:10px;">Paso 3: Si el CPL subió — el cuello está en la calidad de los leads</p>
-              <p style="font-size:15px;">Paso 4: Acciones concretas para cada escenario con criterio de prioridad</p>
+      <!-- PHASE 2 -->
+      <div class="phase-card reveal">
+        <div class="phase-header">
+          <div class="phase-num">
+            <div class="phase-num-val">2</div>
+            <div class="phase-num-label">Fase</div>
+          </div>
+          <div class="phase-title-block">
+            <div class="phase-range">Al escalar</div>
+            <div class="phase-name">Automatizar lo que no requiere presencia humana</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-desc">El objetivo de la automatización al escalar no es reemplazar al vendedor. Es liberar las
+            dos horas diarias de venta activa de tareas que un sistema puede hacer igual de bien o mejor: bienvenidas
+            automáticas, recordatorios de seguimiento, movimiento de leads entre etapas, alertas de reactivación.</p>
+          <p class="phase-desc"><strong>Con el mismo equipo, la automatización correcta permite gestionar un 40-60% más
+              de leads sin que el close rate se deteriore</strong>, porque las tareas administrativas que consumían
+            tiempo de venta activa pasan al sistema. El vendedor se enfoca en las conversaciones que requieren juicio
+            humano: la visita, la respuesta a objeciones, el cierre.</p>
+          <div class="phase-signal"><strong>Señal de que la automatización está mal configurada:</strong> el lead recibe
+            un mensaje automático en un momento que requería un contacto humano — por ejemplo, después de expresar una
+            objeción — y la confianza se rompe.</div>
+          <div class="phase-ok"><strong>Señal de que está bien configurada:</strong> el vendedor gasta menos tiempo en
+            tareas administrativas y más tiempo en conversaciones de alta calidad con leads calificados.</div>
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="phase-card reveal">
+        <div class="phase-header">
+          <div class="phase-num">
+            <div class="phase-num-val">3</div>
+            <div class="phase-num-label">Fase</div>
+          </div>
+          <div class="phase-title-block">
+            <div class="phase-range">Después de escalar</div>
+            <div class="phase-name">Monitorear el close rate semana a semana como indicador de salud</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-desc">Después de aumentar el volumen de leads, el close rate es el primer número que avisa si
+            algo está saliendo mal. Una caída de más de 5 puntos sostenida por dos semanas es una señal de que el
+            proceso está saturado o de que la calidad de los leads cambió.</p>
+          <p class="phase-desc">La respuesta correcta no es bajar el presupuesto de ads. <strong>Es diagnosticar si el
+              problema está en la calidad de los leads (problema de targeting) o en la capacidad del proceso de ventas
+              (problema de sistema).</strong> Los dos problemas tienen soluciones distintas y confundirlos lleva a tomar
+            la decisión equivocada.</p>
+          <div class="phase-signal"><strong>Close rate cae + CPL se mantiene:</strong> el problema es el proceso de
+            ventas, no la captación. El equipo no tiene capacidad para gestionar el volumen actual.</div>
+          <div class="phase-ok"><strong>Close rate cae + CPL sube:</strong> el problema es la calidad de los leads. Hay
+            que revisar el targeting y los criterios de calificación antes de seguir escalando.</div>
+        </div>
+      </div>
+
+      <h2>El indicador que predice si el escalado va a funcionar</h2>
+
+      <p>Antes de aumentar el presupuesto de captación, hay una métrica que predice si el escalado va a ser sostenible:
+        la Lead Velocity Rate. Mide el crecimiento porcentual de leads calificados mes a mes. Si crece a un ritmo que el
+        proceso de ventas puede absorber, el escalado es sostenible. Si crece más rápido que la capacidad del proceso,
+        el close rate va a caer.</p>
+
+      <p>Para negocios de construcción y home improvement de alto ticket con un solo vendedor o responsable de ventas,
+        <strong>el límite de absorción suele estar entre 15 y 25 leads calificados por mes</strong>. Por encima de ese
+        número sin automatización adicional o expansión del equipo, el close rate empieza a deteriorarse porque el
+        seguimiento activo de cada lead se vuelve imposible de sostener.</p>
+
+      <div class="data-callout reveal">
+        <div class="data-num">61%</div>
+        <div class="data-text">
+          <p><strong>De los equipos de alto rendimiento usan su CRM para automatizar partes del proceso de
+              ventas</strong>, lo que permite a los vendedores enfocarse en vender en lugar de en tareas
+            administrativas. La automatización es la condición que hace posible escalar sin deteriorar la calidad del
+            seguimiento. <span class="source-tag">HubSpot Global Sales Enablement Survey</span></p>
+        </div>
+      </div>
+
+      <h2>Las 6 condiciones que tienen que estar en verde antes de escalar</h2>
+
+      <p>Esta es la pregunta concreta que hay que responder antes de aumentar el presupuesto de captación. Si alguna de
+        las seis está en rojo, escalar va a producir más leads que el sistema no va a poder convertir.</p>
+
+      <div class="check-items reveal">
+        <div class="check-item">
+          <div class="check-box ok"></div>
+          <div class="check-text"><strong>Close rate estable o en mejora</strong> — el porcentaje de presupuestos que se
+            convierte en obra se mantuvo o mejoró en los últimos 3 meses.</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box ok"></div>
+          <div class="check-text"><strong>Ciclo de venta menor a 21 días</strong> — el tiempo promedio entre primer
+            contacto y firma no supera las 3 semanas. Si supera ese umbral, hay leads estancados que están inflando el
+            número.</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Pipeline sin más de 5 leads estancados</strong> — leads sin actividad en más
+            de 7 días sin una decisión tomada (seguir, nurturing, o archivar).</div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-text"><strong>Bienvenida automática configurada</strong> — el primer mensaje al lead nuevo
+            llega en menos de 5 minutos sin intervención manual, independientemente del horario.</div>
+        </div>
+      </div>
+
+
+      <h2>Qué hacer cuando el close rate cae al escalar</h2>
+
+      <p>El diagnóstico importa antes de tomar cualquier decisión. Hay dos causas posibles y requieren respuestas
+        opuestas.</p>
+
+      <p><strong>Si el CPL se mantiene pero el close rate cae:</strong> el problema es la capacidad del proceso de
+        ventas, no la calidad de los leads. La respuesta correcta es reducir temporalmente el volumen de leads hasta que
+        el proceso esté optimizado para absorber el nuevo volumen. Agregar automatización en los puntos de mayor
+        fricción. Solo después volver a escalar.</p>
+
+      <p><strong>Si el CPL sube y el close rate cae simultáneamente:</strong> el problema está en la calidad de los
+        leads. El targeting de los ads está captando un perfil diferente al que el equipo de ventas puede convertir. La
+        respuesta correcta es revisar la segmentación y los criterios de calificación, no mejorar el proceso de
+        seguimiento.</p>
+
+      <div class="insight reveal">
+        <strong>La señal que más se malinterpreta:</strong> el close rate cae después de escalar y el equipo de ventas
+        dice que "los leads son malos". Eso puede ser verdad o puede ser una racionalización del problema real, que es
+        que el equipo tiene más leads de los que puede gestionar bien. Antes de cambiar el targeting de los ads,
+        comparar el close rate con el CPL. Si el CPL se mantuvo, el problema está en el proceso, no en los leads.
+      </div>
+
+      <div class="divider reveal">
+        <span class="divider-icon">◆ ◆ ◆</span>
+      </div>
+
+
+      <!-- LEAD MAGNET -->
+      <div class="lm-teaser reveal">
+        <div class="lm-header">
+          <div class="lm-eyebrow">Checklist incluido</div>
+          <div class="lm-title">Las 6 condiciones que tienen que estar en verde antes de escalar — con criterio de
+            evaluación para cada una</div>
+        </div>
+        <div class="lm-body">
+          <p class="lm-intro">Este checklist incluye las 6 condiciones completas con el criterio exacto para evaluarlas,
+            más el protocolo de diagnóstico para identificar si el cuello de botella está en la captación o en el
+            proceso de ventas cuando el close rate cae.</p>
+
+          <div class="check-items">
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text"><strong>Sistema de seguimiento post-presupuesto operativo</strong> — los 5
+                contactos del sistema tienen tareas creadas en Kommo y el equipo los ejecuta consistentemente.</div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"></div>
+              <div class="check-text"><strong>Ritual semanal de pipeline establecido</strong> — la revisión de los 3
+                dashboards se hace todos los lunes antes de atender consultas, con registro de los 3 números clave.
+              </div>
             </div>
           </div>
-          <div class="lm-gate-overlay">
-            <div class="gate-label">Checklist completo disponible por WhatsApp</div>
-            <div class="gate-title">Recibí el checklist completo con el criterio de evaluación para cada condición</div>
-            <div class="gate-sub">Incluye el protocolo de diagnóstico para identificar si el cuello está en la captación o en el proceso de ventas.</div>
-            <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito. <strong>La respuesta llega automáticamente.</strong></p>
-            <a class="gate-kw" href="https://wa.me/5491155557890?text=ESCALA" target="_blank" rel="noopener">
-              Escribir ESCALA por WhatsApp <span style="font-size:16px">→</span>
-            </a>
-            <p class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</p>
+
+          <div class="lm-gate">
+            <div class="lm-gate-blur">
+              <div style="padding: 20px 24px;">
+                <p style="font-size:14px;font-weight:700;color:#27DE6B;margin-bottom:12px;">PROTOCOLO DE DIAGNÓSTICO
+                  INCLUIDO</p>
+                <p style="font-size:15px;margin-bottom:10px;">Paso 1: Comparar el close rate con el CPL del mismo
+                  período</p>
+                <p style="font-size:15px;margin-bottom:10px;">Paso 2: Si el CPL se mantuvo — el cuello está en el
+                  proceso de ventas</p>
+                <p style="font-size:15px;margin-bottom:10px;">Paso 3: Si el CPL subió — el cuello está en la calidad de
+                  los leads</p>
+                <p style="font-size:15px;">Paso 4: Acciones concretas para cada escenario con criterio de prioridad</p>
+              </div>
+            </div>
+            <div class="lm-gate-overlay">
+              <div class="gate-label">Checklist completo disponible por WhatsApp</div>
+              <div class="gate-title">Recibí el checklist completo con el criterio de evaluación para cada condición
+              </div>
+              <div class="gate-sub">Incluye el protocolo de diagnóstico para identificar si el cuello está en la
+                captación o en el proceso de ventas.</div>
+              <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito.
+                <strong>La respuesta llega automáticamente.</strong></p>
+              <a class="gate-kw" href="https://wa.me/5491155557890?text=ESCALA" target="_blank" rel="noopener">
+                Escribir ESCALA por WhatsApp <span style="font-size:16px">→</span>
+              </a>
+              <p class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</p>
+            </div>
+          </div>
+          <div class="footnote reveal">
+            <p>Fuentes citadas: HubSpot State of Sales 2025 — los vendedores dedican solo 2 horas al día a actividades
+              de venta activa; tareas administrativas consumen 1 hora diaria adicional. HubSpot 2026 Sales Performance
+              Metrics — si la tasa de conversión baja mientras el volumen sube, hay un problema en el proceso de ventas,
+              el equipo, o la generación de leads. HubSpot Global Sales Enablement Survey — 61% de los equipos de alto
+              rendimiento automatizan partes del proceso de ventas con su CRM. Ebsta 2024 — 61% de deals perdidos
+              atribuidos a indecisión del comprador, frecuentemente por falta de seguimiento activo. MySalesCoach /
+              Aircall 2024 — vendedores con coaching de alta calidad son 50% más propensos a alcanzar o superar sus
+              objetivos. HubSpot Lead Velocity Rate Guide — la Lead Velocity Rate como predictor de crecimiento futuro
+              de ingresos.</p>
           </div>
         </div>
-   <div class="footnote reveal">
-      <p>Fuentes citadas: HubSpot State of Sales 2025 — los vendedores dedican solo 2 horas al día a actividades de venta activa; tareas administrativas consumen 1 hora diaria adicional. HubSpot 2026 Sales Performance Metrics — si la tasa de conversión baja mientras el volumen sube, hay un problema en el proceso de ventas, el equipo, o la generación de leads. HubSpot Global Sales Enablement Survey — 61% de los equipos de alto rendimiento automatizan partes del proceso de ventas con su CRM. Ebsta 2024 — 61% de deals perdidos atribuidos a indecisión del comprador, frecuentemente por falta de seguimiento activo. MySalesCoach / Aircall 2024 — vendedores con coaching de alta calidad son 50% más propensos a alcanzar o superar sus objetivos. HubSpot Lead Velocity Rate Guide — la Lead Velocity Rate como predictor de crecimiento futuro de ingresos.</p>
-    </div>
       </div>
+
+
+
     </div>
-
- 
-
-  </div>
-</article>
-   <!-- FOOTER -->
+  </article>
+  <!-- FOOTER -->
   <footer>
     <div class="footer-logo">
       <img src="../images/logo.png" alt="Mucho Marketing Logo">
@@ -389,17 +1011,18 @@
     <span class="footer-copy">© 2025 Mucho Marketing</span>
   </footer>
 
-<script>
-  window.addEventListener('scroll', () => {
-    const doc = document.documentElement;
-    document.getElementById('progress-bar').style.width =
-      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-  });
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+  <script>
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      document.getElementById('progress-bar').style.width =
+        ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 
 </body>
+
 </html>
