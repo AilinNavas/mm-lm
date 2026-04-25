@@ -433,7 +433,25 @@ footer {
 .ft-logo { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--w30); }
 .ft-logo em { font-style: normal; color: var(--green); opacity: .5; }
 .ft-note { font-size: 11px; color: var(--w30); }
+ /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.footer-logo img {
+  height: 60px;
+  width: auto;
+  display: block;
+}
 /* ── ANIMATIONS ── */
 @keyframes up {
   from { opacity: 0; transform: translateY(20px); }
@@ -761,9 +779,12 @@ footer {
     <p class="privacy"><em>🔒</em> Sin spam. Sin seguimiento no solicitado.</p>
   </div>
 
+  <!-- FOOTER -->
   <footer>
-    <div class="ft-logo">MUCHO <em>MARKETING</em></div>
-    <div class="ft-note">mucho-marketing.com · 2025</div>
+    <div class="footer-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
+    </div>
+    <span class="footer-copy">© 2025 Mucho Marketing</span>
   </footer>
 
 </div><!-- /page -->
