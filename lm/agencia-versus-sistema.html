@@ -553,6 +553,25 @@
     margin-top: 48px;
     line-height: 1.8;
   }
+      /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-logo img {
+  height: 60px;
+  width: auto;
+  display: block;
+}
 
   @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
@@ -580,6 +599,14 @@
     .pillar-grid { grid-template-columns: 1fr; }
     .stat-inline { flex-direction: column; gap: 10px; }
     .cta-section { padding: 36px 20px; }
+         footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    
+    }
   }
 </style>
 </head>
@@ -588,7 +615,9 @@
 <div id="progress-bar"></div>
 
 <header>
-  <div class="logo">Mucho <span>Marketing</span></div>
+  <div class="logo"><a href="" class="nav-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
+    </a></div>
   <div class="header-tag">Estrategia Comercial</div>
 </header>
 
@@ -809,6 +838,13 @@
 
   </div>
 </article>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
+    </div>
+    <span class="footer-copy">© 2025 Mucho Marketing</span>
+  </footer>
 
 <script>
   window.addEventListener('scroll', () => {
