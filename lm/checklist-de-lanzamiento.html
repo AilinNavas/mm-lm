@@ -332,6 +332,37 @@
   /* FOOTNOTE */
   .footnote { font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 24px; margin-top: 48px; line-height: 1.8; }
 
+  .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 60px;
+      /* tamaño real del logo */
+      width: auto;
+      display: block;
+    }
+  
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-logo img {
+  height: 60px;
+  width: auto;
+  display: block;
+}
   @media (max-width: 640px) {
     .doc-header { padding: 20px 20px; }
     .doc-wrap { padding: 40px 20px 80px; }
@@ -345,7 +376,9 @@
 <body>
 
 <div class="doc-header no-print">
-  <div class="logo">Mucho <span>Marketing</span></div>
+   <div class="logo"><a href="" class="nav-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
+    </a></div>
   <div class="doc-tag">Recurso Exclusivo</div>
 </div>
 
@@ -684,6 +717,16 @@
   </div>
 
 </div>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
+    </div>
+    <span class="footer-copy">© 2025 Mucho Marketing</span>
+  </footer>
+
 
 <script>
   let completed = 0;
