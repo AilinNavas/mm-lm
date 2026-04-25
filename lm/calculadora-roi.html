@@ -76,8 +76,18 @@ nav {
   padding: 22px 0; border-bottom: 1px solid var(--bdim);
   margin-bottom: 52px;
 }
-.logo { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.logo em { font-style: normal; color: var(--green); }
+ .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 60px;
+      /* tamaño real del logo */
+      width: auto;
+      display: block;
+    }
+  
 .tag {
   font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
   color: var(--green); background: var(--g08); border: 1px solid var(--border);
@@ -132,7 +142,6 @@ nav {
 
 .ic-inputs { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
 
-.field-group {}
 .field-label {
   font-size: 11px; font-weight: 500; color: var(--w30);
   letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; display: block;
@@ -150,7 +159,7 @@ nav {
 input[type=number], input[type=range] { outline: none; }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-input[type=number] { -moz-appearance: textfield; }
+input[type=number] { appearance: textfield; }
 
 .num-input {
   width: 100%; background: var(--bg);
@@ -465,7 +474,9 @@ footer {
 
   <!-- NAV -->
   <nav>
-    <div class="logo">MUCHO <em>MARKETING</em></div>
+    <div class="logo"><a href="" class="nav-logo">
+      <img src="../images/logo.png" alt="Mucho Marketing Logo">
+    </a></div>
     <div class="tag">CALCULADORA ROI</div>
   </nav>
 
