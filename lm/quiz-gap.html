@@ -1,1063 +1,1693 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Gap de Digitalización — Mucho Marketing</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --brand-dark: #010707;
-  --card-dark:  #09140E;
-  --card-mid:   #192520;
-  --green:      #27DE6B;
-  --green-12:   rgba(39,222,107,0.12);
-  --green-06:   rgba(39,222,107,0.06);
-  --green-03:   rgba(39,222,107,0.03);
-  --white:      #FFFFFF;
-  --w60:        rgba(255,255,255,0.60);
-  --w30:        rgba(255,255,255,0.30);
-  --w10:        rgba(255,255,255,0.08);
-  --border:     rgba(39,222,107,0.18);
-  --border-dim: rgba(255,255,255,0.07);
-  --red:        rgba(255,80,80,0.15);
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: var(--brand-dark);
-  color: var(--white);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* Grid texture */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(39,222,107,0.013) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(39,222,107,0.013) 1px, transparent 1px);
-  background-size: 56px 56px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.glow { position: fixed; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(39,222,107,0.055) 0%, transparent 65%); top: -300px; right: -250px; pointer-events: none; z-index: 0; }
-.glow2 { position: fixed; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(39,222,107,0.03) 0%, transparent 65%); bottom: -150px; left: -100px; pointer-events: none; z-index: 0; }
-
-/* ── LAYOUT ── */
-.shell {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── NAV ── */
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 22px 40px;
-  border-bottom: 1px solid var(--border-dim);
-  flex-shrink: 0;
-}
-
-.logo { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--white); }
-.logo em { font-style: normal; color: var(--green); }
-
-.nav-tag {
-  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--green); background: var(--green-12); border: 1px solid var(--border);
-  padding: 5px 12px; border-radius: 2px;
-}
-
-/* ── PROGRESS BAR ── */
-.progress-wrap {
-  padding: 0 40px;
-  padding-top: 28px;
-  flex-shrink: 0;
-}
-
-.progress-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 10px;
-}
-
-.progress-label {
-  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--w30);
-}
-
-.progress-counter {
-  font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: .04em;
-}
-
-.progress-track {
-  width: 100%; height: 2px; background: var(--w10); border-radius: 0; overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%; background: var(--green); border-radius: 0;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(39,222,107,0.6);
-}
-
-/* ── MAIN CONTENT ── */
-.content {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 40px 60px;
-}
-
-.card {
-  width: 100%;
-  max-width: 620px;
-}
-
-/* ── SCREENS ── */
-.screen { display: none; }
-.screen.active { display: block; animation: slideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) both; }
-.screen.out { animation: slideOut 0.25s cubic-bezier(0.4, 0, 0.2, 1) both; }
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(24px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes slideOut {
-  from { opacity: 1; transform: translateX(0); }
-  to   { opacity: 0; transform: translateX(-24px); }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
-
-/* ── INTRO SCREEN ── */
-.intro-eyebrow {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
-}
-.eyebrow-line { width: 28px; height: 2px; background: var(--green); }
-.eyebrow-text { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
-
-.intro h1 {
-  font-size: clamp(32px, 5vw, 50px);
-  font-weight: 900;
-  line-height: 1.06;
-  letter-spacing: -0.03em;
-  color: var(--white);
-  margin-bottom: 16px;
-}
-.intro h1 em { font-style: normal; color: var(--green); }
-
-.intro-sub {
-  font-size: 15px; color: var(--w60); line-height: 1.65;
-  max-width: 480px; margin-bottom: 32px;
-}
-
-.stats-row {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 36px;
-}
-
-.stat-block {
-  background: var(--card-dark);
-  border: 1px solid var(--border-dim);
-  border-radius: 2px;
-  padding: 14px 16px;
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-block::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-  opacity: 0.4;
-}
-
-.stat-num { font-size: 26px; font-weight: 900; color: var(--green); letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
-.stat-desc { font-size: 10px; color: var(--w30); letter-spacing: .03em; line-height: 1.4; }
-
-.urgency-badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: var(--green-06); border: 1px solid var(--border);
-  border-radius: 2px; padding: 6px 12px; font-size: 11px; font-weight: 500; color: var(--green);
-  margin-bottom: 28px;
-}
-.u-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 1.8s infinite; }
-
-.btn-start {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; background: var(--green); color: var(--brand-dark);
-  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .02em;
-  padding: 17px 28px; border: none; border-radius: 2px; cursor: pointer;
-  transition: all 0.2s ease; position: relative; overflow: hidden;
-}
-.btn-start::before {
-  content: ''; position: absolute; inset: 0;
-  background: rgba(255,255,255,0.15);
-  transform: translateX(-100%); transition: transform 0.3s ease;
-}
-.btn-start:hover::before { transform: translateX(0); }
-.btn-start:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(39,222,107,0.3); }
-
-.btn-note { text-align: center; font-size: 11px; color: var(--w30); margin-top: 10px; }
-
-/* ── QUESTION SCREEN ── */
-.q-pillar {
-  font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--green); margin-bottom: 12px;
-}
-
-.q-text {
-  font-size: clamp(18px, 3vw, 24px);
-  font-weight: 800; line-height: 1.2; letter-spacing: -0.025em;
-  color: var(--white); margin-bottom: 8px;
-}
-
-.q-sub {
-  font-size: 13px; color: var(--w30); line-height: 1.55; margin-bottom: 28px;
-}
-
-.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
-
-.option {
-  display: flex; align-items: flex-start; gap: 14px;
-  background: var(--card-dark);
-  border: 1px solid var(--border-dim);
-  border-radius: 2px; padding: 16px 18px;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  position: relative; overflow: hidden;
-}
-
-.option::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--green-03);
-  opacity: 0; transition: opacity 0.18s ease;
-}
-
-.option:hover { border-color: rgba(39,222,107,0.35); }
-.option:hover::before { opacity: 1; }
-
-.option.selected {
-  border-color: var(--green);
-  background: var(--green-12);
-}
-.option.selected::before { opacity: 0; }
-
-.opt-letter {
-  width: 26px; height: 26px; border-radius: 50%;
-  border: 1px solid var(--border-dim);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; color: var(--w30);
-  flex-shrink: 0; transition: all 0.18s ease;
-  margin-top: 1px;
-}
-
-.option.selected .opt-letter {
-  background: var(--green); border-color: var(--green); color: var(--brand-dark);
-}
-
-.opt-body { flex: 1; }
-.opt-title { font-size: 14px; font-weight: 600; color: var(--white); line-height: 1.3; margin-bottom: 2px; }
-.opt-desc  { font-size: 12px; color: var(--w30); line-height: 1.45; }
-
-.option.selected .opt-title { color: var(--white); }
-
-/* Micro feedback */
-.micro-feedback {
-  height: 0; overflow: hidden;
-  border-left: 3px solid var(--green);
-  padding-left: 14px;
-  font-size: 12px; color: var(--w60); line-height: 1.55;
-  transition: height 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
-}
-.micro-feedback.show { opacity: 1; }
-
-.q-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-
-.btn-back {
-  display: flex; align-items: center; gap: 6px;
-  background: transparent; border: 1px solid var(--border-dim);
-  border-radius: 2px; padding: 13px 18px;
-  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--w30);
-  cursor: pointer; transition: all 0.18s ease;
-}
-.btn-back:hover { border-color: rgba(255,255,255,0.18); color: var(--white); }
-
-.btn-next {
-  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--green); color: var(--brand-dark);
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .02em;
-  padding: 14px 24px; border: none; border-radius: 2px; cursor: pointer;
-  transition: all 0.18s ease; opacity: 0.4; pointer-events: none;
-  position: relative; overflow: hidden;
-}
-.btn-next.enabled { opacity: 1; pointer-events: all; }
-.btn-next.enabled:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(39,222,107,0.28); }
-
-/* ── RESULT SCREEN ── */
-.result-header { margin-bottom: 32px; }
-
-.result-tag {
-  display: inline-block;
-  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--green); background: var(--green-12); border: 1px solid var(--border);
-  padding: 4px 10px; border-radius: 2px; margin-bottom: 16px;
-}
-
-.result-title {
-  font-size: clamp(28px, 4.5vw, 42px); font-weight: 900; letter-spacing: -0.03em;
-  color: var(--white); line-height: 1.1; margin-bottom: 8px;
-}
-.result-title em { font-style: normal; color: var(--green); }
-
-.result-subtitle { font-size: 14px; color: var(--w60); line-height: 1.6; max-width: 500px; }
-
-/* Score display */
-.score-section {
-  background: var(--card-dark);
-  border: 1px solid var(--border);
-  border-radius: 2px; padding: 28px 32px;
-  margin-bottom: 20px;
-  position: relative; overflow: hidden;
-}
-.score-section::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-  opacity: 0.7;
-}
-
-.score-layout { display: flex; align-items: center; gap: 28px; }
-
-.score-num-wrap { flex-shrink: 0; }
-.score-num {
-  font-size: 80px; font-weight: 900; color: var(--green);
-  letter-spacing: -0.05em; line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.score-denom { font-size: 20px; font-weight: 400; color: var(--w30); }
-
-.score-info { flex: 1; }
-.score-level {
-  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--green); margin-bottom: 6px;
-}
-.score-desc {
-  font-size: 14px; color: var(--w60); line-height: 1.6; margin-bottom: 12px;
-}
-.score-bench {
-  font-size: 12px; color: var(--w30); line-height: 1.5;
-  border-left: 3px solid var(--green);
-  padding-left: 12px;
-}
-.score-bench strong { color: var(--green); }
-
-/* Score bar */
-.score-bar-wrap { margin-top: 20px; }
-.score-bar-labels {
-  display: flex; justify-content: space-between;
-  font-size: 10px; color: var(--w30); letter-spacing: .04em; text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.score-bar-track {
-  width: 100%; height: 6px; background: var(--w10); border-radius: 0; overflow: hidden; position: relative;
-}
-.score-bar-fill {
-  height: 100%; background: var(--green);
-  border-radius: 0; width: 0%;
-  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-  box-shadow: 0 0 10px rgba(39,222,107,0.5);
-}
-.score-bar-marker {
-  position: absolute; top: -4px; width: 14px; height: 14px;
-  border-radius: 50%; background: var(--green);
-  box-shadow: 0 0 12px rgba(39,222,107,0.8);
-  transform: translateX(-50%);
-  transition: left 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-}
-
-/* Pillar breakdown */
-.pillars-label {
-  font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--w30); margin-bottom: 12px;
-}
-
-.pillars-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
-
-.pillar-row {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--card-dark); border: 1px solid var(--border-dim);
-  border-radius: 2px; padding: 11px 14px;
-}
-.pillar-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.pillar-icon.ok  { background: var(--green-12); border: 1px solid var(--border); }
-.pillar-icon.mid { background: rgba(255,180,0,0.1); border: 1px solid rgba(255,180,0,0.2); }
-.pillar-icon.low { background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.2); }
-
-.pillar-name { flex: 1; font-size: 13px; font-weight: 500; color: var(--white); }
-.pillar-score { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.pillar-score.ok  { color: var(--green); }
-.pillar-score.mid { color: #FFB400; }
-.pillar-score.low { color: #FF5050; }
-
-.pillar-bar-mini { flex: 1; height: 3px; background: var(--w10); border-radius: 0; overflow: hidden; max-width: 80px; }
-.pillar-bar-inner { height: 100%; border-radius: 0; transition: width 1s ease 0.5s; }
-.pillar-bar-inner.ok  { background: var(--green); }
-.pillar-bar-inner.mid { background: #FFB400; }
-.pillar-bar-inner.low { background: #FF5050; }
-
-/* Result CTA */
-.result-cta-section { }
-.result-cta-label {
-  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--w30); margin-bottom: 12px; text-align: center;
-}
-
-.wa-btn {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; background: var(--green); color: var(--brand-dark);
-  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .02em;
-  padding: 18px 28px; border: none; border-radius: 2px; cursor: pointer;
-  text-decoration: none; transition: all 0.2s ease; margin-bottom: 12px;
-  position: relative; overflow: hidden;
-}
-.wa-btn::before {
-  content: ''; position: absolute; inset: 0;
-  background: rgba(255,255,255,0.15); transform: translateX(-100%); transition: transform 0.3s ease;
-}
-.wa-btn:hover::before { transform: translateX(0); }
-.wa-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(39,222,107,0.35); }
-
-.wa-icon { width: 20px; height: 20px; flex-shrink: 0; }
-
-.divider-or { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.div-line { flex: 1; height: 1px; background: var(--border-dim); }
-.div-text { font-size: 11px; color: var(--w30); letter-spacing: .06em; }
-
-.email-row { display: flex; gap: 8px; margin-bottom: 10px; }
-.email-input {
-  flex: 1; background: var(--card-dark); border: 1px solid var(--border-dim); border-radius: 2px;
-  padding: 13px 16px; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--white); outline: none;
-  transition: border-color 0.2s;
-}
-.email-input::placeholder { color: var(--w30); }
-.email-input:focus { border-color: var(--border); box-shadow: 0 0 0 1px rgba(39,222,107,0.12); }
-.email-btn {
-  background: var(--card-mid); border: 1px solid var(--border); border-radius: 2px;
-  padding: 13px 18px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
-  color: var(--green); cursor: pointer; white-space: nowrap; transition: all 0.18s;
-}
-.email-btn:hover { background: var(--green-12); }
-
-.privacy-note { text-align: center; font-size: 11px; color: var(--w30); }
-.privacy-note span { color: var(--green); opacity: .6; }
-
-/* ── FOOTER ── */
-footer {
-  padding: 20px 40px;
-  border-top: 1px solid var(--border-dim);
-  display: flex; justify-content: space-between; align-items: center;
-  flex-shrink: 0;
-}
-.ft-logo { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--w30); }
-.ft-logo em { font-style: normal; color: var(--green); opacity: .5; }
-.ft-note { font-size: 11px; color: var(--w30); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 600px) {
-  nav { padding: 16px 20px; }
-  .progress-wrap { padding: 20px 20px 0; }
-  .content { padding: 28px 20px 40px; }
-  footer { padding: 16px 20px; }
-  .stats-row { grid-template-columns: 1fr 1fr; }
-  .stats-row .stat-block:last-child { grid-column: span 2; }
-  .score-layout { flex-direction: column; gap: 16px; }
-  .score-num { font-size: 64px; }
-  .email-row { flex-direction: column; }
-  .score-section { padding: 20px; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Gap de Digitalización — Mucho Marketing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --brand-dark: #010707;
+      --card-dark: #09140E;
+      --card-mid: #192520;
+      --green: #27DE6B;
+      --green-12: rgba(39, 222, 107, 0.12);
+      --green-06: rgba(39, 222, 107, 0.06);
+      --green-03: rgba(39, 222, 107, 0.03);
+      --white: #FFFFFF;
+      --w60: rgba(255, 255, 255, 0.60);
+      --w30: rgba(255, 255, 255, 0.30);
+      --w10: rgba(255, 255, 255, 0.08);
+      --border: rgba(39, 222, 107, 0.18);
+      --border-dim: rgba(255, 255, 255, 0.07);
+      --red: rgba(255, 80, 80, 0.15);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--brand-dark);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(39, 222, 107, 0.013) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(39, 222, 107, 0.013) 1px, transparent 1px);
+      background-size: 56px 56px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow {
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(39, 222, 107, 0.055) 0%, transparent 65%);
+      top: -300px;
+      right: -250px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow2 {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(39, 222, 107, 0.03) 0%, transparent 65%);
+      bottom: -150px;
+      left: -100px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LAYOUT ── */
+    .shell {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 40px;
+      border-bottom: 1px solid var(--border-dim);
+      flex-shrink: 0;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 60px;
+      /* tamaño real del logo */
+      width: auto;
+      display: block;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer-logo img {
+      height: 60px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-12);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 2px;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      padding: 0 40px;
+      padding-top: 28px;
+      flex-shrink: 0;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .progress-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--w30);
+    }
+
+    .progress-counter {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: .04em;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 2px;
+      background: var(--w10);
+      border-radius: 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 0;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 8px rgba(39, 222, 107, 0.6);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 40px 60px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 620px;
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+      animation: slideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .screen.out {
+      animation: slideOut 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      to {
+        opacity: 0;
+        transform: translateX(-24px);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    /* ── INTRO SCREEN ── */
+    .intro-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow-line {
+      width: 28px;
+      height: 2px;
+      background: var(--green);
+    }
+
+    .eyebrow-text {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+
+    .intro h1 {
+      font-size: clamp(32px, 5vw, 50px);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .intro h1 em {
+      font-style: normal;
+      color: var(--green);
+    }
+
+    .intro-sub {
+      font-size: 15px;
+      color: var(--w60);
+      line-height: 1.65;
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .stat-block {
+      background: var(--card-dark);
+      border: 1px solid var(--border-dim);
+      border-radius: 2px;
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: 0.4;
+    }
+
+    .stat-num {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-desc {
+      font-size: 10px;
+      color: var(--w30);
+      letter-spacing: .03em;
+      line-height: 1.4;
+    }
+
+    .urgency-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--green-06);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--green);
+      margin-bottom: 28px;
+    }
+
+    .u-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 1.8s infinite;
+    }
+
+    .btn-start {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--green);
+      color: var(--brand-dark);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      padding: 17px 28px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-start::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .btn-start:hover::before {
+      transform: translateX(0);
+    }
+
+    .btn-start:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(39, 222, 107, 0.3);
+    }
+
+    .btn-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--w30);
+      margin-top: 10px;
+    }
+
+    /* ── QUESTION SCREEN ── */
+    .q-pillar {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .q-text {
+      font-size: clamp(18px, 3vw, 24px);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .q-sub {
+      font-size: 13px;
+      color: var(--w30);
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--card-dark);
+      border: 1px solid var(--border-dim);
+      border-radius: 2px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--green-03);
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+
+    .option:hover {
+      border-color: rgba(39, 222, 107, 0.35);
+    }
+
+    .option:hover::before {
+      opacity: 1;
+    }
+
+    .option.selected {
+      border-color: var(--green);
+      background: var(--green-12);
+    }
+
+    .option.selected::before {
+      opacity: 0;
+    }
+
+    .opt-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--border-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--w30);
+      flex-shrink: 0;
+      transition: all 0.18s ease;
+      margin-top: 1px;
+    }
+
+    .option.selected .opt-letter {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--brand-dark);
+    }
+
+    .opt-body {
+      flex: 1;
+    }
+
+    .opt-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
+
+    .opt-desc {
+      font-size: 12px;
+      color: var(--w30);
+      line-height: 1.45;
+    }
+
+    .option.selected .opt-title {
+      color: var(--white);
+    }
+
+    /* Micro feedback */
+    .micro-feedback {
+      height: 0;
+      overflow: hidden;
+      border-left: 3px solid var(--green);
+      padding-left: 14px;
+      font-size: 12px;
+      color: var(--w60);
+      line-height: 1.55;
+      transition: height 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .micro-feedback.show {
+      opacity: 1;
+    }
+
+    .q-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-back {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--border-dim);
+      border-radius: 2px;
+      padding: 13px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--w30);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .btn-back:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      color: var(--white);
+    }
+
+    .btn-next {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--green);
+      color: var(--brand-dark);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      opacity: 0.4;
+      pointer-events: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-next.enabled {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .btn-next.enabled:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(39, 222, 107, 0.28);
+    }
+
+    /* ── RESULT SCREEN ── */
+    .result-header {
+      margin-bottom: 32px;
+    }
+
+    .result-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-12);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    .result-title {
+      font-size: clamp(28px, 4.5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .result-title em {
+      font-style: normal;
+      color: var(--green);
+    }
+
+    .result-subtitle {
+      font-size: 14px;
+      color: var(--w60);
+      line-height: 1.6;
+      max-width: 500px;
+    }
+
+    /* Score display */
+    .score-section {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: 0.7;
+    }
+
+    .score-layout {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .score-num-wrap {
+      flex-shrink: 0;
+    }
+
+    .score-num {
+      font-size: 80px;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: -0.05em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score-denom {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--w30);
+    }
+
+    .score-info {
+      flex: 1;
+    }
+
+    .score-level {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+
+    .score-desc {
+      font-size: 14px;
+      color: var(--w60);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .score-bench {
+      font-size: 12px;
+      color: var(--w30);
+      line-height: 1.5;
+      border-left: 3px solid var(--green);
+      padding-left: 12px;
+    }
+
+    .score-bench strong {
+      color: var(--green);
+    }
+
+    /* Score bar */
+    .score-bar-wrap {
+      margin-top: 20px;
+    }
+
+    .score-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--w30);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .score-bar-track {
+      width: 100%;
+      height: 6px;
+      background: var(--w10);
+      border-radius: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 0;
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+      box-shadow: 0 0 10px rgba(39, 222, 107, 0.5);
+    }
+
+    .score-bar-marker {
+      position: absolute;
+      top: -4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(39, 222, 107, 0.8);
+      transform: translateX(-50%);
+      transition: left 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+    }
+
+    /* Pillar breakdown */
+    .pillars-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--w30);
+      margin-bottom: 12px;
+    }
+
+    .pillars-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .pillar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card-dark);
+      border: 1px solid var(--border-dim);
+      border-radius: 2px;
+      padding: 11px 14px;
+    }
+
+    .pillar-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pillar-icon.ok {
+      background: var(--green-12);
+      border: 1px solid var(--border);
+    }
+
+    .pillar-icon.mid {
+      background: rgba(255, 180, 0, 0.1);
+      border: 1px solid rgba(255, 180, 0, 0.2);
+    }
+
+    .pillar-icon.low {
+      background: rgba(255, 80, 80, 0.1);
+      border: 1px solid rgba(255, 80, 80, 0.2);
+    }
+
+    .pillar-name {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .pillar-score {
+      font-size: 12px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pillar-score.ok {
+      color: var(--green);
+    }
+
+    .pillar-score.mid {
+      color: #FFB400;
+    }
+
+    .pillar-score.low {
+      color: #FF5050;
+    }
+
+    .pillar-bar-mini {
+      flex: 1;
+      height: 3px;
+      background: var(--w10);
+      border-radius: 0;
+      overflow: hidden;
+      max-width: 80px;
+    }
+
+    .pillar-bar-inner {
+      height: 100%;
+      border-radius: 0;
+      transition: width 1s ease 0.5s;
+    }
+
+    .pillar-bar-inner.ok {
+      background: var(--green);
+    }
+
+    .pillar-bar-inner.mid {
+      background: #FFB400;
+    }
+
+    .pillar-bar-inner.low {
+      background: #FF5050;
+    }
+
+    /* Result CTA */
+    .result-cta-section {}
+
+    .result-cta-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--w30);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--green);
+      color: var(--brand-dark);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      padding: 18px 28px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wa-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .wa-btn:hover::before {
+      transform: translateX(0);
+    }
+
+    .wa-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(39, 222, 107, 0.35);
+    }
+
+    .wa-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .divider-or {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .div-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border-dim);
+    }
+
+    .div-text {
+      font-size: 11px;
+      color: var(--w30);
+      letter-spacing: .06em;
+    }
+
+    .email-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .email-input {
+      flex: 1;
+      background: var(--card-dark);
+      border: 1px solid var(--border-dim);
+      border-radius: 2px;
+      padding: 13px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .email-input::placeholder {
+      color: var(--w30);
+    }
+
+    .email-input:focus {
+      border-color: var(--border);
+      box-shadow: 0 0 0 1px rgba(39, 222, 107, 0.12);
+    }
+
+    .email-btn {
+      background: var(--card-mid);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 13px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s;
+    }
+
+    .email-btn:hover {
+      background: var(--green-12);
+    }
+
+    .privacy-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--w30);
+    }
+
+    .privacy-note span {
+      color: var(--green);
+      opacity: .6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 20px 40px;
+      border-top: 1px solid var(--border-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .ft-logo {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--w30);
+    }
+
+    .ft-logo em {
+      font-style: normal;
+      color: var(--green);
+      opacity: .5;
+    }
+
+    .ft-note {
+      font-size: 11px;
+      color: var(--w30);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav {
+        padding: 16px 20px;
+      }
+
+      .progress-wrap {
+        padding: 20px 20px 0;
+      }
+
+      .content {
+        padding: 28px 20px 40px;
+      }
+
+      footer {
+        padding: 16px 20px;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats-row .stat-block:last-child {
+        grid-column: span 2;
+      }
+
+      .score-layout {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .score-num {
+        font-size: 64px;
+      }
+
+      .email-row {
+        flex-direction: column;
+      }
+
+      .score-section {
+        padding: 20px;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="glow"></div>
-<div class="glow2"></div>
+  <div class="glow"></div>
+  <div class="glow2"></div>
 
-<div class="shell">
+  <div class="shell">
 
-  <!-- NAV -->
-  <nav>
-    <div class="logo">MUCHO <em>MARKETING</em></div>
-    <div class="nav-tag">DIAGNÓSTICO GRATUITO</div>
-  </nav>
+    <!-- NAV -->
+    <nav>
+      <div class="logo"><a href="" class="nav-logo">
+          <img src="../images/logo.png" alt="Mucho Marketing Logo">
+        </a></div>
+      <div class="nav-tag">DIAGNÓSTICO GRATUITO</div>
+    </nav>
 
-  <!-- PROGRESS (hidden on intro & result) -->
-  <div class="progress-wrap" id="progress-wrap" style="display:none">
-    <div class="progress-meta">
-      <span class="progress-label">Progreso del diagnóstico</span>
-      <span class="progress-counter" id="progress-counter">1 / 8</span>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progress-fill" style="width:12.5%"></div>
-    </div>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="content">
-  <div class="card">
-
-    <!-- ══════════ INTRO ══════════ -->
-    <div class="screen active" id="screen-intro">
-      <div class="intro-eyebrow">
-        <div class="eyebrow-line"></div>
-        <div class="eyebrow-text">Quiz de digitalización</div>
+    <!-- PROGRESS (hidden on intro & result) -->
+    <div class="progress-wrap" id="progress-wrap" style="display:none">
+      <div class="progress-meta">
+        <span class="progress-label">Progreso del diagnóstico</span>
+        <span class="progress-counter" id="progress-counter">1 / 8</span>
       </div>
-      <h1 class="intro">¿Dónde está tu empresa frente al <em>66,7%</em> del sector?</h1>
-      <p class="intro-sub">8 preguntas. 3 minutos. Resultado con tu score real y benchmark de 8.462 empresas del sector (APB, 2026).</p>
-
-      <div class="stats-row">
-        <div class="stat-block">
-          <div class="stat-num">66,7%</div>
-          <div class="stat-desc">del sector ya adoptó tecnología digital en 12 meses</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-num">3,1x</div>
-          <div class="stat-desc">más rápido crecen las empresas con sistema digital</div>
-        </div>
-        <div class="stat-block">
-          <div class="stat-num">12%</div>
-          <div class="stat-desc">domina sus 4 métricas financieras clave hoy</div>
-        </div>
-      </div>
-
-      <div class="urgency-badge">
-        <div class="u-dot"></div>
-        <span>52 empresas completaron este diagnóstico esta semana</span>
-      </div>
-
-      <button class="btn-start" onclick="goToQ(0)">
-        Empezar diagnóstico gratuito
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
-      <p class="btn-note">Sin registro previo · Resultado inmediato · 100% gratuito</p>
-    </div>
-
-    <!-- ══════════ QUESTIONS ══════════ -->
-    <div class="screen" id="screen-q">
-      <div class="q-pillar" id="q-pillar">PILAR 1 · CAPTACIÓN</div>
-      <div class="q-text" id="q-text">¿Tu empresa mide el costo por lead de cada canal de marketing?</div>
-      <div class="q-sub" id="q-sub">Saber el CPL real es lo que separa el gasto de la inversión.</div>
-
-      <div class="options" id="options-wrap"></div>
-
-      <div class="micro-feedback" id="micro-feedback"></div>
-
-      <div class="q-nav" style="margin-top:24px;">
-        <button class="btn-back" id="btn-back" onclick="goBack()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Anterior
-        </button>
-        <button class="btn-next" id="btn-next" onclick="goNext()">
-          Siguiente
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:12.5%"></div>
       </div>
     </div>
 
-    <!-- ══════════ RESULT ══════════ -->
-    <div class="screen" id="screen-result">
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="card">
 
-      <div class="result-header">
-        <div class="result-tag">TU DIAGNÓSTICO</div>
-        <div class="result-title" id="result-title">Etapa <em>inicial</em> de digitalización</div>
-        <div class="result-subtitle" id="result-subtitle">Tu empresa tiene base para crecer. Hay pilares clave que activar antes de invertir más en captación.</div>
-      </div>
-
-      <div class="score-section">
-        <div class="score-layout">
-          <div class="score-num-wrap">
-            <span class="score-num" id="score-display">0</span>
-            <span class="score-denom">/100</span>
+        <!-- ══════════ INTRO ══════════ -->
+        <div class="screen active" id="screen-intro">
+          <div class="intro-eyebrow">
+            <div class="eyebrow-line"></div>
+            <div class="eyebrow-text">Quiz de digitalización</div>
           </div>
-          <div class="score-info">
-            <div class="score-level" id="score-level">NIVEL: INICIAL</div>
-            <div class="score-desc" id="score-desc">Tu empresa está construyendo las bases del sistema digital.</div>
-            <div class="score-bench" id="score-bench">
-              El <strong>66,7%</strong> del sector ya está en nivel Avanzado en al menos 3 de estos pilares. <strong>Hay una ventana de tiempo.</strong>
+          <h1 class="intro">¿Dónde está tu empresa frente al <em>66,7%</em> del sector?</h1>
+          <p class="intro-sub">8 preguntas. 3 minutos. Resultado con tu score real y benchmark de 8.462 empresas del
+            sector (APB, 2026).</p>
+
+          <div class="stats-row">
+            <div class="stat-block">
+              <div class="stat-num">66,7%</div>
+              <div class="stat-desc">del sector ya adoptó tecnología digital en 12 meses</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-num">3,1x</div>
+              <div class="stat-desc">más rápido crecen las empresas con sistema digital</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-num">12%</div>
+              <div class="stat-desc">domina sus 4 métricas financieras clave hoy</div>
             </div>
           </div>
-        </div>
-        <div class="score-bar-wrap">
-          <div class="score-bar-labels">
-            <span>Inicial</span><span>En desarrollo</span><span>Avanzado</span>
+
+          <div class="urgency-badge">
+            <div class="u-dot"></div>
+            <span>52 empresas completaron este diagnóstico esta semana</span>
           </div>
-          <div class="score-bar-track" style="position:relative;">
-            <div class="score-bar-fill" id="score-bar-fill"></div>
-            <div class="score-bar-marker" id="score-bar-marker" style="left:0%"></div>
+
+          <button class="btn-start" onclick="goToQ(0)">
+            Empezar diagnóstico gratuito
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+          <p class="btn-note">Sin registro previo · Resultado inmediato · 100% gratuito</p>
+        </div>
+
+        <!-- ══════════ QUESTIONS ══════════ -->
+        <div class="screen" id="screen-q">
+          <div class="q-pillar" id="q-pillar">PILAR 1 · CAPTACIÓN</div>
+          <div class="q-text" id="q-text">¿Tu empresa mide el costo por lead de cada canal de marketing?</div>
+          <div class="q-sub" id="q-sub">Saber el CPL real es lo que separa el gasto de la inversión.</div>
+
+          <div class="options" id="options-wrap"></div>
+
+          <div class="micro-feedback" id="micro-feedback"></div>
+
+          <div class="q-nav" style="margin-top:24px;">
+            <button class="btn-back" id="btn-back" onclick="goBack()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              Anterior
+            </button>
+            <button class="btn-next" id="btn-next" onclick="goNext()">
+              Siguiente
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
-      </div>
 
-      <div class="pillars-label">DETALLE POR PILAR</div>
-      <div class="pillars-grid" id="pillars-grid"></div>
+        <!-- ══════════ RESULT ══════════ -->
+        <div class="screen" id="screen-result">
 
-      <div class="result-cta-section">
-        <div class="result-cta-label" id="cta-label">Recibí el plan de acción para tu score</div>
-        <a class="wa-btn" id="wa-btn" href="#" target="_blank" rel="noopener">
-          <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Enviame el plan de acción para mi empresa
-        </a>
+          <div class="result-header">
+            <div class="result-tag">TU DIAGNÓSTICO</div>
+            <div class="result-title" id="result-title">Etapa <em>inicial</em> de digitalización</div>
+            <div class="result-subtitle" id="result-subtitle">Tu empresa tiene base para crecer. Hay pilares clave que
+              activar antes de invertir más en captación.</div>
+          </div>
 
-        <div class="divider-or">
-          <div class="div-line"></div>
-          <span class="div-text">o recibilo por email</span>
-          <div class="div-line"></div>
+          <div class="score-section">
+            <div class="score-layout">
+              <div class="score-num-wrap">
+                <span class="score-num" id="score-display">0</span>
+                <span class="score-denom">/100</span>
+              </div>
+              <div class="score-info">
+                <div class="score-level" id="score-level">NIVEL: INICIAL</div>
+                <div class="score-desc" id="score-desc">Tu empresa está construyendo las bases del sistema digital.
+                </div>
+                <div class="score-bench" id="score-bench">
+                  El <strong>66,7%</strong> del sector ya está en nivel Avanzado en al menos 3 de estos pilares.
+                  <strong>Hay una ventana de tiempo.</strong>
+                </div>
+              </div>
+            </div>
+            <div class="score-bar-wrap">
+              <div class="score-bar-labels">
+                <span>Inicial</span><span>En desarrollo</span><span>Avanzado</span>
+              </div>
+              <div class="score-bar-track" style="position:relative;">
+                <div class="score-bar-fill" id="score-bar-fill"></div>
+                <div class="score-bar-marker" id="score-bar-marker" style="left:0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pillars-label">DETALLE POR PILAR</div>
+          <div class="pillars-grid" id="pillars-grid"></div>
+
+          <div class="result-cta-section">
+            <div class="result-cta-label" id="cta-label">Recibí el plan de acción para tu score</div>
+            <a class="wa-btn" id="wa-btn" href="#" target="_blank" rel="noopener">
+              <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              Enviame el plan de acción para mi empresa
+            </a>
+
+            <div class="divider-or">
+              <div class="div-line"></div>
+              <span class="div-text">o recibilo por email</span>
+              <div class="div-line"></div>
+            </div>
+
+            <div class="email-row">
+              <input type="email" class="email-input" id="email-input" placeholder="tu@empresa.com">
+              <button class="email-btn" onclick="sendEmail()">Enviame el plan →</button>
+            </div>
+            <p class="privacy-note"><span>🔒</span> Sin spam. Sin seguimiento no solicitado.</p>
+          </div>
         </div>
 
-        <div class="email-row">
-          <input type="email" class="email-input" id="email-input" placeholder="tu@empresa.com">
-          <button class="email-btn" onclick="sendEmail()">Enviame el plan →</button>
-        </div>
-        <p class="privacy-note"><span>🔒</span> Sin spam. Sin seguimiento no solicitado.</p>
       </div>
     </div>
 
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-logo">
+        <img src="../images/logo.png" alt="Mucho Marketing Logo">
+      </div>
+      <span class="footer-copy">© 2025 Mucho Marketing</span>
+    </footer>
+
+
   </div>
-  </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="ft-logo">MUCHO <em>MARKETING</em></div>
-    <div class="ft-note">mucho-marketing.com · 2025</div>
-  </footer>
+  <script>
+    // ══════════════════════════════════════════════════════════
+    // DATA
+    // ══════════════════════════════════════════════════════════
+    const QUESTIONS = [
+      {
+        pillar: 'PILAR 1 · CAPTACIÓN',
+        text: '¿Tu empresa mide el costo por lead (CPL) de cada canal de marketing?',
+        sub: 'Saber el CPL real es lo que separa el gasto de la inversión medible.',
+        options: [
+          { letter: 'A', title: 'Sí, tenemos el CPL claro por canal', desc: 'Google, Meta, referidos — sabemos qué genera cada uno.', pts: 100, fb: 'Excelente. Ese nivel de visibilidad es el primer paso para optimizar el gasto.' },
+          { letter: 'B', title: 'Más o menos — tenemos datos generales', desc: 'Sabemos cuánto gastamos pero no el costo por lead exacto.', pts: 40, fb: 'Es el punto de partida más común. El siguiente paso es instalar tracking granular por canal.' },
+          { letter: 'C', title: 'No, no lo medimos', desc: 'Invertimos pero no sabemos bien qué genera cada canal.', pts: 0, fb: 'Esto es lo que más vemos. Sin CPL claro, es imposible saber qué escalar y qué cortar.' },
+        ]
+      },
+      {
+        pillar: 'PILAR 2 · CRM Y SEGUIMIENTO',
+        text: '¿Tu equipo usa un CRM para gestionar los leads que entran?',
+        sub: 'El CRM es la diferencia entre un equipo reactivo y uno con sistema.',
+        options: [
+          { letter: 'A', title: 'Sí, tenemos Kommo, HubSpot o similar activo', desc: 'Los leads entran al CRM, se asignan y se hace seguimiento sistematizado.', pts: 100, fb: 'El CRM activo es el diferenciador más claro entre empresas que escalan y las que no.' },
+          { letter: 'B', title: 'Usamos Excel o WhatsApp Business para organizarnos', desc: 'Tenemos algún orden pero sin automatización ni pipeline real.', pts: 35, fb: 'Excel y WhatsApp funcionan hasta cierto volumen. Después se convierte en la principal fuente de pérdida de leads.' },
+          { letter: 'C', title: 'No, cada vendedor maneja sus leads como puede', desc: 'No hay sistema centralizado de seguimiento.', pts: 0, fb: 'Con este setup, es imposible saber cuántos leads se pierden ni en qué etapa. Es el punto de mayor impacto a resolver.' },
+        ]
+      },
+      {
+        pillar: 'PILAR 3 · VELOCIDAD DE RESPUESTA',
+        text: '¿En cuánto tiempo promedio responde tu equipo un lead nuevo?',
+        sub: 'Leads respondidos en menos de 5 minutos califican 21x más (HubSpot & Harvard).',
+        options: [
+          { letter: 'A', title: 'Menos de 1 hora en horario comercial', desc: 'El equipo tiene el hábito de responder rápido y hay proceso para eso.', pts: 90, fb: 'Muy bien. La respuesta rápida es uno de los pocos factores que multiplica la tasa de cierre sin cambiar el presupuesto.' },
+          { letter: 'B', title: 'Entre 1 y 4 horas', desc: 'Respondemos el mismo día pero no de forma inmediata.', pts: 45, fb: 'En proyectos de alto ticket, 4 horas puede ser la diferencia entre cerrar y perder el lead. Es un gap accionable rápido.' },
+          { letter: 'C', title: 'Más de 4 horas o al día siguiente', desc: 'Hay demoras y a veces los leads quedan sin respuesta.', pts: 0, fb: 'Este es el punto de fuga más invisible y más costoso. El lead caliente se enfría en horas.' },
+        ]
+      },
+      {
+        pillar: 'PILAR 4 · CONTENIDO CON ESTRATEGIA',
+        text: '¿Publicás contenido en Instagram con una estrategia de conversión definida?',
+        sub: 'Contenido que genera engagement es diferente de contenido que genera leads.',
+        options: [
+          { letter: 'A', title: 'Sí, tenemos calendario editorial con objetivos de conversión', desc: 'Cada pieza tiene un propósito: atraer, educar o convertir.', pts: 100, fb: 'El contenido con estrategia es el activo de captación más escalable que existe. Bien ejecutado, funciona sin ads.' },
+          { letter: 'B', title: 'Publicamos regularmente pero sin estrategia formal', desc: 'Generamos contenido pero no está alineado a objetivos de venta.', pts: 30, fb: 'Es el estado más común. Mucho esfuerzo con bajo retorno comercial. La estrategia cambia eso radicalmente.' },
+          { letter: 'C', title: 'Publicamos poco o de forma inconsistente', desc: 'No hay regularidad ni plan definido.', pts: 0, fb: 'Sin consistencia, el algoritmo y la audiencia no pueden crecer. Es el pilar más fácil de activar con el sistema correcto.' },
+        ]
+      },
+      {
+        pillar: 'PILAR 5 · META ADS',
+        text: '¿Corrés campañas de Meta Ads con objetivo de conversación (click-to-WhatsApp)?',
+        sub: 'Los ads con destino a WhatsApp generan leads calificados a USD 1-4 por chat en proyectos premium.',
+        options: [
+          { letter: 'A', title: 'Sí, tenemos campañas activas que llevan directo a WhatsApp', desc: 'Los leads entran a una conversación inmediata desde el anuncio.', pts: 100, fb: 'Perfecto. Ese setup es el que permite medir el CPL con precisión y responder al lead en el momento de mayor intención.' },
+          { letter: 'B', title: 'Hacemos algunos ads pero los leads llegan directo a WhatsApp', desc: 'Sin un paso intermedio — el lead entra directo a una conversación.', pts: 60, fb: 'Ads a WhatsApp directo es una estrategia válida y eficiente. El foco pasa a optimizar el primer mensaje y la calificación inicial.' },
+          { letter: 'C', title: 'No usamos Meta Ads', desc: 'No hemos probado o probamos mal sin resultados.', pts: 0, fb: 'Con el sistema correcto, Meta Ads con click-to-WhatsApp genera entre USD 1 y USD 4 por lead calificado en proyectos premium.' },
+        ]
+      },
+      {
+        pillar: 'PILAR 6 · CALIFICACIÓN DE LEADS',
+        text: '¿Tu equipo tiene un proceso definido para calificar un lead desde el primer mensaje?',
+        sub: 'El 12,8% de empresas del sector usa un proceso formal de calificación (APB, 2026).',
+        options: [
+          { letter: 'A', title: 'Sí, tenemos un script de calificación que el equipo usa', desc: 'Hay preguntas estándar que se hacen en el primer contacto.', pts: 100, fb: 'Excelente. La calificación temprana evita horas de tiempo del equipo en leads que nunca van a cerrar.' },
+          { letter: 'B', title: 'Cada vendedor califica a su manera', desc: 'No hay un criterio unificado de qué es un buen lead.', pts: 30, fb: 'Sin criterio unificado, es imposible saber si el problema está en la captación o en la calificación.' },
+          { letter: 'C', title: 'No, atendemos a todos igual', desc: 'No filtramos ni clasificamos los leads al llegar.', pts: 0, fb: 'Atender todos los leads igual es la forma más eficiente de quemar el tiempo de los mejores vendedores.' },
+        ]
+      },
+      {
+        pillar: 'PILAR 7 · SEGUIMIENTO POST-COTIZACIÓN',
+        text: '¿Tenés un proceso sistematizado de seguimiento después de enviar un presupuesto?',
+        sub: 'El 70% de los proyectos que no cierran es por falta de seguimiento, no por precio.',
+        options: [
+          { letter: 'A', title: 'Sí, tenemos una secuencia definida de touchpoints post-cotización', desc: 'Sabemos cuándo, cómo y qué enviar después de presupuestar.', pts: 100, fb: 'El seguimiento sistematizado post-cotización es donde se concentra la mayor parte del margen recuperable.' },
+          { letter: 'B', title: 'Hacemos seguimiento pero sin proceso definido', desc: 'Cada vendedor lo hace a su criterio y timing.', pts: 35, fb: 'Sin proceso estándar, el seguimiento depende de la memoria y el hábito de cada vendedor. Se pierde mucho.' },
+          { letter: 'C', title: 'No, esperamos que el cliente responda', desc: 'Después de enviar el presupuesto, no hay acción sistemática.', pts: 0, fb: 'Esperar al cliente es dejar que el 70% de los proyectos se vayan con la competencia que sí hace seguimiento.' },
+        ]
+      },
+      {
+        pillar: 'PILAR 8 · CAPACITACIÓN DEL EQUIPO',
+        text: '¿Tu equipo de ventas recibió capacitación específica para atender leads digitales?',
+        sub: 'Un lead que viene por Instagram tiene comportamientos distintos a un referido. La técnica de venta también.',
+        options: [
+          { letter: 'A', title: 'Sí, capacitamos al equipo para leads de canales digitales', desc: 'Saben cómo calificar, responder y seguir un lead digital.', pts: 100, fb: 'La capacitación para leads digitales es el multiplicador más subestimado de todo el sistema.' },
+          { letter: 'B', title: 'Improvisamos — los vendedores aprenden solos', desc: 'El equipo se adapta pero sin formación específica.', pts: 25, fb: 'Los mejores vendedores cara a cara no siempre son los mejores con leads digitales. Son habilidades distintas.' },
+          { letter: 'C', title: 'No, y se nota en la tasa de conversión', desc: 'Los vendedores no están preparados para atender leads de redes.', pts: 0, fb: 'Esto es lo más común y lo más fácil de resolver con el sistema correcto. La capacitación es parte del onboarding.' },
+        ]
+      }
+    ];
 
-</div>
+    // Pillar names for result display
+    const PILLAR_NAMES = [
+      'Captación y CPL',
+      'CRM y seguimiento',
+      'Velocidad de respuesta',
+      'Contenido estratégico',
+      'Meta Ads',
+      'Calificación de leads',
+      'Seguimiento post-cotización',
+      'Capacitación del equipo',
+    ];
 
-<script>
-// ══════════════════════════════════════════════════════════
-// DATA
-// ══════════════════════════════════════════════════════════
-const QUESTIONS = [
-  {
-    pillar: 'PILAR 1 · CAPTACIÓN',
-    text: '¿Tu empresa mide el costo por lead (CPL) de cada canal de marketing?',
-    sub: 'Saber el CPL real es lo que separa el gasto de la inversión medible.',
-    options: [
-      { letter:'A', title:'Sí, tenemos el CPL claro por canal', desc:'Google, Meta, referidos — sabemos qué genera cada uno.', pts:100, fb:'Excelente. Ese nivel de visibilidad es el primer paso para optimizar el gasto.' },
-      { letter:'B', title:'Más o menos — tenemos datos generales', desc:'Sabemos cuánto gastamos pero no el costo por lead exacto.', pts:40, fb:'Es el punto de partida más común. El siguiente paso es instalar tracking granular por canal.' },
-      { letter:'C', title:'No, no lo medimos', desc:'Invertimos pero no sabemos bien qué genera cada canal.', pts:0, fb:'Esto es lo que más vemos. Sin CPL claro, es imposible saber qué escalar y qué cortar.' },
-    ]
-  },
-  {
-    pillar: 'PILAR 2 · CRM Y SEGUIMIENTO',
-    text: '¿Tu equipo usa un CRM para gestionar los leads que entran?',
-    sub: 'El CRM es la diferencia entre un equipo reactivo y uno con sistema.',
-    options: [
-      { letter:'A', title:'Sí, tenemos Kommo, HubSpot o similar activo', desc:'Los leads entran al CRM, se asignan y se hace seguimiento sistematizado.', pts:100, fb:'El CRM activo es el diferenciador más claro entre empresas que escalan y las que no.' },
-      { letter:'B', title:'Usamos Excel o WhatsApp Business para organizarnos', desc:'Tenemos algún orden pero sin automatización ni pipeline real.', pts:35, fb:'Excel y WhatsApp funcionan hasta cierto volumen. Después se convierte en la principal fuente de pérdida de leads.' },
-      { letter:'C', title:'No, cada vendedor maneja sus leads como puede', desc:'No hay sistema centralizado de seguimiento.', pts:0, fb:'Con este setup, es imposible saber cuántos leads se pierden ni en qué etapa. Es el punto de mayor impacto a resolver.' },
-    ]
-  },
-  {
-    pillar: 'PILAR 3 · VELOCIDAD DE RESPUESTA',
-    text: '¿En cuánto tiempo promedio responde tu equipo un lead nuevo?',
-    sub: 'Leads respondidos en menos de 5 minutos califican 21x más (HubSpot & Harvard).',
-    options: [
-      { letter:'A', title:'Menos de 1 hora en horario comercial', desc:'El equipo tiene el hábito de responder rápido y hay proceso para eso.', pts:90, fb:'Muy bien. La respuesta rápida es uno de los pocos factores que multiplica la tasa de cierre sin cambiar el presupuesto.' },
-      { letter:'B', title:'Entre 1 y 4 horas', desc:'Respondemos el mismo día pero no de forma inmediata.', pts:45, fb:'En proyectos de alto ticket, 4 horas puede ser la diferencia entre cerrar y perder el lead. Es un gap accionable rápido.' },
-      { letter:'C', title:'Más de 4 horas o al día siguiente', desc:'Hay demoras y a veces los leads quedan sin respuesta.', pts:0, fb:'Este es el punto de fuga más invisible y más costoso. El lead caliente se enfría en horas.' },
-    ]
-  },
-  {
-    pillar: 'PILAR 4 · CONTENIDO CON ESTRATEGIA',
-    text: '¿Publicás contenido en Instagram con una estrategia de conversión definida?',
-    sub: 'Contenido que genera engagement es diferente de contenido que genera leads.',
-    options: [
-      { letter:'A', title:'Sí, tenemos calendario editorial con objetivos de conversión', desc:'Cada pieza tiene un propósito: atraer, educar o convertir.', pts:100, fb:'El contenido con estrategia es el activo de captación más escalable que existe. Bien ejecutado, funciona sin ads.' },
-      { letter:'B', title:'Publicamos regularmente pero sin estrategia formal', desc:'Generamos contenido pero no está alineado a objetivos de venta.', pts:30, fb:'Es el estado más común. Mucho esfuerzo con bajo retorno comercial. La estrategia cambia eso radicalmente.' },
-      { letter:'C', title:'Publicamos poco o de forma inconsistente', desc:'No hay regularidad ni plan definido.', pts:0, fb:'Sin consistencia, el algoritmo y la audiencia no pueden crecer. Es el pilar más fácil de activar con el sistema correcto.' },
-    ]
-  },
-  {
-    pillar: 'PILAR 5 · META ADS',
-    text: '¿Corrés campañas de Meta Ads con objetivo de conversación (click-to-WhatsApp)?',
-    sub: 'Los ads con destino a WhatsApp generan leads calificados a USD 1-4 por chat en proyectos premium.',
-    options: [
-      { letter:'A', title:'Sí, tenemos campañas activas que llevan directo a WhatsApp', desc:'Los leads entran a una conversación inmediata desde el anuncio.', pts:100, fb:'Perfecto. Ese setup es el que permite medir el CPL con precisión y responder al lead en el momento de mayor intención.' },
-      { letter:'B', title:'Hacemos algunos ads pero los leads llegan directo a WhatsApp', desc:'Sin un paso intermedio — el lead entra directo a una conversación.', pts:60, fb:'Ads a WhatsApp directo es una estrategia válida y eficiente. El foco pasa a optimizar el primer mensaje y la calificación inicial.' },
-      { letter:'C', title:'No usamos Meta Ads', desc:'No hemos probado o probamos mal sin resultados.', pts:0, fb:'Con el sistema correcto, Meta Ads con click-to-WhatsApp genera entre USD 1 y USD 4 por lead calificado en proyectos premium.' },
-    ]
-  },
-  {
-    pillar: 'PILAR 6 · CALIFICACIÓN DE LEADS',
-    text: '¿Tu equipo tiene un proceso definido para calificar un lead desde el primer mensaje?',
-    sub: 'El 12,8% de empresas del sector usa un proceso formal de calificación (APB, 2026).',
-    options: [
-      { letter:'A', title:'Sí, tenemos un script de calificación que el equipo usa', desc:'Hay preguntas estándar que se hacen en el primer contacto.', pts:100, fb:'Excelente. La calificación temprana evita horas de tiempo del equipo en leads que nunca van a cerrar.' },
-      { letter:'B', title:'Cada vendedor califica a su manera', desc:'No hay un criterio unificado de qué es un buen lead.', pts:30, fb:'Sin criterio unificado, es imposible saber si el problema está en la captación o en la calificación.' },
-      { letter:'C', title:'No, atendemos a todos igual', desc:'No filtramos ni clasificamos los leads al llegar.', pts:0, fb:'Atender todos los leads igual es la forma más eficiente de quemar el tiempo de los mejores vendedores.' },
-    ]
-  },
-  {
-    pillar: 'PILAR 7 · SEGUIMIENTO POST-COTIZACIÓN',
-    text: '¿Tenés un proceso sistematizado de seguimiento después de enviar un presupuesto?',
-    sub: 'El 70% de los proyectos que no cierran es por falta de seguimiento, no por precio.',
-    options: [
-      { letter:'A', title:'Sí, tenemos una secuencia definida de touchpoints post-cotización', desc:'Sabemos cuándo, cómo y qué enviar después de presupuestar.', pts:100, fb:'El seguimiento sistematizado post-cotización es donde se concentra la mayor parte del margen recuperable.' },
-      { letter:'B', title:'Hacemos seguimiento pero sin proceso definido', desc:'Cada vendedor lo hace a su criterio y timing.', pts:35, fb:'Sin proceso estándar, el seguimiento depende de la memoria y el hábito de cada vendedor. Se pierde mucho.' },
-      { letter:'C', title:'No, esperamos que el cliente responda', desc:'Después de enviar el presupuesto, no hay acción sistemática.', pts:0, fb:'Esperar al cliente es dejar que el 70% de los proyectos se vayan con la competencia que sí hace seguimiento.' },
-    ]
-  },
-  {
-    pillar: 'PILAR 8 · CAPACITACIÓN DEL EQUIPO',
-    text: '¿Tu equipo de ventas recibió capacitación específica para atender leads digitales?',
-    sub: 'Un lead que viene por Instagram tiene comportamientos distintos a un referido. La técnica de venta también.',
-    options: [
-      { letter:'A', title:'Sí, capacitamos al equipo para leads de canales digitales', desc:'Saben cómo calificar, responder y seguir un lead digital.', pts:100, fb:'La capacitación para leads digitales es el multiplicador más subestimado de todo el sistema.' },
-      { letter:'B', title:'Improvisamos — los vendedores aprenden solos', desc:'El equipo se adapta pero sin formación específica.', pts:25, fb:'Los mejores vendedores cara a cara no siempre son los mejores con leads digitales. Son habilidades distintas.' },
-      { letter:'C', title:'No, y se nota en la tasa de conversión', desc:'Los vendedores no están preparados para atender leads de redes.', pts:0, fb:'Esto es lo más común y lo más fácil de resolver con el sistema correcto. La capacitación es parte del onboarding.' },
-    ]
-  }
-];
+    // ══════════════════════════════════════════════════════════
+    // STATE
+    // ══════════════════════════════════════════════════════════
+    let currentQ = 0;
+    let answers = new Array(QUESTIONS.length).fill(null); // index of selected option
+    let scores = new Array(QUESTIONS.length).fill(0);
 
-// Pillar names for result display
-const PILLAR_NAMES = [
-  'Captación y CPL',
-  'CRM y seguimiento',
-  'Velocidad de respuesta',
-  'Contenido estratégico',
-  'Meta Ads',
-  'Calificación de leads',
-  'Seguimiento post-cotización',
-  'Capacitación del equipo',
-];
+    // ══════════════════════════════════════════════════════════
+    // NAVIGATION
+    // ══════════════════════════════════════════════════════════
+    function goToQ(idx) {
+      currentQ = idx;
 
-// ══════════════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════════════
-let currentQ   = 0;
-let answers    = new Array(QUESTIONS.length).fill(null); // index of selected option
-let scores     = new Array(QUESTIONS.length).fill(0);
+      // Show/hide progress
+      document.getElementById('progress-wrap').style.display = idx >= 0 ? 'block' : 'none';
 
-// ══════════════════════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════════════════════
-function goToQ(idx) {
-  currentQ = idx;
-
-  // Show/hide progress
-  document.getElementById('progress-wrap').style.display = idx >= 0 ? 'block' : 'none';
-
-  switchScreen('screen-q');
-  renderQuestion();
-  updateProgress();
-}
-
-function goBack() {
-  if (currentQ === 0) {
-    switchScreen('screen-intro');
-    document.getElementById('progress-wrap').style.display = 'none';
-    return;
-  }
-  currentQ--;
-  renderQuestion();
-  updateProgress();
-}
-
-function goNext() {
-  if (answers[currentQ] === null) return;
-
-  if (currentQ === QUESTIONS.length - 1) {
-    showResult();
-    return;
-  }
-  currentQ++;
-  renderQuestion();
-  updateProgress();
-}
-
-// ══════════════════════════════════════════════════════════
-// SCREEN SWITCH
-// ══════════════════════════════════════════════════════════
-function switchScreen(targetId) {
-  const screens = document.querySelectorAll('.screen');
-  screens.forEach(s => {
-    if (s.classList.contains('active')) {
-      s.classList.remove('active');
+      switchScreen('screen-q');
+      renderQuestion();
+      updateProgress();
     }
-  });
-  const target = document.getElementById(targetId);
-  setTimeout(() => {
-    target.classList.add('active');
-  }, 60);
-}
 
-// ══════════════════════════════════════════════════════════
-// RENDER QUESTION
-// ══════════════════════════════════════════════════════════
-function renderQuestion() {
-  const q = QUESTIONS[currentQ];
-  document.getElementById('q-pillar').textContent = q.pillar;
-  document.getElementById('q-text').textContent   = q.text;
-  document.getElementById('q-sub').textContent    = q.sub;
+    function goBack() {
+      if (currentQ === 0) {
+        switchScreen('screen-intro');
+        document.getElementById('progress-wrap').style.display = 'none';
+        return;
+      }
+      currentQ--;
+      renderQuestion();
+      updateProgress();
+    }
 
-  const wrap = document.getElementById('options-wrap');
-  wrap.innerHTML = '';
+    function goNext() {
+      if (answers[currentQ] === null) return;
 
-  q.options.forEach((opt, i) => {
-    const div = document.createElement('div');
-    div.className = 'option' + (answers[currentQ] === i ? ' selected' : '');
-    div.innerHTML = `
+      if (currentQ === QUESTIONS.length - 1) {
+        showResult();
+        return;
+      }
+      currentQ++;
+      renderQuestion();
+      updateProgress();
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // SCREEN SWITCH
+    // ══════════════════════════════════════════════════════════
+    function switchScreen(targetId) {
+      const screens = document.querySelectorAll('.screen');
+      screens.forEach(s => {
+        if (s.classList.contains('active')) {
+          s.classList.remove('active');
+        }
+      });
+      const target = document.getElementById(targetId);
+      setTimeout(() => {
+        target.classList.add('active');
+      }, 60);
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // RENDER QUESTION
+    // ══════════════════════════════════════════════════════════
+    function renderQuestion() {
+      const q = QUESTIONS[currentQ];
+      document.getElementById('q-pillar').textContent = q.pillar;
+      document.getElementById('q-text').textContent = q.text;
+      document.getElementById('q-sub').textContent = q.sub;
+
+      const wrap = document.getElementById('options-wrap');
+      wrap.innerHTML = '';
+
+      q.options.forEach((opt, i) => {
+        const div = document.createElement('div');
+        div.className = 'option' + (answers[currentQ] === i ? ' selected' : '');
+        div.innerHTML = `
       <div class="opt-letter">${opt.letter}</div>
       <div class="opt-body">
         <div class="opt-title">${opt.title}</div>
         <div class="opt-desc">${opt.desc}</div>
       </div>`;
-    div.addEventListener('click', () => selectOption(i));
-    wrap.appendChild(div);
-  });
+        div.addEventListener('click', () => selectOption(i));
+        wrap.appendChild(div);
+      });
 
-  // Feedback
-  const fb = document.getElementById('micro-feedback');
-  if (answers[currentQ] !== null) {
-    showFeedback(q.options[answers[currentQ]].fb);
-  } else {
-    fb.classList.remove('show');
-    fb.style.height = '0';
-    fb.textContent = '';
-  }
+      // Feedback
+      const fb = document.getElementById('micro-feedback');
+      if (answers[currentQ] !== null) {
+        showFeedback(q.options[answers[currentQ]].fb);
+      } else {
+        fb.classList.remove('show');
+        fb.style.height = '0';
+        fb.textContent = '';
+      }
 
-  // Back button label
-  document.getElementById('btn-back').style.display = 'flex';
+      // Back button label
+      document.getElementById('btn-back').style.display = 'flex';
 
-  // Next button
-  const btnNext = document.getElementById('btn-next');
-  const isLast  = currentQ === QUESTIONS.length - 1;
-  btnNext.innerHTML = isLast
-    ? 'Ver mi diagnóstico <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
-    : 'Siguiente <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+      // Next button
+      const btnNext = document.getElementById('btn-next');
+      const isLast = currentQ === QUESTIONS.length - 1;
+      btnNext.innerHTML = isLast
+        ? 'Ver mi diagnóstico <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+        : 'Siguiente <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
 
-  if (answers[currentQ] !== null) {
-    btnNext.classList.add('enabled');
-  } else {
-    btnNext.classList.remove('enabled');
-  }
-}
-
-// ══════════════════════════════════════════════════════════
-// SELECT OPTION
-// ══════════════════════════════════════════════════════════
-function selectOption(idx) {
-  answers[currentQ] = idx;
-  scores[currentQ]  = QUESTIONS[currentQ].options[idx].pts;
-
-  // Update visual
-  document.querySelectorAll('.option').forEach((el, i) => {
-    el.classList.toggle('selected', i === idx);
-    const letter = el.querySelector('.opt-letter');
-    if (i === idx) letter.style.cssText = 'background:var(--green);border-color:var(--green);color:var(--brand-dark)';
-    else           letter.style.cssText = '';
-  });
-
-  // Show feedback
-  showFeedback(QUESTIONS[currentQ].options[idx].fb);
-
-  // Enable next
-  document.getElementById('btn-next').classList.add('enabled');
-
-  // Auto-advance after brief delay on mobile feel
-  setTimeout(() => {
-    if (currentQ < QUESTIONS.length - 1) {
-      goNext();
+      if (answers[currentQ] !== null) {
+        btnNext.classList.add('enabled');
+      } else {
+        btnNext.classList.remove('enabled');
+      }
     }
-  }, 2200);
-}
 
-// ══════════════════════════════════════════════════════════
-// FEEDBACK
-// ══════════════════════════════════════════════════════════
-function showFeedback(text) {
-  const fb = document.getElementById('micro-feedback');
-  fb.textContent = text;
-  fb.style.height = 'auto';
-  const h = fb.scrollHeight;
-  fb.style.height = '0';
-  fb.offsetHeight; // reflow
-  fb.style.transition = 'height 0.3s ease, opacity 0.3s ease';
-  fb.style.height = (h + 16) + 'px';
-  fb.style.paddingTop  = '12px';
-  fb.style.paddingBottom = '4px';
-  fb.classList.add('show');
-}
+    // ══════════════════════════════════════════════════════════
+    // SELECT OPTION
+    // ══════════════════════════════════════════════════════════
+    function selectOption(idx) {
+      answers[currentQ] = idx;
+      scores[currentQ] = QUESTIONS[currentQ].options[idx].pts;
 
-// ══════════════════════════════════════════════════════════
-// PROGRESS
-// ══════════════════════════════════════════════════════════
-function updateProgress() {
-  const answered = answers.filter(a => a !== null).length;
-  const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-counter').textContent = (currentQ + 1) + ' / ' + QUESTIONS.length;
-}
+      // Update visual
+      document.querySelectorAll('.option').forEach((el, i) => {
+        el.classList.toggle('selected', i === idx);
+        const letter = el.querySelector('.opt-letter');
+        if (i === idx) letter.style.cssText = 'background:var(--green);border-color:var(--green);color:var(--brand-dark)';
+        else letter.style.cssText = '';
+      });
 
-// ══════════════════════════════════════════════════════════
-// RESULT
-// ══════════════════════════════════════════════════════════
-function showResult() {
-  document.getElementById('progress-wrap').style.display = 'none';
-  switchScreen('screen-result');
-  setTimeout(renderResult, 100);
-}
+      // Show feedback
+      showFeedback(QUESTIONS[currentQ].options[idx].fb);
 
-function renderResult() {
-  const totalScore = Math.round(scores.reduce((a, b) => a + b, 0) / QUESTIONS.length);
+      // Enable next
+      document.getElementById('btn-next').classList.add('enabled');
 
-  // Animate score counter
-  animateCounter(totalScore);
+      // Auto-advance after brief delay on mobile feel
+      setTimeout(() => {
+        if (currentQ < QUESTIONS.length - 1) {
+          goNext();
+        }
+      }, 2200);
+    }
 
-  // Score bar
-  setTimeout(() => {
-    document.getElementById('score-bar-fill').style.width   = totalScore + '%';
-    document.getElementById('score-bar-marker').style.left  = totalScore + '%';
-  }, 150);
+    // ══════════════════════════════════════════════════════════
+    // FEEDBACK
+    // ══════════════════════════════════════════════════════════
+    function showFeedback(text) {
+      const fb = document.getElementById('micro-feedback');
+      fb.textContent = text;
+      fb.style.height = 'auto';
+      const h = fb.scrollHeight;
+      fb.style.height = '0';
+      fb.offsetHeight; // reflow
+      fb.style.transition = 'height 0.3s ease, opacity 0.3s ease';
+      fb.style.height = (h + 16) + 'px';
+      fb.style.paddingTop = '12px';
+      fb.style.paddingBottom = '4px';
+      fb.classList.add('show');
+    }
 
-  // Level config
-  let level, title, desc, bench, ctaLabel;
+    // ══════════════════════════════════════════════════════════
+    // PROGRESS
+    // ══════════════════════════════════════════════════════════
+    function updateProgress() {
+      const answered = answers.filter(a => a !== null).length;
+      const pct = ((currentQ + 1) / QUESTIONS.length) * 100;
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-counter').textContent = (currentQ + 1) + ' / ' + QUESTIONS.length;
+    }
 
-  if (totalScore >= 70) {
-    level    = 'NIVEL: AVANZADO';
-    title    = 'Empresa <em>avanzada</em> en digitalización';
-    desc     = 'Tu empresa tiene un sistema digital sólido. Estás en el grupo del 66,7% que ya adoptó tecnología. El siguiente paso es optimizar y escalar.';
-    bench    = 'Estás por encima del promedio del sector. El foco ahora es la integración de los pilares que todavía no están al 100%.';
-    ctaLabel = 'Recibí el plan de optimización para tu score';
-  } else if (totalScore >= 40) {
-    level    = 'NIVEL: EN DESARROLLO';
-    title    = 'Empresa <em>en desarrollo</em> digital';
-    desc     = 'Tenés bases concretas. Hay pilares clave sin activar que están generando pérdidas recuperables. El sistema completo cambia el resultado.';
-    bench    = 'El <strong>66,7%</strong> del sector ya está en nivel Avanzado en al menos 3 pilares. <strong>La ventana de tiempo está abierta.</strong>';
-    ctaLabel = 'Recibí el plan de acción para tu score';
-  } else {
-    level    = 'NIVEL: INICIAL';
-    title    = 'Empresa en etapa <em>inicial</em> de digitalización';
-    desc     = 'Tu empresa tiene una oportunidad enorme. La mayoría de los pilares sin activar son exactamente lo que el sistema de Mucho Marketing resuelve en 30 días.';
-    bench    = 'El <strong>66,7%</strong> del sector ya adoptó tecnología. <strong>Cada mes que pasa es ventaja para el que lo hace primero en tu zona.</strong>';
-    ctaLabel = 'Recibí el plan de acción prioritario para tu empresa';
-  }
+    // ══════════════════════════════════════════════════════════
+    // RESULT
+    // ══════════════════════════════════════════════════════════
+    function showResult() {
+      document.getElementById('progress-wrap').style.display = 'none';
+      switchScreen('screen-result');
+      setTimeout(renderResult, 100);
+    }
 
-  document.getElementById('result-title').innerHTML    = title;
-  document.getElementById('score-level').textContent   = level;
-  document.getElementById('score-desc').textContent    = desc;
-  document.getElementById('score-bench').innerHTML     = bench;
-  document.getElementById('cta-label').textContent     = ctaLabel;
+    function renderResult() {
+      const totalScore = Math.round(scores.reduce((a, b) => a + b, 0) / QUESTIONS.length);
 
-  // Pillar breakdown
-  renderPillars();
+      // Animate score counter
+      animateCounter(totalScore);
 
-  // WA link
-  buildWALink(totalScore, level);
-}
+      // Score bar
+      setTimeout(() => {
+        document.getElementById('score-bar-fill').style.width = totalScore + '%';
+        document.getElementById('score-bar-marker').style.left = totalScore + '%';
+      }, 150);
 
-function animateCounter(target) {
-  const el = document.getElementById('score-display');
-  const duration = 1000;
-  const start    = performance.now();
-  function step(now) {
-    const t   = Math.min((now - start) / duration, 1);
-    const val = Math.round(t * t * (3 - 2 * t) * target); // smoothstep
-    el.textContent = val;
-    if (t < 1) requestAnimationFrame(step);
-    else el.textContent = target;
-  }
-  requestAnimationFrame(step);
-}
+      // Level config
+      let level, title, desc, bench, ctaLabel;
 
-function renderPillars() {
-  const grid = document.getElementById('pillars-grid');
-  grid.innerHTML = '';
+      if (totalScore >= 70) {
+        level = 'NIVEL: AVANZADO';
+        title = 'Empresa <em>avanzada</em> en digitalización';
+        desc = 'Tu empresa tiene un sistema digital sólido. Estás en el grupo del 66,7% que ya adoptó tecnología. El siguiente paso es optimizar y escalar.';
+        bench = 'Estás por encima del promedio del sector. El foco ahora es la integración de los pilares que todavía no están al 100%.';
+        ctaLabel = 'Recibí el plan de optimización para tu score';
+      } else if (totalScore >= 40) {
+        level = 'NIVEL: EN DESARROLLO';
+        title = 'Empresa <em>en desarrollo</em> digital';
+        desc = 'Tenés bases concretas. Hay pilares clave sin activar que están generando pérdidas recuperables. El sistema completo cambia el resultado.';
+        bench = 'El <strong>66,7%</strong> del sector ya está en nivel Avanzado en al menos 3 pilares. <strong>La ventana de tiempo está abierta.</strong>';
+        ctaLabel = 'Recibí el plan de acción para tu score';
+      } else {
+        level = 'NIVEL: INICIAL';
+        title = 'Empresa en etapa <em>inicial</em> de digitalización';
+        desc = 'Tu empresa tiene una oportunidad enorme. La mayoría de los pilares sin activar son exactamente lo que el sistema de Mucho Marketing resuelve en 30 días.';
+        bench = 'El <strong>66,7%</strong> del sector ya adoptó tecnología. <strong>Cada mes que pasa es ventaja para el que lo hace primero en tu zona.</strong>';
+        ctaLabel = 'Recibí el plan de acción prioritario para tu empresa';
+      }
 
-  scores.forEach((pts, i) => {
-    let cls, icon;
-    if      (pts >= 80) { cls = 'ok';  icon = '✓'; }
-    else if (pts >= 30) { cls = 'mid'; icon = '~'; }
-    else                { cls = 'low'; icon = '!'; }
+      document.getElementById('result-title').innerHTML = title;
+      document.getElementById('score-level').textContent = level;
+      document.getElementById('score-desc').textContent = desc;
+      document.getElementById('score-bench').innerHTML = bench;
+      document.getElementById('cta-label').textContent = ctaLabel;
 
-    const pct = pts + '%';
+      // Pillar breakdown
+      renderPillars();
 
-    const row = document.createElement('div');
-    row.className = 'pillar-row';
-    row.innerHTML = `
+      // WA link
+      buildWALink(totalScore, level);
+    }
+
+    function animateCounter(target) {
+      const el = document.getElementById('score-display');
+      const duration = 1000;
+      const start = performance.now();
+      function step(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const val = Math.round(t * t * (3 - 2 * t) * target); // smoothstep
+        el.textContent = val;
+        if (t < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+
+    function renderPillars() {
+      const grid = document.getElementById('pillars-grid');
+      grid.innerHTML = '';
+
+      scores.forEach((pts, i) => {
+        let cls, icon;
+        if (pts >= 80) { cls = 'ok'; icon = '✓'; }
+        else if (pts >= 30) { cls = 'mid'; icon = '~'; }
+        else { cls = 'low'; icon = '!'; }
+
+        const pct = pts + '%';
+
+        const row = document.createElement('div');
+        row.className = 'pillar-row';
+        row.innerHTML = `
       <div class="pillar-icon ${cls}">
-        <span style="font-size:12px;font-weight:700;color:${cls==='ok'?'var(--green)':cls==='mid'?'#FFB400':'#FF5050'}">${icon}</span>
+        <span style="font-size:12px;font-weight:700;color:${cls === 'ok' ? 'var(--green)' : cls === 'mid' ? '#FFB400' : '#FF5050'}">${icon}</span>
       </div>
       <span class="pillar-name">${PILLAR_NAMES[i]}</span>
       <div class="pillar-bar-mini">
         <div class="pillar-bar-inner ${cls}" style="width:0%" data-target="${pct}"></div>
       </div>
       <span class="pillar-score ${cls}">${pts}/100</span>`;
-    grid.appendChild(row);
-  });
+        grid.appendChild(row);
+      });
 
-  // Animate bars
-  setTimeout(() => {
-    document.querySelectorAll('.pillar-bar-inner').forEach(bar => {
-      bar.style.width = bar.dataset.target;
-    });
-  }, 300);
-}
+      // Animate bars
+      setTimeout(() => {
+        document.querySelectorAll('.pillar-bar-inner').forEach(bar => {
+          bar.style.width = bar.dataset.target;
+        });
+      }, 300);
+    }
 
-function buildWALink(score, level) {
-  const weakPillars = scores
-    .map((pts, i) => ({ name: PILLAR_NAMES[i], pts }))
-    .filter(p => p.pts < 50)
-    .map(p => p.name)
-    .slice(0, 2)
-    .join(', ');
+    function buildWALink(score, level) {
+      const weakPillars = scores
+        .map((pts, i) => ({ name: PILLAR_NAMES[i], pts }))
+        .filter(p => p.pts < 50)
+        .map(p => p.name)
+        .slice(0, 2)
+        .join(', ');
 
-  const lvlText = level.replace('NIVEL: ', '').toLowerCase();
+      const lvlText = level.replace('NIVEL: ', '').toLowerCase();
 
-  const msg = encodeURIComponent(
-    `Hola, hice el quiz de digitalización de Mucho Marketing. ` +
-    `Mi score fue ${score}/100 — nivel ${lvlText}. ` +
-    (weakPillars ? `Los pilares que me quedaron más bajos son: ${weakPillars}. ` : '') +
-    `¿Me podés decir cuáles son los primeros pasos recomendados para mi empresa?`
-  );
-  document.getElementById('wa-btn').href = `https://wa.me/5491100000000?text=${msg}`;
-}
+      const msg = encodeURIComponent(
+        `Hola, hice el quiz de digitalización de Mucho Marketing. ` +
+        `Mi score fue ${score}/100 — nivel ${lvlText}. ` +
+        (weakPillars ? `Los pilares que me quedaron más bajos son: ${weakPillars}. ` : '') +
+        `¿Me podés decir cuáles son los primeros pasos recomendados para mi empresa?`
+      );
+      document.getElementById('wa-btn').href = `https://wa.me/5491100000000?text=${msg}`;
+    }
 
-// ══════════════════════════════════════════════════════════
-// EMAIL
-// ══════════════════════════════════════════════════════════
-function sendEmail() {
-  const inp = document.getElementById('email-input');
-  if (!inp.value.trim() || !inp.value.includes('@')) {
-    inp.style.borderColor = 'rgba(255,80,80,0.5)';
-    inp.focus();
-    setTimeout(() => inp.style.borderColor = '', 1500);
-    return;
-  }
-  const btn = inp.nextElementSibling;
-  btn.textContent   = 'Enviado ✓';
-  btn.style.color   = 'var(--green)';
-  btn.disabled      = true;
-}
-</script>
+    // ══════════════════════════════════════════════════════════
+    // EMAIL
+    // ══════════════════════════════════════════════════════════
+    function sendEmail() {
+      const inp = document.getElementById('email-input');
+      if (!inp.value.trim() || !inp.value.includes('@')) {
+        inp.style.borderColor = 'rgba(255,80,80,0.5)';
+        inp.focus();
+        setTimeout(() => inp.style.borderColor = '', 1500);
+        return;
+      }
+      const btn = inp.nextElementSibling;
+      btn.textContent = 'Enviado ✓';
+      btn.style.color = 'var(--green)';
+      btn.disabled = true;
+    }
+  </script>
 </body>
+
 </html>

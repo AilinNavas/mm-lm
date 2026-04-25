@@ -1,459 +1,1119 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>El sistema de seguimiento post-presupuesto · Mucho Marketing</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --brand-dark: #010707;
-    --card-dark: #09140E;
-    --card-mid: #192520;
-    --green: #27DE6B;
-    --white: #FFFFFF;
-    --text-body: rgba(255,255,255,0.72);
-    --text-muted: rgba(255,255,255,0.38);
-    --border: rgba(255,255,255,0.08);
-    --green-dim: rgba(39,222,107,0.08);
-    --green-border: rgba(39,222,107,0.25);
-    --red: rgba(255,100,100,0.85);
-    --red-dim: rgba(255,80,80,0.07);
-    --red-border: rgba(255,80,80,0.18);
-    --yellow: #F5C842;
-    --yellow-dim: rgba(245,200,66,0.07);
-    --yellow-border: rgba(245,200,66,0.2);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El sistema de seguimiento post-presupuesto · Mucho Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-dark: #010707;
+      --card-dark: #09140E;
+      --card-mid: #192520;
+      --green: #27DE6B;
+      --white: #FFFFFF;
+      --text-body: rgba(255, 255, 255, 0.72);
+      --text-muted: rgba(255, 255, 255, 0.38);
+      --border: rgba(255, 255, 255, 0.08);
+      --green-dim: rgba(39, 222, 107, 0.08);
+      --green-border: rgba(39, 222, 107, 0.25);
+      --red: rgba(255, 100, 100, 0.85);
+      --red-dim: rgba(255, 80, 80, 0.07);
+      --red-border: rgba(255, 80, 80, 0.18);
+      --yellow: #F5C842;
+      --yellow-dim: rgba(245, 200, 66, 0.07);
+      --yellow-border: rgba(245, 200, 66, 0.2);
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--brand-dark); color: var(--text-body); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.85; font-size: 17px; -webkit-font-smoothing: antialiased; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--green); z-index: 100; transition: width 0.1s linear; }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  header { border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: rgba(1,7,7,0.97); backdrop-filter: blur(12px); z-index: 50; }
-  .logo { font-size: 15px; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.04em; }
-  .logo span { color: var(--green); }
-  .header-tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+    body {
+      background: var(--brand-dark);
+      color: var(--text-body);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.85;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .hero { max-width: 760px; margin: 0 auto; padding: 80px 40px 56px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.2s; }
-  .article-category { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
-  .article-category::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--green); }
-  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.07; color: var(--white); margin-bottom: 28px; letter-spacing: -0.03em; }
-  h1 em { font-style: normal; color: var(--green); }
-  .hero-subtitle { font-size: 18px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 40px; border-left: 3px solid var(--green); padding-left: 20px; }
-  .article-meta { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--text-muted); padding-bottom: 40px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .meta-dot { width: 3px; height: 3px; background: var(--green); border-radius: 50%; flex-shrink: 0; }
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--green);
+      z-index: 100;
+      transition: width 0.1s linear;
+    }
 
-  .content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.8s ease forwards 0.5s; }
-  .content p { margin-bottom: 24px; }
-  .content p strong { color: var(--white); font-weight: 600; }
-  h2 { font-size: clamp(20px, 3vw, 28px); font-weight: 900; color: var(--white); margin: 64px 0 20px; line-height: 1.12; letter-spacing: -0.025em; }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(1, 7, 7, 0.97);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
 
-  .pull-quote { border-left: 3px solid var(--green); padding: 22px 28px; margin: 48px 0; background: var(--card-dark); }
-  .pull-quote p { font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; color: var(--white); line-height: 1.45; margin: 0; letter-spacing: -0.01em; }
+    .logo {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
 
-  .source-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 2px 7px; font-weight: 600; vertical-align: middle; margin-left: 5px; position: relative; top: -1px; }
+    .logo span {
+      color: var(--green);
+    }
 
-  .data-callout { background: var(--card-dark); border: 1px solid var(--border); border-left: 3px solid var(--green); padding: 20px 24px; margin: 32px 0; display: flex; gap: 20px; align-items: flex-start; }
-  .data-num { font-size: 36px; font-weight: 900; color: var(--green); line-height: 1; letter-spacing: -0.03em; flex-shrink: 0; min-width: 72px; }
-  .data-text { flex: 1; padding-top: 4px; font-size: 15px; line-height: 1.65; }
-  .data-text strong { color: var(--white); font-weight: 600; }
+    .header-tag {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
 
-  /* STAT GRID */
-  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin: 48px 0; border: 1px solid var(--border); }
-  .stat-item { background: var(--card-dark); padding: 28px 20px; text-align: center; }
-  .stat-num { font-size: clamp(40px, 5vw, 54px); font-weight: 900; color: var(--green); line-height: 1; margin-bottom: 10px; display: block; letter-spacing: -0.04em; }
-  .stat-label { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-  .stat-source { font-size: 10px; color: rgba(255,255,255,0.18); margin-top: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 40px 56px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
 
-  /* TIMELINE */
-  .timeline { margin: 48px 0; }
-  .timeline-step { display: flex; gap: 24px; margin-bottom: 2px; }
-  .tl-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 64px; }
-  .tl-day { background: var(--card-mid); border: 1px solid var(--green-border); font-size: 10px; font-weight: 700; color: var(--green); padding: 8px 4px; text-align: center; width: 100%; letter-spacing: 0.05em; line-height: 1.3; }
-  .tl-line { width: 1px; background: var(--border); flex: 1; min-height: 20px; }
-  .tl-content { background: var(--card-dark); border: 1px solid var(--border); padding: 20px 24px; flex: 1; border-left: 3px solid transparent; transition: border-color 0.2s; }
-  .tl-content:hover { border-left-color: var(--green); }
-  .tl-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 8px; letter-spacing: -0.01em; }
-  .tl-body { font-size: 14px; color: var(--text-body); line-height: 1.7; }
-  .tl-body strong { color: var(--white); font-weight: 600; }
-  .tl-msg { font-size: 13px; color: var(--text-muted); font-style: italic; margin-top: 12px; border-left: 2px solid var(--green-border); padding-left: 12px; line-height: 1.65; }
+    .article-category {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
 
-  /* OBJECTION CARDS */
-  .objection-card { background: var(--card-dark); border: 1px solid var(--border); margin: 24px 0; overflow: hidden; }
-  .obj-header { display: flex; align-items: center; gap: 0; }
-  .obj-tag { background: var(--yellow-dim); border-right: 1px solid var(--border); padding: 14px 18px; font-size: 10px; font-weight: 700; color: var(--yellow); letter-spacing: 0.15em; text-transform: uppercase; flex-shrink: 0; min-width: 120px; }
-  .obj-phrase { padding: 14px 20px; font-size: 16px; font-weight: 600; color: var(--white); font-style: italic; }
-  .obj-body { padding: 20px 24px; border-top: 1px solid var(--border); }
-  .obj-why { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.65; }
-  .obj-why strong { color: var(--text-body); font-weight: 500; }
-  .obj-response { font-size: 14px; color: var(--text-body); line-height: 1.75; border-left: 2px solid var(--green); padding-left: 14px; }
-  .obj-response strong { color: var(--white); font-weight: 600; }
+    .article-category::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--green);
+    }
 
-  .warning { background: var(--red-dim); border: 1px solid var(--red-border); border-left: 3px solid var(--red); padding: 18px 22px; margin: 32px 0; font-size: 15px; line-height: 1.65; }
-  .warning strong { color: var(--red); font-weight: 600; }
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      line-height: 1.07;
+      color: var(--white);
+      margin-bottom: 28px;
+      letter-spacing: -0.03em;
+    }
 
-  /* LEAD MAGNET */
-  .lm-teaser { background: var(--card-dark); border: 1px solid var(--border); border-top: 2px solid var(--green); margin: 64px 0 0; overflow: hidden; }
-  .lm-header { padding: 24px 28px; background: var(--card-mid); border-bottom: 1px solid var(--border); }
-  .lm-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
-  .lm-title { font-size: 20px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; }
-  .lm-body { padding: 28px; }
-  .lm-intro { font-size: 15px; color: var(--text-body); margin-bottom: 24px; line-height: 1.7; }
+    h1 em {
+      font-style: normal;
+      color: var(--green);
+    }
 
-  .lm-gate { position: relative; border-top: 1px solid var(--border); }
-  .lm-gate-blur { filter: blur(4px); user-select: none; pointer-events: none; opacity: 0.45; max-height: 160px; overflow: hidden; }
-  .lm-gate-overlay { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px; background: var(--card-dark); border-top: 1px solid var(--green-border); }
-  .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
-  .gate-title { font-size: 18px; font-weight: 900; color: var(--white); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2; }
-  .gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; max-width: 380px; }
-  .gate-instruction { font-size: 13px; color: var(--text-body); margin-bottom: 14px; line-height: 1.6; background: var(--card-mid); border: 1px solid var(--green-border); padding: 10px 14px; }
-  .gate-instruction strong { color: var(--green); font-weight: 700; }
-  .gate-kw { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--green); color: var(--brand-dark); padding: 14px 28px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; margin-bottom: 10px; transition: background 0.2s, transform 0.2s; cursor: pointer; }
-  .gate-kw:hover { background: #4eff8a; transform: translateY(-2px); }
-  .gate-kw-arrow { font-size: 16px; }
-  .gate-note { font-size: 11px; color: var(--text-muted); }
+    .hero-subtitle {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      border-left: 3px solid var(--green);
+      padding-left: 20px;
+    }
 
-  .divider { display: flex; align-items: center; gap: 16px; margin: 56px 0; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-  .divider-icon { color: var(--green); font-size: 9px; letter-spacing: 0.4em; font-weight: 700; }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
 
-  .footnote { font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 28px; margin-top: 48px; line-height: 1.8; }
+    .meta-dot {
+      width: 3px;
+      height: 3px;
+      background: var(--green);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
 
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+    .content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
 
-  @media (max-width: 600px) {
-    header { padding: 16px 20px; }
-    .hero, .content { padding-left: 20px; padding-right: 20px; }
-    .hero { padding-top: 48px; }
-    .stat-grid { grid-template-columns: 1fr; }
-    .data-callout { flex-direction: column; gap: 10px; }
-    .lm-body { padding: 20px; }
-    .timeline-step { flex-direction: column; gap: 8px; }
-    .tl-left { flex-direction: row; width: 100%; }
-    .tl-line { display: none; }
-    .obj-header { flex-direction: column; }
-    .obj-tag { min-width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
-  }
-</style>
+    .content p {
+      margin-bottom: 24px;
+    }
+
+    .content p strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 900;
+      color: var(--white);
+      margin: 64px 0 20px;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--green);
+      padding: 22px 28px;
+      margin: 48px 0;
+      background: var(--card-dark);
+    }
+
+    .pull-quote p {
+      font-size: clamp(17px, 2.2vw, 21px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.45;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .source-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      padding: 2px 7px;
+      font-weight: 600;
+      vertical-align: middle;
+      margin-left: 5px;
+      position: relative;
+      top: -1px;
+    }
+
+    .data-callout {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      padding: 20px 24px;
+      margin: 32px 0;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .data-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      flex-shrink: 0;
+      min-width: 72px;
+    }
+
+    .data-text {
+      flex: 1;
+      padding-top: 4px;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .data-text strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* STAT GRID */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin: 48px 0;
+      border: 1px solid var(--border);
+    }
+
+    .stat-item {
+      background: var(--card-dark);
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: clamp(40px, 5vw, 54px);
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 10px;
+      display: block;
+      letter-spacing: -0.04em;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .stat-source {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.18);
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      margin: 48px 0;
+    }
+
+    .timeline-step {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 2px;
+    }
+
+    .tl-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      width: 64px;
+    }
+
+    .tl-day {
+      background: var(--card-mid);
+      border: 1px solid var(--green-border);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--green);
+      padding: 8px 4px;
+      text-align: center;
+      width: 100%;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+    }
+
+    .tl-line {
+      width: 1px;
+      background: var(--border);
+      flex: 1;
+      min-height: 20px;
+    }
+
+    .tl-content {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      padding: 20px 24px;
+      flex: 1;
+      border-left: 3px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .tl-content:hover {
+      border-left-color: var(--green);
+    }
+
+    .tl-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .tl-body {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.7;
+    }
+
+    .tl-body strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .tl-msg {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 12px;
+      border-left: 2px solid var(--green-border);
+      padding-left: 12px;
+      line-height: 1.65;
+    }
+
+    /* OBJECTION CARDS */
+    .objection-card {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      margin: 24px 0;
+      overflow: hidden;
+    }
+
+    .obj-header {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .obj-tag {
+      background: var(--yellow-dim);
+      border-right: 1px solid var(--border);
+      padding: 14px 18px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--yellow);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      min-width: 120px;
+    }
+
+    .obj-phrase {
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      font-style: italic;
+    }
+
+    .obj-body {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .obj-why {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.65;
+    }
+
+    .obj-why strong {
+      color: var(--text-body);
+      font-weight: 500;
+    }
+
+    .obj-response {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.75;
+      border-left: 2px solid var(--green);
+      padding-left: 14px;
+    }
+
+    .obj-response strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .warning {
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      border-left: 3px solid var(--red);
+      padding: 18px 22px;
+      margin: 32px 0;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .warning strong {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    /* LEAD MAGNET */
+    .lm-teaser {
+      background: var(--card-dark);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--green);
+      margin: 64px 0 0;
+      overflow: hidden;
+    }
+
+    .lm-header {
+      padding: 24px 28px;
+      background: var(--card-mid);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lm-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .lm-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .lm-body {
+      padding: 28px;
+    }
+
+    .lm-intro {
+      font-size: 15px;
+      color: var(--text-body);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .lm-gate {
+      position: relative;
+      border-top: 1px solid var(--border);
+    }
+
+    .lm-gate-blur {
+      filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.45;
+      max-height: 160px;
+      overflow: hidden;
+    }
+
+    .lm-gate-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      background: var(--card-dark);
+      border-top: 1px solid var(--green-border);
+    }
+
+    .gate-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+
+    .gate-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .gate-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+
+    .gate-instruction {
+      font-size: 13px;
+      color: var(--text-body);
+      margin-bottom: 14px;
+      line-height: 1.6;
+      background: var(--card-mid);
+      border: 1px solid var(--green-border);
+      padding: 10px 14px;
+    }
+
+    .gate-instruction strong {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .gate-kw {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--green);
+      color: var(--brand-dark);
+      padding: 14px 28px;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .gate-kw:hover {
+      background: #4eff8a;
+      transform: translateY(-2px);
+    }
+
+    .gate-kw-arrow {
+      font-size: 16px;
+    }
+
+    .gate-note {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 56px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-icon {
+      color: var(--green);
+      font-size: 9px;
+      letter-spacing: 0.4em;
+      font-weight: 700;
+    }
+
+    .footnote {
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      margin-top: 48px;
+      line-height: 1.8;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 16px 20px;
+      }
+
+      .hero,
+      .content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero {
+        padding-top: 48px;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .data-callout {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .lm-body {
+        padding: 20px;
+      }
+
+      .timeline-step {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .tl-left {
+        flex-direction: row;
+        width: 100%;
+      }
+
+      .tl-line {
+        display: none;
+      }
+
+      .obj-header {
+        flex-direction: column;
+      }
+
+      .obj-tag {
+        min-width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="progress-bar"></div>
+  <div id="progress-bar"></div>
 
-<header>
-  <div class="logo">Mucho <span>Marketing</span></div>
-  <div class="header-tag">Seguimiento Post-Presupuesto</div>
-</header>
+  <header>
+    <div class="logo">Mucho <span>Marketing</span></div>
+    <div class="header-tag">Seguimiento Post-Presupuesto</div>
+  </header>
 
-<article>
-  <div class="hero">
-    <div class="article-category">Diagnóstico C — Seguimiento</div>
-    <h1>El sistema de seguimiento post-presupuesto: <em>cuándo, cómo y qué decir</em> en cada contacto</h1>
-    <p class="hero-subtitle">La mayoría de los presupuestos no se pierden por precio. Se pierden porque nadie hizo seguimiento. Este artículo da el sistema exacto para convertir presupuestos enviados en proyectos cerrados.</p>
-    <div class="article-meta">
-      <span>Mucho Marketing</span>
-      <span class="meta-dot"></span>
-      <span>12 min de lectura</span>
-      <span class="meta-dot"></span>
-      <span>Fuentes: HubSpot · Invesp · Salesforce · Geoffrey James</span>
-    </div>
-  </div>
-
-  <div class="content">
-
-    <p>Cuando una empresa de construcción o home improvement manda un presupuesto, suele pasar una de dos cosas: el cliente responde rápido y avanza, o desaparece. En el segundo caso, la respuesta más frecuente del equipo de ventas es esperar. Algunos mandan un mensaje a los dos días preguntando "¿pudiste ver el presupuesto?". Si no hay respuesta, archivan.</p>
-
-    <p>Ese comportamiento tiene un costo que pocas empresas calculan. No es un costo de oportunidad abstracto — es facturación concreta que se fue a la competencia no porque el precio era mejor, sino porque alguien llamó o escribió cuando el cliente finalmente estaba listo para decidir.</p>
-
-    <div class="pull-quote reveal">
-      <p>El 60% de los clientes rechaza una oferta cuatro veces antes de comprar. El 44% de los vendedores abandona después de un solo intento de seguimiento. La aritmética de esa combinación es la razón por la que se pierden la mayoría de los presupuestos enviados. <span class="source-tag">Invesp / HubSpot</span></p>
-    </div>
-
-    <h2>Los números que nadie quiere ver</h2>
-
-    <p>El problema del seguimiento post-presupuesto no es falta de ganas. Es falta de sistema. Cuando no hay un protocolo establecido, cada vendedor sigue su propio criterio — que generalmente es hacer uno o dos intentos y pasar al siguiente lead.</p>
-
-    <div class="stat-grid reveal">
-      <div class="stat-item">
-        <span class="stat-num">80%</span>
-        <span class="stat-label">de las ventas requieren cinco o más seguimientos para cerrarse</span>
-        <div class="stat-source">Invesp / HubSpot</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">44%</span>
-        <span class="stat-label">de los vendedores abandona después de un solo intento de seguimiento</span>
-        <div class="stat-source">Invesp / HubSpot</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">48%</span>
-        <span class="stat-label">de los vendedores no hace ningún intento de seguimiento en absoluto</span>
-        <div class="stat-source">Invesp</div>
+  <article>
+    <div class="hero">
+      <div class="article-category">Diagnóstico C — Seguimiento</div>
+      <h1>El sistema de seguimiento post-presupuesto: <em>cuándo, cómo y qué decir</em> en cada contacto</h1>
+      <p class="hero-subtitle">La mayoría de los presupuestos no se pierden por precio. Se pierden porque nadie hizo
+        seguimiento. Este artículo da el sistema exacto para convertir presupuestos enviados en proyectos cerrados.</p>
+      <div class="article-meta">
+        <span>Mucho Marketing</span>
+        <span class="meta-dot"></span>
+        <span>12 min de lectura</span>
+        <span class="meta-dot"></span>
+        <span>Fuentes: HubSpot · Invesp · Salesforce · Geoffrey James</span>
       </div>
     </div>
 
-    <p>Para un negocio de alto ticket en construcción, esos números tienen una traducción directa: si enviaste 20 presupuestos el mes pasado y tu equipo hizo seguimiento activo solo en los primeros 2 días, estás dejando potencialmente 12 a 15 oportunidades reales sin cerrar — no porque el cliente no estuviera interesado, sino porque nadie volvió a llamar cuando él finalmente tuvo tiempo de revisar la propuesta.</p>
+    <div class="content">
 
-    <h2>Por qué el seguimiento post-presupuesto es diferente al resto</h2>
+      <p>Cuando una empresa de construcción o home improvement manda un presupuesto, suele pasar una de dos cosas: el
+        cliente responde rápido y avanza, o desaparece. En el segundo caso, la respuesta más frecuente del equipo de
+        ventas es esperar. Algunos mandan un mensaje a los dos días preguntando "¿pudiste ver el presupuesto?". Si no
+        hay respuesta, archivan.</p>
 
-    <p>El seguimiento después de enviar un presupuesto no es lo mismo que el nurturing de un lead frío. Hay tres diferencias fundamentales que cambian completamente cómo se maneja:</p>
+      <p>Ese comportamiento tiene un costo que pocas empresas calculan. No es un costo de oportunidad abstracto — es
+        facturación concreta que se fue a la competencia no porque el precio era mejor, sino porque alguien llamó o
+        escribió cuando el cliente finalmente estaba listo para decidir.</p>
 
-    <p><strong>Hay una propuesta concreta en la mesa.</strong> El cliente ya sabe qué, cuánto, y cómo. La conversación ya no es de exploración — es de decisión. Cada contacto tiene que ayudarlo a tomar esa decisión, no recordarle que existe la empresa.</p>
-
-    <p><strong>El cliente está comparando.</strong> En el momento en que recibió el presupuesto, probablemente también le pidió propuesta a uno o dos competidores. El seguimiento no solo tiene que mantener la relación — tiene que diferenciarte activamente de las otras opciones que está evaluando.</p>
-
-    <p><strong>Las objeciones son específicas.</strong> Ya no son "no sé si lo necesito" o "no sé si tengo presupuesto". Son "el precio me parece alto", "tengo que consultarlo con mi pareja", o "estoy esperando ver la otra propuesta". Esas objeciones requieren respuestas concretas, no mensajes genéricos de seguimiento.</p>
-
-    <div class="data-callout reveal">
-      <div class="data-num">49%</div>
-      <div class="data-text"><p><strong>Más alta es la tasa de respuesta del primer seguimiento</strong> comparado con el mensaje inicial que acompañó el presupuesto. El primer seguimiento no es molestia — es el momento en que la mayoría de los clientes recién leen la propuesta con atención. <span class="source-tag">Belkins / HubSpot</span></p></div>
-    </div>
-
-    <h2>El sistema de cinco contactos</h2>
-
-    <p>El sistema que sigue está diseñado para negocios de alto ticket donde el ciclo de decisión puede ser de días a semanas. Cada contacto tiene un objetivo específico, un tono diferente, y un criterio para saber si avanzar o pasar a nurturing.</p>
-
-    <div class="timeline reveal">
-
-      <div class="timeline-step">
-        <div class="tl-left">
-          <div class="tl-day">Hora 2</div>
-          <div class="tl-line"></div>
-        </div>
-        <div class="tl-content">
-          <div class="tl-title">Confirmación de envío + apertura</div>
-          <div class="tl-body">Inmediatamente después de enviar el presupuesto, un mensaje corto que confirma el envío, invita a hacer preguntas, y propone una llamada breve para recorrerlo juntos. <strong>La mayoría de los vendedores espera que el cliente lea y decida solo — pero el 71% de los compradores prefiere hacer preguntas antes de decidir.</strong> Ofrecerle ese espacio inmediatamente es una ventaja competitiva real.</div>
-          <div class="tl-msg">"[Nombre], te acabo de enviar la propuesta por mail. Cualquier pregunta que tengas sobre los materiales, los tiempos, o la forma de trabajo, avisame. Si preferís, puedo llamarte 15 minutos esta semana para recorrerla juntos — a veces es más rápido que ir y venir por mensajes."</div>
-        </div>
+      <div class="pull-quote reveal">
+        <p>El 60% de los clientes rechaza una oferta cuatro veces antes de comprar. El 44% de los vendedores abandona
+          después de un solo intento de seguimiento. La aritmética de esa combinación es la razón por la que se pierden
+          la mayoría de los presupuestos enviados. <span class="source-tag">Invesp / HubSpot</span></p>
       </div>
 
-      <div class="timeline-step">
-        <div class="tl-left">
-          <div class="tl-day">Día 2</div>
-          <div class="tl-line"></div>
+      <h2>Los números que nadie quiere ver</h2>
+
+      <p>El problema del seguimiento post-presupuesto no es falta de ganas. Es falta de sistema. Cuando no hay un
+        protocolo establecido, cada vendedor sigue su propio criterio — que generalmente es hacer uno o dos intentos y
+        pasar al siguiente lead.</p>
+
+      <div class="stat-grid reveal">
+        <div class="stat-item">
+          <span class="stat-num">80%</span>
+          <span class="stat-label">de las ventas requieren cinco o más seguimientos para cerrarse</span>
+          <div class="stat-source">Invesp / HubSpot</div>
         </div>
-        <div class="tl-content">
-          <div class="tl-title">Primer seguimiento — verificación de recepción</div>
-          <div class="tl-body">Si no hubo respuesta al primer mensaje, un contacto breve que verifica que recibió la propuesta y abre la puerta a preguntas. <strong>No preguntar "¿qué decidiste?" — es demasiado pronto y demasiado presión.</strong> Preguntar si hay algo que aclarar es dar un paso adelante sin invadir el proceso de decisión.</div>
-          <div class="tl-msg">"Hola [nombre], quería verificar que recibiste bien la propuesta que te envié el [día]. ¿Llegó todo bien? Si hay algún detalle que quieras que te explique mejor, avisame."</div>
+        <div class="stat-item">
+          <span class="stat-num">44%</span>
+          <span class="stat-label">de los vendedores abandona después de un solo intento de seguimiento</span>
+          <div class="stat-source">Invesp / HubSpot</div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">48%</span>
+          <span class="stat-label">de los vendedores no hace ningún intento de seguimiento en absoluto</span>
+          <div class="stat-source">Invesp</div>
         </div>
       </div>
 
-      <div class="timeline-step">
-        <div class="tl-left">
-          <div class="tl-day">Día 5</div>
-          <div class="tl-line"></div>
-        </div>
-        <div class="tl-content">
-          <div class="tl-title">Segundo seguimiento — aporte de valor adicional</div>
-          <div class="tl-body">Este contacto no pregunta por la decisión. Agrega algo concreto que ayuda al cliente a evaluar mejor: una foto de un proyecto similar terminado, un detalle técnico relevante que no estaba en el presupuesto, o una referencia de un cliente del mismo tipo de propiedad. <strong>El objetivo es demostrar expertise en el momento en que el cliente está comparando propuestas — no recordarle que se está demorando en decidir.</strong></div>
-          <div class="tl-msg">"[Nombre], mientras esperabas la decisión, terminamos un proyecto muy parecido al tuyo en [zona/tipo de propiedad]. Te mando las fotos por si te sirven para visualizar el resultado final. El plazo de esa obra fue de [X semanas], similar a lo que cotizamos para tu caso."</div>
-        </div>
-      </div>
+      <p>Para un negocio de alto ticket en construcción, esos números tienen una traducción directa: si enviaste 20
+        presupuestos el mes pasado y tu equipo hizo seguimiento activo solo en los primeros 2 días, estás dejando
+        potencialmente 12 a 15 oportunidades reales sin cerrar — no porque el cliente no estuviera interesado, sino
+        porque nadie volvió a llamar cuando él finalmente tuvo tiempo de revisar la propuesta.</p>
 
-      <div class="timeline-step">
-        <div class="tl-left">
-          <div class="tl-day">Día 10</div>
-          <div class="tl-line"></div>
-        </div>
-        <div class="tl-content">
-          <div class="tl-title">Tercer seguimiento — pregunta directa por la decisión</div>
-          <div class="tl-body">Acá sí se pregunta directamente. No de forma agresiva, pero sí con claridad. <strong>El cliente que lleva 10 días con la propuesta sin responder generalmente tiene una objeción que no verbalizó — precio, otra propuesta, un decisor adicional.</strong> Este mensaje invita a que esa objeción salga a la superficie para poder trabajarla.</div>
-          <div class="tl-msg">"[Nombre], ¿cómo viene la decisión? Si hay algo que te genera dudas sobre la propuesta — el precio, la forma de trabajo, los materiales — prefiero que me lo digas directamente para poder aclararlo o ajustarlo si tiene sentido. ¿En qué etapa estás?"</div>
-        </div>
-      </div>
+      <h2>Por qué el seguimiento post-presupuesto es diferente al resto</h2>
 
-      <div class="timeline-step">
-        <div class="tl-left">
-          <div class="tl-day">Día 21</div>
-          <div class="tl-line"></div>
-        </div>
-        <div class="tl-content">
-          <div class="tl-title">Cuarto seguimiento — reencuadre o cierre del loop</div>
-          <div class="tl-body">Si llegó hasta acá sin respuesta, una de dos cosas: el cliente todavía está evaluando (y necesita un último empujón) o decidió no avanzar y no quiere decirlo. Este mensaje lo invita explícitamente a compartir si el proyecto cambió de planes — lo que es a la vez una oportunidad de reapertura y un cierre limpio si la respuesta es negativa.</div>
-          <div class="tl-msg">"[Nombre], entiendo que los procesos de decisión llevan tiempo. Si el proyecto avanzó hacia otra dirección o cambió de planes, avisame sin problema — me ayuda saber para poder enfocarme en otros proyectos. Y si todavía está en evaluación, quedo disponible para cualquier pregunta."</div>
+      <p>El seguimiento después de enviar un presupuesto no es lo mismo que el nurturing de un lead frío. Hay tres
+        diferencias fundamentales que cambian completamente cómo se maneja:</p>
+
+      <p><strong>Hay una propuesta concreta en la mesa.</strong> El cliente ya sabe qué, cuánto, y cómo. La conversación
+        ya no es de exploración — es de decisión. Cada contacto tiene que ayudarlo a tomar esa decisión, no recordarle
+        que existe la empresa.</p>
+
+      <p><strong>El cliente está comparando.</strong> En el momento en que recibió el presupuesto, probablemente también
+        le pidió propuesta a uno o dos competidores. El seguimiento no solo tiene que mantener la relación — tiene que
+        diferenciarte activamente de las otras opciones que está evaluando.</p>
+
+      <p><strong>Las objeciones son específicas.</strong> Ya no son "no sé si lo necesito" o "no sé si tengo
+        presupuesto". Son "el precio me parece alto", "tengo que consultarlo con mi pareja", o "estoy esperando ver la
+        otra propuesta". Esas objeciones requieren respuestas concretas, no mensajes genéricos de seguimiento.</p>
+
+      <div class="data-callout reveal">
+        <div class="data-num">49%</div>
+        <div class="data-text">
+          <p><strong>Más alta es la tasa de respuesta del primer seguimiento</strong> comparado con el mensaje inicial
+            que acompañó el presupuesto. El primer seguimiento no es molestia — es el momento en que la mayoría de los
+            clientes recién leen la propuesta con atención. <span class="source-tag">Belkins / HubSpot</span></p>
         </div>
       </div>
 
-    </div>
+      <h2>El sistema de cinco contactos</h2>
 
-    <h2>Cómo manejar las cuatro objeciones más frecuentes post-presupuesto</h2>
+      <p>El sistema que sigue está diseñado para negocios de alto ticket donde el ciclo de decisión puede ser de días a
+        semanas. Cada contacto tiene un objetivo específico, un tono diferente, y un criterio para saber si avanzar o
+        pasar a nurturing.</p>
 
-    <p>Las objeciones que aparecen después de enviar un presupuesto son distintas de las que aparecen en la calificación inicial. Son más específicas, más profundas, y generalmente señalan algo concreto que el cliente necesita resolver antes de decidir.</p>
+      <div class="timeline reveal">
 
-    <p>HubSpot documenta un principio clave sobre objeciones: <strong>la primera objeción que verbaliza un cliente raramente es la objeción real.</strong> Es la salida más fácil. La objeción real está debajo. El trabajo del vendedor no es responder la primera — es descubrir la segunda.</p>
+        <div class="timeline-step">
+          <div class="tl-left">
+            <div class="tl-day">Hora 2</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-title">Confirmación de envío + apertura</div>
+            <div class="tl-body">Inmediatamente después de enviar el presupuesto, un mensaje corto que confirma el
+              envío, invita a hacer preguntas, y propone una llamada breve para recorrerlo juntos. <strong>La mayoría de
+                los vendedores espera que el cliente lea y decida solo — pero el 71% de los compradores prefiere hacer
+                preguntas antes de decidir.</strong> Ofrecerle ese espacio inmediatamente es una ventaja competitiva
+              real.</div>
+            <div class="tl-msg">"[Nombre], te acabo de enviar la propuesta por mail. Cualquier pregunta que tengas sobre
+              los materiales, los tiempos, o la forma de trabajo, avisame. Si preferís, puedo llamarte 15 minutos esta
+              semana para recorrerla juntos — a veces es más rápido que ir y venir por mensajes."</div>
+          </div>
+        </div>
 
-    <div class="objection-card reveal">
-      <div class="obj-header">
-        <div class="obj-tag">Objeción 01</div>
-        <div class="obj-phrase">"Me parece caro" / "El precio es alto"</div>
+        <div class="timeline-step">
+          <div class="tl-left">
+            <div class="tl-day">Día 2</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-title">Primer seguimiento — verificación de recepción</div>
+            <div class="tl-body">Si no hubo respuesta al primer mensaje, un contacto breve que verifica que recibió la
+              propuesta y abre la puerta a preguntas. <strong>No preguntar "¿qué decidiste?" — es demasiado pronto y
+                demasiado presión.</strong> Preguntar si hay algo que aclarar es dar un paso adelante sin invadir el
+              proceso de decisión.</div>
+            <div class="tl-msg">"Hola [nombre], quería verificar que recibiste bien la propuesta que te envié el [día].
+              ¿Llegó todo bien? Si hay algún detalle que quieras que te explique mejor, avisame."</div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="tl-left">
+            <div class="tl-day">Día 5</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-title">Segundo seguimiento — aporte de valor adicional</div>
+            <div class="tl-body">Este contacto no pregunta por la decisión. Agrega algo concreto que ayuda al cliente a
+              evaluar mejor: una foto de un proyecto similar terminado, un detalle técnico relevante que no estaba en el
+              presupuesto, o una referencia de un cliente del mismo tipo de propiedad. <strong>El objetivo es demostrar
+                expertise en el momento en que el cliente está comparando propuestas — no recordarle que se está
+                demorando en decidir.</strong></div>
+            <div class="tl-msg">"[Nombre], mientras esperabas la decisión, terminamos un proyecto muy parecido al tuyo
+              en [zona/tipo de propiedad]. Te mando las fotos por si te sirven para visualizar el resultado final. El
+              plazo de esa obra fue de [X semanas], similar a lo que cotizamos para tu caso."</div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="tl-left">
+            <div class="tl-day">Día 10</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-title">Tercer seguimiento — pregunta directa por la decisión</div>
+            <div class="tl-body">Acá sí se pregunta directamente. No de forma agresiva, pero sí con claridad. <strong>El
+                cliente que lleva 10 días con la propuesta sin responder generalmente tiene una objeción que no
+                verbalizó — precio, otra propuesta, un decisor adicional.</strong> Este mensaje invita a que esa
+              objeción salga a la superficie para poder trabajarla.</div>
+            <div class="tl-msg">"[Nombre], ¿cómo viene la decisión? Si hay algo que te genera dudas sobre la propuesta —
+              el precio, la forma de trabajo, los materiales — prefiero que me lo digas directamente para poder
+              aclararlo o ajustarlo si tiene sentido. ¿En qué etapa estás?"</div>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="tl-left">
+            <div class="tl-day">Día 21</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-title">Cuarto seguimiento — reencuadre o cierre del loop</div>
+            <div class="tl-body">Si llegó hasta acá sin respuesta, una de dos cosas: el cliente todavía está evaluando
+              (y necesita un último empujón) o decidió no avanzar y no quiere decirlo. Este mensaje lo invita
+              explícitamente a compartir si el proyecto cambió de planes — lo que es a la vez una oportunidad de
+              reapertura y un cierre limpio si la respuesta es negativa.</div>
+            <div class="tl-msg">"[Nombre], entiendo que los procesos de decisión llevan tiempo. Si el proyecto avanzó
+              hacia otra dirección o cambió de planes, avisame sin problema — me ayuda saber para poder enfocarme en
+              otros proyectos. Y si todavía está en evaluación, quedo disponible para cualquier pregunta."</div>
+          </div>
+        </div>
+
       </div>
-      <div class="obj-body">
-        <p class="obj-why"><strong>Lo que generalmente significa:</strong> según el experto en ventas Geoffrey James, una objeción de precio no es "real" hasta que el cliente la plantea dos veces. La primera vez suele ser una salida fácil. Puede significar que no vio el valor, que está comparando con una propuesta de menor calidad, o que genuinamente tiene restricción de presupuesto — tres situaciones muy distintas que requieren respuestas distintas.</p>
-        <div class="obj-response">
-          <strong>Primero, preguntar antes de defender:</strong> "¿Cuándo decís que es caro, ¿estás comparándolo con otra propuesta que recibiste, o con lo que esperabas invertir cuando empezaste a buscar?"<br><br>
-          Esa pregunta abre la conversación real. Si compara con otra propuesta, se puede trabajar en diferenciación. Si compara con su expectativa inicial, puede que la expectativa estuviera mal calibrada y valga la pena recalibrarla. <strong>Nunca ofrecer descuento antes de entender cuál de las dos es.</strong>
+
+      <h2>Cómo manejar las cuatro objeciones más frecuentes post-presupuesto</h2>
+
+      <p>Las objeciones que aparecen después de enviar un presupuesto son distintas de las que aparecen en la
+        calificación inicial. Son más específicas, más profundas, y generalmente señalan algo concreto que el cliente
+        necesita resolver antes de decidir.</p>
+
+      <p>HubSpot documenta un principio clave sobre objeciones: <strong>la primera objeción que verbaliza un cliente
+          raramente es la objeción real.</strong> Es la salida más fácil. La objeción real está debajo. El trabajo del
+        vendedor no es responder la primera — es descubrir la segunda.</p>
+
+      <div class="objection-card reveal">
+        <div class="obj-header">
+          <div class="obj-tag">Objeción 01</div>
+          <div class="obj-phrase">"Me parece caro" / "El precio es alto"</div>
+        </div>
+        <div class="obj-body">
+          <p class="obj-why"><strong>Lo que generalmente significa:</strong> según el experto en ventas Geoffrey James,
+            una objeción de precio no es "real" hasta que el cliente la plantea dos veces. La primera vez suele ser una
+            salida fácil. Puede significar que no vio el valor, que está comparando con una propuesta de menor calidad,
+            o que genuinamente tiene restricción de presupuesto — tres situaciones muy distintas que requieren
+            respuestas distintas.</p>
+          <div class="obj-response">
+            <strong>Primero, preguntar antes de defender:</strong> "¿Cuándo decís que es caro, ¿estás comparándolo con
+            otra propuesta que recibiste, o con lo que esperabas invertir cuando empezaste a buscar?"<br><br>
+            Esa pregunta abre la conversación real. Si compara con otra propuesta, se puede trabajar en diferenciación.
+            Si compara con su expectativa inicial, puede que la expectativa estuviera mal calibrada y valga la pena
+            recalibrarla. <strong>Nunca ofrecer descuento antes de entender cuál de las dos es.</strong>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="objection-card reveal">
-      <div class="obj-header">
-        <div class="obj-tag">Objeción 02</div>
-        <div class="obj-phrase">"Tengo que consultarlo con mi pareja/socio"</div>
-      </div>
-      <div class="obj-body">
-        <p class="obj-why"><strong>Lo que generalmente significa:</strong> hay un decisor que no participó en el proceso y cuya aprobación es necesaria. Esto no es una objeción — es información sobre el proceso de decisión que debería haberse detectado en la calificación inicial. Si no se detectó, el trabajo ahora es facilitar que ese decisor adicional se involucre cuanto antes.</p>
-        <div class="obj-response">
-          "Perfecto, es una decisión importante y tiene sentido tomarla juntos. ¿Qué te parece si coordinamos una llamada o reunión breve con los dos? A veces es más fácil que yo explique directamente los detalles de la propuesta y puedan hacer preguntas en el momento."<br><br>
-          <strong>El objetivo es entrar a la conversación con ambos decisores, no esperar a que uno convenza al otro.</strong>
+      <div class="objection-card reveal">
+        <div class="obj-header">
+          <div class="obj-tag">Objeción 02</div>
+          <div class="obj-phrase">"Tengo que consultarlo con mi pareja/socio"</div>
+        </div>
+        <div class="obj-body">
+          <p class="obj-why"><strong>Lo que generalmente significa:</strong> hay un decisor que no participó en el
+            proceso y cuya aprobación es necesaria. Esto no es una objeción — es información sobre el proceso de
+            decisión que debería haberse detectado en la calificación inicial. Si no se detectó, el trabajo ahora es
+            facilitar que ese decisor adicional se involucre cuanto antes.</p>
+          <div class="obj-response">
+            "Perfecto, es una decisión importante y tiene sentido tomarla juntos. ¿Qué te parece si coordinamos una
+            llamada o reunión breve con los dos? A veces es más fácil que yo explique directamente los detalles de la
+            propuesta y puedan hacer preguntas en el momento."<br><br>
+            <strong>El objetivo es entrar a la conversación con ambos decisores, no esperar a que uno convenza al
+              otro.</strong>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="objection-card reveal">
-      <div class="obj-header">
-        <div class="obj-tag">Objeción 03</div>
-        <div class="obj-phrase">"Estoy viendo otras propuestas" / "Estoy comparando"</div>
-      </div>
-      <div class="obj-body">
-        <p class="obj-why"><strong>Lo que generalmente significa:</strong> el cliente está en el proceso normal de tomar una decisión importante. No es una señal negativa — es el comportamiento esperado en alto ticket. El problema es cuando el vendedor interpreta esto como "no hay nada que hacer hasta que decida" y deja de ser activo.</p>
-        <div class="obj-response">
-          "Tiene todo el sentido comparar. ¿Qué aspectos son los más importantes para vos en esta decisión — el precio, los materiales, los tiempos de obra, la experiencia del equipo?"<br><br>
-          Esa pregunta posiciona al vendedor como asesor en el proceso de comparación, no como competidor ansioso. <strong>Cuando el cliente articula sus criterios de decisión, el vendedor puede demostrar superioridad en lo que más importa — no en todo.</strong>
+      <div class="objection-card reveal">
+        <div class="obj-header">
+          <div class="obj-tag">Objeción 03</div>
+          <div class="obj-phrase">"Estoy viendo otras propuestas" / "Estoy comparando"</div>
+        </div>
+        <div class="obj-body">
+          <p class="obj-why"><strong>Lo que generalmente significa:</strong> el cliente está en el proceso normal de
+            tomar una decisión importante. No es una señal negativa — es el comportamiento esperado en alto ticket. El
+            problema es cuando el vendedor interpreta esto como "no hay nada que hacer hasta que decida" y deja de ser
+            activo.</p>
+          <div class="obj-response">
+            "Tiene todo el sentido comparar. ¿Qué aspectos son los más importantes para vos en esta decisión — el
+            precio, los materiales, los tiempos de obra, la experiencia del equipo?"<br><br>
+            Esa pregunta posiciona al vendedor como asesor en el proceso de comparación, no como competidor ansioso.
+            <strong>Cuando el cliente articula sus criterios de decisión, el vendedor puede demostrar superioridad en lo
+              que más importa — no en todo.</strong>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="objection-card reveal">
-      <div class="obj-header">
-        <div class="obj-tag">Objeción 04</div>
-        <div class="obj-phrase">"Lo estoy pensando" / "Dame unos días más"</div>
-      </div>
-      <div class="obj-body">
-        <p class="obj-why"><strong>Lo que generalmente significa:</strong> hay algo que no terminó de resolverse en la propuesta — una duda no verbalizada, una comparación en curso, o un factor externo (presupuesto, timing, aprobación de tercero) que el cliente no quiere explicar todavía. "Lo estoy pensando" es casi siempre una cortesía, no una descripción de lo que está pasando.</p>
-        <div class="obj-response">
-          "Sin problema, entiendo que es una decisión importante. Para ayudarte a tomar la mejor decisión: ¿hay algún aspecto específico de la propuesta que todavía te genera dudas? A veces un detalle que no quedó claro puede frenar el proceso más de lo que parece."<br><br>
-          <strong>Dar permiso explícito para expresar la duda real suele desbloquear la conversación.</strong> Si el cliente dice "no, está todo claro", puede ser el momento de proponer una fecha concreta para la decisión.
+      <div class="objection-card reveal">
+        <div class="obj-header">
+          <div class="obj-tag">Objeción 04</div>
+          <div class="obj-phrase">"Lo estoy pensando" / "Dame unos días más"</div>
+        </div>
+        <div class="obj-body">
+          <p class="obj-why"><strong>Lo que generalmente significa:</strong> hay algo que no terminó de resolverse en la
+            propuesta — una duda no verbalizada, una comparación en curso, o un factor externo (presupuesto, timing,
+            aprobación de tercero) que el cliente no quiere explicar todavía. "Lo estoy pensando" es casi siempre una
+            cortesía, no una descripción de lo que está pasando.</p>
+          <div class="obj-response">
+            "Sin problema, entiendo que es una decisión importante. Para ayudarte a tomar la mejor decisión: ¿hay algún
+            aspecto específico de la propuesta que todavía te genera dudas? A veces un detalle que no quedó claro puede
+            frenar el proceso más de lo que parece."<br><br>
+            <strong>Dar permiso explícito para expresar la duda real suele desbloquear la conversación.</strong> Si el
+            cliente dice "no, está todo claro", puede ser el momento de proponer una fecha concreta para la decisión.
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="warning reveal">
-      <strong>El error más frecuente:</strong> defender el precio antes de entender la objeción real. Cuando un vendedor escucha "está caro" y responde inmediatamente con una justificación del valor, está respondiendo a la objeción de superficie — no a la real. En el mejor caso parece que no escuchó. En el peor caso, confirma que la única forma de avanzar es negociar el precio.
-    </div>
-
-    <div class="divider reveal">
-      <span class="divider-icon">◆ ◆ ◆</span>
-    </div>
-
-    <!-- LEAD MAGNET -->
-    <div class="lm-teaser reveal">
-      <div class="lm-header">
-        <div class="lm-eyebrow">Guía incluida</div>
-        <div class="lm-title">La secuencia completa de seguimiento post-presupuesto con mensajes exactos para cada contacto</div>
+      <div class="warning reveal">
+        <strong>El error más frecuente:</strong> defender el precio antes de entender la objeción real. Cuando un
+        vendedor escucha "está caro" y responde inmediatamente con una justificación del valor, está respondiendo a la
+        objeción de superficie — no a la real. En el mejor caso parece que no escuchó. En el peor caso, confirma que la
+        única forma de avanzar es negociar el precio.
       </div>
-      <div class="lm-body">
-        <p class="lm-intro">Esta guía incluye los cinco mensajes completos listos para adaptar y usar, las respuestas exactas a las cuatro objeciones más frecuentes, el árbol de decisión para saber cuándo seguir insistiendo y cuándo pasar a nurturing, y la configuración del sistema en Kommo CRM.</p>
 
-        <!-- Preview: first two steps visible -->
-        <div class="timeline">
-          <div class="timeline-step">
-            <div class="tl-left">
-              <div class="tl-day">Hora 2</div>
+      <div class="divider reveal">
+        <span class="divider-icon">◆ ◆ ◆</span>
+      </div>
+
+      <!-- LEAD MAGNET -->
+      <div class="lm-teaser reveal">
+        <div class="lm-header">
+          <div class="lm-eyebrow">Guía incluida</div>
+          <div class="lm-title">La secuencia completa de seguimiento post-presupuesto con mensajes exactos para cada
+            contacto</div>
+        </div>
+        <div class="lm-body">
+          <p class="lm-intro">Esta guía incluye los cinco mensajes completos listos para adaptar y usar, las respuestas
+            exactas a las cuatro objeciones más frecuentes, el árbol de decisión para saber cuándo seguir insistiendo y
+            cuándo pasar a nurturing, y la configuración del sistema en Kommo CRM.</p>
+
+          <!-- Preview: first two steps visible -->
+          <div class="timeline">
+            <div class="timeline-step">
+              <div class="tl-left">
+                <div class="tl-day">Hora 2</div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-content">
+                <div class="tl-title">Confirmación de envío</div>
+                <div class="tl-body">Mensaje inmediato post-envío con invitación a llamada de 15 minutos para recorrer
+                  la propuesta juntos.</div>
+                <div class="tl-msg">"[Nombre], te acabo de enviar la propuesta por mail. Cualquier pregunta avisame. Si
+                  querés, puedo llamarte 15 minutos esta semana para recorrerla juntos."</div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="tl-left">
+                <div class="tl-day">Día 2</div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-content">
+                <div class="tl-title">Verificación de recepción</div>
+                <div class="tl-body">Primer seguimiento breve que verifica que llegó la propuesta y abre la puerta a
+                  preguntas sin presionar por la decisión.</div>
+                <div class="tl-msg">"Hola [nombre], quería verificar que recibiste bien la propuesta. ¿Llegó todo bien?"
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GATE -->
+          <div class="lm-gate">
+            <div class="lm-gate-blur">
               <div class="tl-line"></div>
             </div>
             <div class="tl-content">
-              <div class="tl-title">Confirmación de envío</div>
-              <div class="tl-body">Mensaje inmediato post-envío con invitación a llamada de 15 minutos para recorrer la propuesta juntos.</div>
-              <div class="tl-msg">"[Nombre], te acabo de enviar la propuesta por mail. Cualquier pregunta avisame. Si querés, puedo llamarte 15 minutos esta semana para recorrerla juntos."</div>
+              <div class="tl-title">Aporte de valor adicional</div>
+              <div class="tl-body">Mensaje completo con proyecto de referencia + variantes según tipo de obra.</div>
+              <div class="tl-msg">████████████████████████████████</div>
             </div>
           </div>
           <div class="timeline-step">
             <div class="tl-left">
-              <div class="tl-day">Día 2</div>
+              <div class="tl-day">Día 10</div>
               <div class="tl-line"></div>
             </div>
             <div class="tl-content">
-              <div class="tl-title">Verificación de recepción</div>
-              <div class="tl-body">Primer seguimiento breve que verifica que llegó la propuesta y abre la puerta a preguntas sin presionar por la decisión.</div>
-              <div class="tl-msg">"Hola [nombre], quería verificar que recibiste bien la propuesta. ¿Llegó todo bien?"</div>
+              <div class="tl-title">Pregunta directa por la decisión</div>
+              <div class="tl-body">Mensaje que invita a verbalizar la objeción real + árbol de respuestas.</div>
+              <div class="tl-msg">████████████████████████████████</div>
+            </div>
+          </div>
+          <div class="timeline-step">
+            <div class="tl-left">
+              <div class="tl-day">Día 21</div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-title">Reencuadre o cierre del loop</div>
+              <div class="tl-body">Mensaje final + criterio de cuándo archivar y cuándo pasar a nurturing.</div>
+              <div class="tl-msg">████████████████████████████████</div>
             </div>
           </div>
         </div>
-
-        <!-- GATE -->
-        <div class="lm-gate">
-          <div class="lm-gate-blur">
-<div class="tl-line"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-title">Aporte de valor adicional</div>
-                  <div class="tl-body">Mensaje completo con proyecto de referencia + variantes según tipo de obra.</div>
-                  <div class="tl-msg">████████████████████████████████</div>
-                </div>
-              </div>
-              <div class="timeline-step">
-                <div class="tl-left">
-                  <div class="tl-day">Día 10</div>
-                  <div class="tl-line"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-title">Pregunta directa por la decisión</div>
-                  <div class="tl-body">Mensaje que invita a verbalizar la objeción real + árbol de respuestas.</div>
-                  <div class="tl-msg">████████████████████████████████</div>
-                </div>
-              </div>
-              <div class="timeline-step">
-                <div class="tl-left">
-                  <div class="tl-day">Día 21</div>
-                  <div class="tl-line"></div>
-                </div>
-                <div class="tl-content">
-                  <div class="tl-title">Reencuadre o cierre del loop</div>
-                  <div class="tl-body">Mensaje final + criterio de cuándo archivar y cuándo pasar a nurturing.</div>
-                  <div class="tl-msg">████████████████████████████████</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          </div>
-          <div class="lm-gate-overlay">
-            <div class="gate-label">Guía completa disponible por WhatsApp</div>
-            <div class="gate-title">Recibí los 5 mensajes completos + respuestas a las 4 objeciones</div>
-            <div class="gate-sub">Incluye árbol de decisión, configuración en Kommo, y criterio de cuándo pasar a nurturing.</div>
-            <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito. <strong>La respuesta llega automáticamente.</strong></p>
-            <a class="gate-kw" href="https://wa.me/5491155557890?text=SEGUIMIENTO" target="_blank" rel="noopener">
-              Escribir SEGUIMIENTO por WhatsApp <span class="gate-kw-arrow">→</span>
-            </a>
-            <div class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
-          </div>
-        </div>
-
       </div>
     </div>
+    <div class="lm-gate-overlay">
+      <div class="gate-label">Guía completa disponible por WhatsApp</div>
+      <div class="gate-title">Recibí los 5 mensajes completos + respuestas a las 4 objeciones</div>
+      <div class="gate-sub">Incluye árbol de decisión, configuración en Kommo, y criterio de cuándo pasar a nurturing.
+      </div>
+      <p class="gate-instruction">Tocá el botón, abrí WhatsApp y enviá el mensaje tal como está escrito. <strong>La
+          respuesta llega automáticamente.</strong></p>
+      <a class="gate-kw" href="https://wa.me/5491155557890?text=SEGUIMIENTO" target="_blank" rel="noopener">
+        Escribir SEGUIMIENTO por WhatsApp <span class="gate-kw-arrow">→</span>
+      </a>
+      <div class="gate-note">Envialo por WhatsApp al número de Mucho Marketing</div>
+    </div>
+    </div>
 
+    </div>
     <div class="footnote reveal">
-      <p>Fuentes citadas: Invesp — 80% de las ventas requieren cinco o más seguimientos, 44% de los vendedores abandona tras un intento, 48% no hace ningún seguimiento, 60% de los clientes rechaza una oferta cuatro veces antes de comprar. Belkins Research — el primer seguimiento aumenta la tasa de respuesta un 49%. HubSpot State of Sales 2024 — datos sobre comportamiento de seguimiento de vendedores. Geoffrey James, Sales Expert — la primera objeción de precio raramente es la real. HubSpot Objection Handling Guide 2025 — marco de cuatro pasos para manejo de objeciones. Forum Corporation research — proceso de manejo de objeciones de cuatro pasos (documentado en HubSpot). Los porcentajes corresponden a estudios realizados principalmente en mercados de EE.UU.</p>
+      <p>Fuentes citadas: Invesp — 80% de las ventas requieren cinco o más seguimientos, 44% de los vendedores abandona
+        tras un intento, 48% no hace ningún seguimiento, 60% de los clientes rechaza una oferta cuatro veces antes de
+        comprar. Belkins Research — el primer seguimiento aumenta la tasa de respuesta un 49%. HubSpot State of Sales
+        2024 — datos sobre comportamiento de seguimiento de vendedores. Geoffrey James, Sales Expert — la primera
+        objeción de precio raramente es la real. HubSpot Objection Handling Guide 2025 — marco de cuatro pasos para
+        manejo de objeciones. Forum Corporation research — proceso de manejo de objeciones de cuatro pasos (documentado
+        en HubSpot). Los porcentajes corresponden a estudios realizados principalmente en mercados de EE.UU.</p>
+    </div>
     </div>
 
-  </div>
-</article>
 
-<script>
-  window.addEventListener('scroll', () => {
-    const doc = document.documentElement;
-    document.getElementById('progress-bar').style.width =
-      ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-  });
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+
+    </div>
+  </article>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      document.getElementById('progress-bar').style.width =
+        ((doc.scrollTop || document.body.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 
 </body>
+
 </html>
