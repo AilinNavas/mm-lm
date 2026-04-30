@@ -793,7 +793,7 @@ nav {
   </div>
 
   <!-- TESTIMONIAL -->
-  <div class="testimonial">
+  <!-- <div class="testimonial">
     <p class="testimonial-text">
       "Cuando mapié el embudo me di cuenta que no era un problema de captación — tenía leads. Era el seguimiento después de enviar el presupuesto. <strong>Estaba perdiendo USD 6.000 por mes en proyectos que ya habían llegado.</strong> Con el sistema de Mucho Marketing, eso cambió en el primer mes."
     </p>
@@ -804,7 +804,7 @@ nav {
         <div class="author-role">Empresa de proyectos premium · Rosario · USD 8K ticket promedio</div>
       </div>
     </div>
-  </div>
+  </div> -->
 
    <!-- FOOTER -->
   <footer>
@@ -1162,19 +1162,19 @@ function buildWALink(d) {
 // ══════════════════════════════════════════════════════════
 // EMAIL
 // ══════════════════════════════════════════════════════════
-function sendEmail() {
-  const inp = document.getElementById('email-inp');
-  if (!inp.value.trim() || !inp.value.includes('@')) {
-    inp.style.borderColor = 'rgba(255,80,80,.5)';
-    inp.focus();
-    setTimeout(() => inp.style.borderColor = '', 1500);
-    return;
-  }
-  const btn = inp.nextElementSibling;
-  btn.textContent = 'Enviado ✓';
-  btn.style.color = '#27DE6B';
-  btn.disabled = true;
-}
+// function sendEmail() {
+//   const inp = document.getElementById('email-inp');
+//   if (!inp.value.trim() || !inp.value.includes('@')) {
+//     inp.style.borderColor = 'rgba(255,80,80,.5)';
+//     inp.focus();
+//     setTimeout(() => inp.style.borderColor = '', 1500);
+//     return;
+//   }
+//   const btn = inp.nextElementSibling;
+//   btn.textContent = 'Enviado ✓';
+//   btn.style.color = '#27DE6B';
+//   btn.disabled = true;
+// }
 </script>
 </body>
 </html>
