@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -368,14 +368,451 @@
 
     <p class="sub">Generamos la demanda y armamos el sistema para convertirla. Primer mes sin costo.</p>
 
+    Funnel flow -->
+    
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mucho Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #010707;
+    --card: #09140E;
+    --mid: #192520;
+    --green: #27DE6B;
+    --white: #fff;
+    --muted: rgba(255,255,255,0.38);
+    --line: rgba(255,255,255,0.07);
+    --green-glow: rgba(39,222,107,0.12);
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.028;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── AMBIENT GLOW ── */
+  .glow {
+    position: fixed;
+    top: -20vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120vw;
+    height: 70vh;
+    background: radial-gradient(ellipse at center top, rgba(39,222,107,0.07) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 24px env(safe-area-inset-bottom, 24px);
+  }
+
+  /* ── LOGO ── */
+  .logo {
+    padding: 40px 0 0;
+    font-size: 11px;
+    font-weight: 900;
+    font-variation-settings: 'wght' 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0;
+    animation: up 0.6s 0.1s ease forwards;
+  }
+  .logo span { color: var(--green); }
+
+  /* ── HERO ── */
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 0 32px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: up 0.6s 0.2s ease forwards;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: blink 2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  h1 {
+    font-size: clamp(42px, 12vw, 64px);
+    font-weight: 900;
+    font-variation-settings: 'wght' 900;
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: up 0.7s 0.3s ease forwards;
+  }
+
+  h1 .accent { color: var(--green); }
+
+  /* ── SUBTITLE ── */
+  .sub {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    max-width: 340px;
+    opacity: 0;
+    animation: up 0.7s 0.45s ease forwards;
+  }
+
+  /* ── FUNNEL FLOW ── */
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: up 0.7s 0.55s ease forwards;
+  }
+
+  .funnel-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+
+  .funnel-step--highlight {
+    background: rgba(39,222,107,0.06);
+    border-color: rgba(39,222,107,0.25);
+  }
+
+  .funnel-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--green);
+    opacity: 0.6;
+    flex-shrink: 0;
+    width: 20px;
+  }
+
+  .funnel-step--highlight .funnel-num { opacity: 1; }
+
+  .funnel-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .funnel-text strong {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--white);
+  }
+
+  .funnel-step--highlight .funnel-text strong {
+    color: var(--green);
+    font-size: 16px;
+  }
+
+  .funnel-text span {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .funnel-arrow {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+    opacity: 0.5;
+  }
+
+  /* ── CTA BUTTON ── */
+  .cta-wrap {
+    opacity: 0;
+    animation: up 0.7s 0.7s ease forwards;
+    padding-bottom: 40px;
+  }
+
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--green);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 800;
+    font-variation-settings: 'wght' 800;
+    letter-spacing: -0.01em;
+    border-radius: 14px;
+    padding: 19px 24px;
+    width: 100%;
+    transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+    box-shadow: 0 0 0 0 rgba(39,222,107,0);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  }
+
+  .cta:active {
+    transform: scale(0.97);
+    opacity: 0.92;
+  }
+
+  @media (hover: hover) {
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(39,222,107,0.25);
+    }
+  }
+
+  .cta-icon {
+    width: 22px; height: 22px;
+    flex-shrink: 0;
+  }
+
+  .cta-sub {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+  }
+
+  /* ── FREE BADGE ── */
+  .free-badge {
+    display: inline-block;
+    background: var(--green-glow);
+    border: 1px solid rgba(39,222,107,0.25);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50%       { transform: scale(1.6); opacity: 0.15; }
+  }
+  /* ── MATERIALS SECTION ── */
+  .materials {
+    padding: 0 0 56px;
+    opacity: 0;
+    animation: up 0.7s 0.85s ease forwards;
+  }
+
+  .materials-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .materials-divider::before,
+  .materials-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .materials-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .materials-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mat {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 15px 18px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mat:active { transform: scale(0.98); }
+
+  @media (hover: hover) {
+    .mat:hover {
+      border-color: rgba(39,222,107,0.2);
+      background: rgba(39,222,107,0.04);
+    }
+  }
+
+  .mat-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(39,222,107,0.08);
+    border: 1px solid rgba(39,222,107,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .mat-icon svg {
+    width: 16px; height: 16px;
+    stroke: var(--green);
+  }
+
+  .mat-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mat-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .mat-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .mat-arrow {
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  @media (hover: hover) {
+    .mat:hover .mat-arrow {
+      transform: translateX(3px);
+      color: var(--green);
+    }
+  }
+
+  /* Special: Diagnóstico gets a green accent */
+  .mat--highlight {
+    border-color: rgba(39,222,107,0.2);
+    background: rgba(39,222,107,0.04);
+  }
+
+  .mat--highlight .mat-icon {
+    background: rgba(39,222,107,0.14);
+    border-color: rgba(39,222,107,0.3);
+  }
+
+  .mat--highlight .mat-title { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="page">
+
+  <div class="logo">MUCHO <span>MARKETING</span></div>
+
+  <div class="hero">
+
+    <div class="eyebrow">Reformas · Cerramientos · Piscinas · Construcción</div>
+
+    <h1>
+      Más ventas.<br>
+      <span class="accent">Garantizado.</span>
+    </h1>
+
+    <p class="sub">Generamos la demanda y armamos el sistema para convertirla. Primer mes sin costo.</p>
+
     <!-- Funnel flow -->
     <div class="funnel">
       <div class="funnel-step">
         <span class="funnel-num">01</span>
         <div class="funnel-text">
-          <strong>Consultas calificadas</strong>
-          <span>Meta Ads que atraen al cliente correcto</span>
-        </div>
+            <strong>Más consultas calificadas</strong>
+            <span>Publicidad rentable que atrae al cliente correcto</span>
+          </div>
       </div>
       <div class="funnel-arrow">
         <svg width="12" height="16" viewBox="0 0 12 16" fill="none">
@@ -386,7 +823,7 @@
         <span class="funnel-num">02</span>
         <div class="funnel-text">
           <strong>Más presupuestos enviados</strong>
-          <span>CRM que hace el seguimiento solo</span>
+          <span>CRM inteligente que hace la venta más fácil</span>
         </div>
       </div>
       <div class="funnel-arrow">
@@ -423,30 +860,98 @@
       </p>
     </div>
 
-    <div class="secondary-navigation reveal">
+    <!-- Materials section -->
+    <div class="materials">
+      <div class="materials-divider">
+        <span class="materials-label">Si todavía no es el momento</span>
+      </div>
 
-  <div class="secondary-nav-title">
-    También podés explorar:
-  </div>
+      <div class="materials-list">
 
-  <div class="secondary-nav-links">
+        <a class="mat" href="https://www.mucho-marketing.com/lm/los-4-numeros" target="_blank" rel="noopener">
+          <div class="mat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18"/>
+            </svg>
+          </div>
+          <div class="mat-body">
+            <span class="mat-title">Los 4 números clave</span>
+            <span class="mat-desc">Los 4 números exactos que definen la rentabilidad de tu empresa</span>
+          </div>
+          <svg class="mat-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
 
-    <a href="/lm/diagnostico-gratuito"
-       class="secondary-link">
-      Autodiagnóstico en 5 minutos
-    </a>
+        <a class="mat" href="https://www.mucho-marketing.com/lm/cliente-ideal" target="_blank" rel="noopener">
+          <div class="mat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+          </div>
+          <div class="mat-body">
+            <span class="mat-title">Filtrar para escalar</span>
+            <span class="mat-desc">Cómo atraer clientes premium y tener cierres más rápidos</span>
+          </div>
+          <svg class="mat-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
 
-    <a href="/lm/los-4-numeros"
-       class="secondary-link">
-      Los 4 números claves
-    </a>
+        <a class="mat" href="https://www.mucho-marketing.com/lm/gestion-comercial" target="_blank" rel="noopener">
+          <div class="mat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12h4l3 8 4-16 3 8h6"/>
+            </svg>
+          </div>
+          <div class="mat-body">
+            <span class="mat-title">Ingeniería comercial</span>
+            <span class="mat-desc">Cómo sistematizar el seguimiento y aumentar tu tasa de cierre sin más esfuerzo</span>
+          </div>
+          <svg class="mat-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
 
-  </div>
+        <a class="mat" href="https://www.mucho-marketing.com/lm/sistema-de-captacion" target="_blank" rel="noopener">
+          <div class="mat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 3v9l5 3"/>
+            </svg>
+          </div>
+          <div class="mat-body">
+            <span class="mat-title">Máquina de demanda</span>
+            <span class="mat-desc">El fin del "boca a boca". Genera consultas calificadas de forma predecible</span>
+          </div>
+          <svg class="mat-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
 
-</div>
+        <a class="mat mat--highlight" href="https://www.mucho-marketing.com/lm/diagnostico-gratuito" target="_blank" rel="noopener">
+          <div class="mat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          <div class="mat-body">
+            <span class="mat-title">Autodiagnóstico gratuito de 5 minutos</span>
+            <span class="mat-desc">Identifica la fuga de capital exacta en tu embudo de ventas actual</span>
+          </div>
+          <svg class="mat-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+      </div>
+    </div>
 
   </div>
 </div>
 
 </body>
 </html>
+
