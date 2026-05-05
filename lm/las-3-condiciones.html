@@ -206,4 +206,10 @@
     document.getElementById('progressPct').textContent = '0%';
     document.getElementById('q1').classList.add('active');
   }
+  // NUEVA FUNCIÓN PARA WHATSAPP
+  function goToWhatsApp(mensaje) {
+    var telefono = "5491112345678"; // <--- REEMPLAZÁ CON TU NÚMERO (con código de país)
+    var url = "https://wa.me/" + telefono + "?text=" + encodeURIComponent(mensaje);
+    window.open(url, '_blank');
+  }
 </script>
