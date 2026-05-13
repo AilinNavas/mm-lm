@@ -1449,8 +1449,19 @@ const WA_KEYWORDS = {
 
 function buildWALink(diagnosis) {
   const keyword = WA_KEYWORDS[diagnosis] || 'DIAGNOSTICO';
-  const msg = encodeURIComponent(keyword);
-  return `https://wa.me/${WA_NUMBER}?text=${msg}`;
+
+  const name = document.getElementById('f-name')?.value.trim() || '';
+  const email = document.getElementById('f-email')?.value.trim() || '';
+
+  const msg = `
+${keyword}
+
+Mis datos son:
+• Nombre: ${name}
+• Email: ${email}
+  `.trim();
+
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
 function revealForm() {
